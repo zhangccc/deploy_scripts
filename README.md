@@ -53,7 +53,7 @@ cd /deploy_scripts/server
 ./ambari-server-inst.sh  
   
 浏览器访问IP:8080，选择服务栈，注册集群主机等  
-参数：  
+配置参数：  
 **Grafana Admin Password:** admin admin
 
   
