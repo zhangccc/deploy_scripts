@@ -26,5 +26,6 @@ spawn scp -r /etc/hosts root@$hn:/etc/
 	expect "*assword:" { send "$pw\n" } }
 	"*assword:" { send "$pw\n" } 
 	}
+	expect "*]#*"
 EOF
 done

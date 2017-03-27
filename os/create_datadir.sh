@@ -19,7 +19,7 @@ then
 		}
 			expect "*#*"
 		send "mkdir /data1 /data2\n"
-			expect "*#*"
+			expect "*]#*"
 	EOF
 	done
 
@@ -46,8 +46,7 @@ else
 		send "ln -s $1/data1 /data1\n"
 			expect "*#*"
 		send "ln -s $1/data2 /data2\n"
-			expect "*#*"
+			expect "*]#*"
 	EOF
 	done
-
 fi

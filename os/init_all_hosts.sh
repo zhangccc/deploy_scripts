@@ -1,10 +1,12 @@
 #!/bin/bash
+
+httppost=`cat /etc/httpd/conf/httpd.conf |grep "Listen " |grep -v "#" |awk '{print $2}'`
+httpid=`hostname -i`
+
 cat ./ip.txt|while read line;
 do
 hn=`echo $line|awk '{print $1}'`
 pw=`echo $line|awk '{print $2}'`
-httppost=`cat /etc/httpd/conf/httpd.conf |grep "Listen " |grep -v "#" |awk '{print $2}'`
-httpid=`hostname -i`
 
 /usr/bin/expect <<-EOF
 set timeout 100000
@@ -21,6 +23,6 @@ spawn ssh $hn
         expect "*#*"
 	send "./init_centos6.sh -hostname $hn -yum_baseurl http://$httpid\:$httppost/sugo_yum\n"
 	send "rm -rf init_centos6.sh\n"
-		expect "*#*"
+		expect "*]#*"
 EOF
 done
