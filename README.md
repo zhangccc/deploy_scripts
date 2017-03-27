@@ -9,7 +9,7 @@ hostname需设为三级域名，如test01.sugo.vm
 需要安装的相关软件包：wget、ntp、openssh-clients  
 ambari-server主机的/etc/hosts文件，需添加集群各主机IP与hostname的映射
 
-###搭建本地yum源
+### 搭建本地yum源 ###
 > 使用任意一种http服务器，如tomcat，将yum源文件sugo_yum.zip解压到http服务器的内容目录，或其它目录并用符号链接连接http内容目录  
 > 修改http服务端口号为81或其它，创建数据存储目录，开启http服务，下载脚本
 
@@ -35,14 +35,14 @@ chmod 755 create\_datadir.sh init\_all\_hosts.sh init\_centos6.sh init\_process.
   
   
 
-###系统基本参数优化
+### 系统基本参数优化 ###
 >分发hosts文件到其它主机  
 >运行参数优化脚本
 
 ./scp\_hosts.sh  
 ./init\_process.sh
 
-###ambari-server安装
+### ambari-server安装 ###
 >直接运行脚本即可  
 >此处默认http服务和ambari-server安装在同一台主机上  
 
@@ -56,14 +56,14 @@ cd /deploy_scripts/server
   
 
 
-####解决问题
+#### 解决问题 ####
 - 简化部署流程
 - 减少手动操作
 - 减少部署错误
 - 缩减部署时间
 - 集群主机数量较多时，优势会更加明显
 
-####不足
+#### 不足 ####
 集群部署过程中会出现文件目录不同、IP与hostname的映射等诸多细节的不同，脚本基于流程编写，并没有将所有可能出现变化的细节参数化，仅参数化部分较重要的输入信息
 
 
