@@ -19,7 +19,9 @@ vi /etc/httpd/conf/httpd.conf
     Listen 81
 mkdir /data   #如果已经存在则无需创建  
 cd /data  
-上传yum源sugo\_yum.zip  
+
+>上传yum源sugo\_yum.zip  
+
 unzip sugo\_yum.zip  
 ln -s /data/sugo_yum /var/www/html  
 service httpd start  
@@ -27,11 +29,12 @@ service httpd start
 wget http://\`hostname`:81/sugo\_yum/SG/centos6/1.0/deploy\_scripts.tar.gz  
 tar -zxvf deploy\_scripts.tar.gz  
 cd deploy\_scripts/os  
-修改ip.txt，按“hostname+密码”的格式输入ambari-server外其它所有主机的信息  
+>修改ip.txt，按“hostname+密码”的格式输入ambari-server外其它所有主机的信息  
+
 chmod 755 create\_datadir.sh init\_all\_hosts.sh init\_centos6.sh init\_process.sh scp\_hosts.sh  
 ./create_datadir.sh [$datadir]  
   
->[$datadir]为数据存储根目录，例如上面的/data，如果准备阶段没有规划该目录，则默认为空，执行时不输入该参数
+[$datadir]为数据存储根目录，例如上面的/data，如果准备阶段没有规划该目录，则默认为空，执行时不输入该参数
   
   
 
