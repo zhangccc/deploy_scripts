@@ -5,7 +5,7 @@
 > 做好主机规划并准备主机，配置静态IP，修改主机hostname，安装相关软件包，如果是离线主机，需要配置本地安装源库，规划数据存储目录
 
 注：  
-hostname需设为三级域名，如test01.sugo.vm  
+hostname需设为二级域名，如test01.sugo.vm  
 需要安装的相关软件包：wget、ntp、openssh-clients  
 ambari-server主机的/etc/hosts文件，需添加集群各主机IP与hostname的映射
 
@@ -53,7 +53,7 @@ cd /deploy_scripts/server
 ./ambari-server-inst.sh  
   
 浏览器访问IP:8080，选择服务栈，注册集群主机等  
-配置参数：  
+**配置参数：**  
 **Grafana Admin Password:** admin admin
 
   
