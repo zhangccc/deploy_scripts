@@ -13,45 +13,54 @@ ambari-server主机的/etc/hosts文件，需添加集群各主机IP与hostname�
 > 使用任意一种http服务器，如tomcat，将yum源文件sugo_yum.zip解压到http服务器的内容目录，或其它目录并用符号链接连接http内容目录  
 > 修改http服务端口号为81或其它，创建数据存储目录，开启http服务，下载脚本
 
-yum install -y httpd    
-vi /etc/httpd/conf/httpd.conf   
- 
-    Listen 81
+```shell
+yum install -y httpd   
+vi /etc/httpd/conf/httpd.conf
+
+Listen 81
+```
+```shell
 mkdir /data   #如果已经存在则无需创建  
 cd /data  
+```
 
 >上传yum源sugo\_yum.zip  
 
-unzip sugo\_yum.zip  
+```shell
+unzip sugo_yum.zip  
 ln -s /data/sugo_yum /var/www/html  
 service httpd start  
   
-wget http://\`hostname`:81/sugo\_yum/SG/centos6/1.0/deploy\_scripts.tar.gz  
-tar -zxvf deploy\_scripts.tar.gz  
-cd deploy\_scripts/os  
+wget http://`hostname`:81/sugo_yum/SG/centos6/1.0/deploy_scripts.tar.gz  
+tar -zxvf deploy_scripts.tar.gz  
+cd deploy_scripts/os  
+```
 >修改ip.txt，按“hostname+密码”的格式输入ambari-server外其它所有主机的信息  
 
+```shell
 chmod 755 create\_datadir.sh init\_all\_hosts.sh init\_centos6.sh init\_process.sh scp\_hosts.sh  
 ./create_datadir.sh [$datadir]  
-  
+```
 [$datadir]为数据存储根目录，例如上面的/data，如果准备阶段没有规划该目录，则默认为空，执行时不输入该参数
   
   
 
 ### 系统基本参数优化 ###
 >分发hosts文件到其它主机  
->运行参数优化脚本
+>运行参数优化脚本  
 
+```shell
 ./scp\_hosts.sh  
 ./init\_process.sh
-
+```
 ### ambari-server安装 ###
 >直接运行脚本即可  
 >此处默认http服务和ambari-server安装在同一台主机上  
-
+```shell
 cd /deploy_scripts/server  
 ./ambari-server-inst.sh  
-  
+```  
+
 浏览器访问IP:8080，选择服务栈，注册集群主机等  
 **配置参数：**  
 **Grafana Admin Password:** admin admin
