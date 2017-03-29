@@ -25,7 +25,7 @@ mkdir /data
 cd
 vi pre_servers.sh
 vi sugo_yum_inst.sh
-chmod pre_servers.sh sugo_yum_inst.sh
+chmod 755 pre_servers.sh sugo_yum_inst.sh
 ./pre_servers.sh $httppost $sugo_yum_dir $datadir
 ```
 $httppost为http服务需要修改为的端口号  
