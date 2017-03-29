@@ -36,6 +36,7 @@ if [ $skip_ssh -eq 0 ] && [ $skip_jdk -eq 0 ] && [ "$yum_baseurl" = "" ]
 fi
 
 /usr/sbin/ntpdate -u 202.108.6.95
+service ntpd start
 
 ### set hostname
 
