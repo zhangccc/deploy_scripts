@@ -1,19 +1,6 @@
 #!/bin/bash
 
-#安装相关软件
-yum install -y wget 
-yum install -y ntp
-yum install -y openssh-clients
-yum install -y unzip
-yum install -y expect
-
-#关闭防火墙和seLinux
-chkconfig iptables off
-/etc/init.d/iptables stop
-setenforce 0
-
-
-cat ./ip.txt|while read line;
+cat /etc/ip.txt|while read line;
 do
 hn=`echo $line|awk '{print $1}'`
 pw=`echo $line|awk '{print $2}'`
