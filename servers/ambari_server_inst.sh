@@ -20,6 +20,21 @@ expect {
 				expect "*(n)?" { send "/r" }
 			} 						
 				}
+		
+		"(y)?" {send "\r"
+			expect {
+				"*(n)?" { send "\r"
+					expect "*(1):" { send "3\r"
+						expect "JAVA_HOME:" {send "/usr/local/jdk18\r"
+							expect "*(n)?" { send "\r" }
+											}
+									}
+					expect "*(n)?" { send "/r"
+						expect "*(n)?" { send "/r" }
+									} 						
+						}
+					}
+				}
 		}
 expect "*]#*"
 EOF
