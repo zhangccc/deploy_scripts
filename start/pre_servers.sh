@@ -10,5 +10,5 @@ cd /root/deploy_scripts/os
 cd /root/deploy_scripts/os
 ./init_process.sh
 
-cd ../servers
+cd ../ambari-server
 ./ambari_server_inst.sh

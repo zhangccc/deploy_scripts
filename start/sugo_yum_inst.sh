@@ -34,5 +34,5 @@ chmod 755 init_process.sh
 tar -zxvf deploy_scripts.tar.gz
 cd deploy_scripts/os
 chmod 755 * 
-cd ../servers
+cd ../ambari-server
 chmod 755 ambari_server_inst.sh
