@@ -1,4 +1,5 @@
 # 集群部署文档（待续） #
+[TOC]
 
 ## 1 前期准备 ##
 1.1 主机配置要求  
@@ -13,28 +14,28 @@ Cpu ：8核， 内存：32g   数量：3
 
 Services| Components|test01.sugo.vm|test02.sugo.vm|test03.sugo.vm
 -------|----------|----------|----------|----------
-Ambari Metrics  |   Metrics Collector   |   安 | |
-Ambari Metrics  |   Grafana | 安 |  |
-Ambari Metrics  |   Metrics Monitor | 安 | 安 | 安　	　	　
-PostgresQL  |   Postgres server     |安	　	　	　
-Redis	|Redis server   | 安	　	　	　
-Zookeeper	|ZooKeeper  Server  |安|安|安	　	　	　
-HDFS	|Namenode   |安|安	　	　	　
-HDFS	|Datanode   |安|安|安	　	　	　
-HDFS	|ZKFailoverController   |安|安|	　	　	　
-HDFS    |Journalnode    |安|安|安	　	　	　
-Yarn    |Resourcemanager    |安|安	　	　	　
-Yarn	|ProxyServer    |安	　	　	　
-Yarn	|Nodemanager    |安	　	　	　
-MapReduce	|History Server |   安	　	　	　
-Kafka	|Kafka Broker   |||安	　	　	　
-Druid	|Broker |安|安	　	　	　
-Druid	|Historical ||安|安　	　	　
-Druid	|Overlord   |安|安	　	　	　
-Druid	|MiddleManager  |安|安　	　	　
-Druid	|Coordinator    |安|安　	　	　
-Astro	|ASTRO UI   |安	　	　
-OpenResty	|OpenResty Server   |安	　	　	　
+Ambari Metrics  |   Metrics Collector   |   √ | |
+Ambari Metrics  |   Grafana | √ |  |
+Ambari Metrics  |   Metrics Monitor | √ | √ | √	　	　
+PostgresQL  |   Postgres server     |√	　	　	　
+Redis	|Redis server   | √	　	　	　
+Zookeeper	|ZooKeeper  Server  |√|√|√	　	　	　
+HDFS	|Namenode   |√|√	　	　	　
+HDFS	|Datanode   |√|√|√	　	　	　
+HDFS	|ZKFailoverController   |√|√|	　	　	　
+HDFS    |Journalnode    |√|√|√	　	　	　
+Yarn    |Resourcemanager    |√|√	　	　	　
+Yarn	|ProxyServer    |√	　	　	　
+Yarn	|Nodemanager    |√	　	　	　
+MapReduce	|History Server |   √	　	　	　
+Kafka	|Kafka Broker   |||√	　	　	　
+Druid	|Broker |√|√	　	　	　
+Druid	|Historical ||√|√	　	　
+Druid	|Overlord   |√|√	　	　	　
+Druid	|MiddleManager  |√|√	　	　
+Druid	|Coordinator    |√|√	　	　
+Astro	|ASTRO UI   |√	　	　
+OpenResty	|OpenResty Server   |√	　	　	　
 
 
 
@@ -99,18 +100,18 @@ port: 15432
 注：生产环境中至少部署三个节点
 
 ### 3.4  HDFS安装 ###
-###### 3.4.1 环境要求：
+#### 3.4.1 环境要求：
 保证两个目录地址NameNode.dfs.namenode.name.dir不存在
 两个NameNode的hdfs用户能互相免密码登录
 
-###### 3.4.2 可修改参数：
+#### 3.4.2 可修改参数：
 dfs.namenode.name.dir  
 dfs.namenode.data.dir  
 hadoop.log.dir  
 dfs.journalnode.edits.dir  
 hadoop.tmp.dir  
 
-###### 3.4.3 安装：
+#### 3.4.3 安装：
 此处的HDFS为HA模式，有两个NameNode，假设NN1为Active Namenode，NN2为Standby Namenode。
  
 正常情况下会报错ZKFailoverController(zkfc)启动失败，不报错表示已经安装过HDFS，跳过失败，点击下一步，按照以下顺序操作：
@@ -160,27 +161,26 @@ hdfs dfs -mkdir -p /tmp/hadoop-yarn/staging
 hdfs dfs -chmod 777 /tmp/hadoop-yarn/staging  
 ```
 
-### 3.7  Druidio安装
+### 3.7  Druid安装
 环境要求：  
 Postgresql(可通过界面安装)  
 创建druid库(UTF8，Postgres)（2.6.1和2.6.2选一种方法即可）  
 
-###### 3.7.1 界面建库：  
+#### 3.7.1 界面建库：  
 下载、安装Postgresql界面管理工具Navicat for PostgreSQL，连接数据库，创建druid库
-   
+
 如果连接时显示密码错误，则进入postgres用户，进行参数设置  
 ```
 /opt/apps/postgres_sugo/bin/psql -d postgres -U postgres -p 15432 -c "ALTER USER postgres PASSWORD '123456';"
 ```  
 
-###### 3.7.2 CLI命令建库：
+#### 3.7.2 CLI命令建库：
 
 ```
 cd /opt/apps
 bin/psql -p 15432 -U postgres -d postgres -c "CREATE DATABASE druid WITH OWNER = postgres ENCODING = UTF8;"
 bin/psql -p 15432 -U postgres -d postgres -c "select datname from pg_database"
-bin/psql -p 15432 -U postgres -d postgres -c "CREATE DATABASE sugo_astro WITH OWNER = postgres ENCODING = UTF8;"
-bin/psql -p 15432 -U postgres -d postgres -c "select datname from pg_database"
+
 ```
 
 建议修改参数：  
@@ -216,7 +216,12 @@ log.dirs
 ### 3.9  Astro安装
 环境要求：  
 Postgresql(可通过界面安装)，并创建sugo_astro库(UTF8，Postgresl)：  
-redis(可通过界面安装)
+redis(可通过界面安装)  
+```
+cd /opt/apps
+bin/psql -p 15432 -U postgres -d postgres -c "CREATE DATABASE sugo_astro WITH OWNER = postgres ENCODING = UTF8;"
+bin/psql -p 15432 -U postgres -d postgres -c "select datname from pg_database"
+```
 
 下载、解压缩user-group-1.0.tgz并启动  
 ```
@@ -257,7 +262,7 @@ redis_host:
 自定义参数（此参数在使用非sugo提供的kafka时添加，使用sugo安装kafka时不需要添加）：  
 kafka.brokers: 192.168.1.122:59092,192.168.1.126:59092,192.168.1.240:59092（例）
 
-### 4 验证安装是否成功
+## 4 验证安装是否成功
 至此，服务安装完成，查看Web界面、导入数据验证安装成功，具体可查看视频  
 查看的服务：  
 HDFS（包括activeNamenode，standbyNamenode）  
