@@ -1,0 +1,2 @@
+test2.sugo.vm 123456
+test3.sugo.vm 123456

@@ -2,8 +2,10 @@
 
 cd /etc/yum.repos.d
 rm ambari.repo
-wget http://`hostname`:81/sugo_yum/AMBARI-2.2.2.0/centos6/2.2.2.0-0/ambari.repo
-sed -i "s/192.168.0.200/`hostname -i`/" ambari.repo
+http_post=`cat /etc/httpd/conf/httpd.conf |grep "Listen " |grep -v "#" |awk '{print $2}'`
+wget http://`hostname`:$http_post/sugo_yum/AMBARI-2.2.2.0/centos6/2.2.2.0-0/ambari.repo
+sed -i "s/192.168.0.200/`hostname`/" ambari.repo
+sed -i "s/yum/sugo_yum/g" ambari.repo
 
 yum install ambari-server -y
 

@@ -125,10 +125,10 @@ if [ $skip_ssh -eq 0 ]
 EOF
     pub_key=`curl "${yum_baseurl}/SG/centos6/1.0/id_rsa.pub"`
 
-    res=`grep "$pub_key" ~/.ssh/authorized_keys`
+    res=`grep "$pub_key" /root/.ssh/authorized_keys`
     if [ "$res" = "" ]
       then
-         echo $pub_key >>  ~/.ssh/authorized_keys
+         echo $pub_key >>  /root/.ssh/authorized_keys
     fi
 fi
 
@@ -146,4 +146,15 @@ if [ $skip_jdk -eq 0 ]
     mv jdk1.8.0_91 jdk18
     rm -rf ${packagename}
     popd 
+	
 fi
+
+#添加java环境变量
+res=`grep "export JAVA_HOME=" /etc/profile`
+if [ "$res" = "" ]
+   then
+	 echo 'export JAVA_HOME=/usr/local/jdk18' >> /etc/profile
+	 echo 'export PATH=$JAVA_HOME/bin:$PATH' >> /etc/profile
+fi
+
+source /etc/profile

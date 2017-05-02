@@ -1,10 +1,15 @@
 #!/bin/bash
 #如果客户已创建/data目录且位于较大磁盘分区下，则通过符号链接减少磁盘占用
 
-if [ "$1" = "" ]
-then
-	mkdir /data1 /data2
+#日志、元数据存储目录--$1
 
+if [ $1 == "" ]
+then
+	mkdir /data1 
+	mkdir /data2
+	
+	echo "存储主目录未设定，数据将直接保存在/data1 和 /data2 目录中"
+	
 	cat /etc/ip.txt |while read line;
 	do
 	hn=`echo $line|awk '{print $1}'`
@@ -26,12 +31,16 @@ then
 		send "yum install -y ntp\r"
 		expect "*]#*"
 		send "yum install -y openssh-clients\r"
+		expect "*]#*"
+		send "service ntpd start\r"
 			expect "*]#*"
 	EOF
 	done
 
 else
-	mkdir -p $1/data1 $1/data2
+
+	mkdir -p $1/data1 
+	mkdir -p $1/data2
 	ln -s $1/data1 /data1
 	ln -s $1/data2 /data2
 	
@@ -49,7 +58,9 @@ else
 		"*assword:" { send "$pw\n" } 
 		}
 			expect "*]#*"
-		send "mkdir -p $1/data1 $1/data2\n"
+		send "mkdir -p $1/data1\n"
+			expect "*]#*"
+		send "mkdir -p $1/data2\n"
 			expect "*]#*"
 		send "ln -s $1/data1 /data1\n"
 			expect "*]#*"
@@ -60,6 +71,8 @@ else
 		send "yum install -y ntp\r"
 		expect "*]#*"
 		send "yum install -y openssh-clients\r"
+		expect "*]#*"
+		send "service ntpd start\r"
 			expect "*]#*"
 	EOF
 	done

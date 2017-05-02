@@ -1,15 +1,14 @@
-# 集群部署文档（待续） #
-[TOC]
+# 集群部署文档 #
 
 ## 1 前期准备 ##
-1.1 主机配置要求  
+### 1.1 主机配置要求  
 建议机器最低配置（也可根据实际情况降低配置，但不建议这样做）  
-Cpu ：8核， 内存：32g   数量：3  
-系统要求： centos6.8（其他版本没测试过）  
-不能连接外网的，请搭好局域网centos yum源。  
-机器数量较多时，建议搭建内部dns服务器  
+CPU ：8核， 内存：32g，   数量：3  
+系统要求： CentOS6.8（其他版本未测试）  
+不能连接外网的，请搭好局域网CentOS yum源。  
+机器数量较多时，建议搭建内部DNS服务器  
   
-1.2 组件安装规划  
+### 1.2 组件安装规划  
 各组件在各主机上的分布如下：
 
 Services| Components|test01.sugo.vm|test02.sugo.vm|test03.sugo.vm
@@ -40,11 +39,11 @@ OpenResty	|OpenResty Server   |√	　	　	　
 
 
 
-## 2 ambari-server安装 ##
-做好主机规划并准备主机，配置静态IP，修改主机hostname，安装相关软件包，如果是离线主机，需要配置本地安装源库，规划数据存储目录
+## 2 Ambari-server安装 
+做好主机规划并准备主机，配置静态IP，修改主机hostname，安装相关软件包，规划数据存储目录，如果是离线主机，需配置本地安装源库
 
 注：  
-hostname需设为二级域名，如test01.sugo.vm  
+hostname需设为二级域名，如：test01.sugo.vm  
 需要安装的相关软件包：wget、ntp、openssh-clients  
 ambari-server主机的/etc/hosts文件，需添加集群各主机IP与hostname的映射  
 另需在/etc/目录下新建ip.txt文件，并添加ambari-server主机外所有主机的hostname+root密码  
@@ -76,14 +75,134 @@ $datadir为数据存放路径
 ./pre_servers.sh 81 /data /data
 ```
 
-如果没有报错信息，则表明ambari-server安装成功， web UI默认端口8080，后面的应用主要通过界面安装
+如果没有报错信息，则表明Ambari-server安装成功， Web UI默认端口8080，后面的应用主要通过界面安装
  
 
-Ambari Metrics安装
-参数：Grafana Admin Password：admin admin
 
-## 3 服务安装 ##
-### 3.1  Postgresql安装  ###
+
+## 3 服务安装(脚本安装或Web安装选其一) ##
+
+  服务(service)的安装可通过两种方式进行，目前建议主机注册、安装AMS通过web操作，其它服务可考虑脚本安装：  
+#### 3.0 主机注册及Ambari Metrics安装  
+参数：Grafana Admin Password：admin admin  
+
+###### 脚本安装 ######  
+是通过http服务调用ambari的REST API来安装服务，安装较简单，速度较快，但配置相关属性时需仔细，脚本安装适合对Linux或Unix比较熟悉的人；  
+###### Web安装
+界面友好，但操作较为繁琐，安装时间较长    
+    
+### 3.1 脚本安装service
+
+#### 3.1.1 准备：  
+在安装服务（service）之前，需要做好集群组件安装规划，此部分在脚本自动化部署的上半部分已经准备好，将规划好的组件及主机信息转换格式，按照格式完成目录下的host-service.json文件  
+修改脚本install.py内的base_url  
+需修改的脚本或文件：  
+```
+host-service.json  
+install.py
+
+```
+
+#### 3.1.2 安装服务
+进入脚本目录deploy_scripts/service_inst/，启动安装脚本：
+```
+python install.py
+```
+  
+  安装完成后，修改配置文件，配置NameNode1和NameNode2下的hdfs用户的免密码登录，保证HDFS的高可用，然后按照一定顺序启动服务  
+  
+需修改配置：  
+|Services| Files|Parameters|Value(example)|Alter|Attention
+|-------|----------|----------|----------|----------|----------
+|Postgres   |postgres-env|postgres.password | 123456| √	|
+|           |               | port             | 15432 |      |√
+|Druid      |   common.runtime|druid.license.signature|建平提供| √	　	　
+|           |               |druid.metadata.storage.connector.connectURI| jdbc:postgresql://dev220.sugo.net:15432/druid|√
+|||druid.metadata.storage.connector.password|123456|√||　	
+|||druid.zk.service.host|{{zk_address}}||√
+|OpenResty|openresty-site|redis_host|dev220.sugo.net|√|
+|Astro|astro-site|dataConfig.hostAndPorts|dev220.sugo.net:6379|√|
+|||db.host|dev220.sugo.net|√||
+|||db.password|123456|√||
+|||db.port|15432|√|
+|||redis.host|dev220.sugo.net|√|
+|||site.collectGateway|http://dev220.sugo.net|√|
+|||site.sdk_ws_url| ws://dev220.sugo.net:8887|√|
+|||site.websdk_api_host|dev220.sugo.net|√|
+|||site.websdk_decide_host|dev220.sugo.net:8080|√|
+|AMS|ams-grafana-env|Grafana Admin Password|admin|√|
+
+
+  
+
+  配置NameNode1和NameNode2下的hdfs用户的免密码登录，启动配置脚本并带上参数（注：passwd为root用户密码）：  
+  ```
+  ./password-less-ssh-hdfs.sh $NN1 $passwd(NN1) $NN2 $passwd(NN2)
+  ```  
+#### 3.1.3  开启服务
+######  1. Postgres  
+######  2. Redis  
+######  3. Zookeeper  
+######  4. 启动HDFS流程会多一些，需注意 
+  a. 启动所有JournalNode  
+  b. 在NameNode1节点上执行zkfc格式化：  
+  ```
+  su - hdfs -c "hdfs zkfc -formatZK -nonInteractive"
+  ```
+  c. 启动所有zkfc  
+  d. 在NameNode1执行格式化操作  
+  ```
+  su - hdfs -c "hdfs namenode -format"
+  ```
+  e.  在NN2节点执行格式化后的数据同步  
+  ```
+  su - hdfs -c "hdfs namenode -bootstrapStandby"
+  ```  
+  f. 启动NameNode2，启动所有DataNode  
+  g. 创建其它服务所需hdfs目录，在NameNode1或NameNode2上执行如下命令：
+  ```
+  su - hdfs
+hdfs dfs -mkdir -p /remote-app-log/logs
+hdfs dfs -chown -R yarn:hadoop  /remote-app-log
+hdfs dfs -chmod 777 /remote-app-log/logs
+
+hdfs dfs -mkdir -p /mr_history/tmp
+hdfs dfs -chmod 777 /mr_history/tmp
+hdfs dfs -mkdir -p /mr_history/done
+hdfs dfs -chmod 777 /mr_history/done
+hdfs dfs -mkdir -p /tmp/hadoop-yarn/staging
+hdfs dfs -chmod 777 /tmp/hadoop-yarn/staging
+
+hdfs dfs -mkdir -p /druid/hadoop-tmp
+hdfs dfs -mkdir -p /druid/indexing-logs
+hdfs dfs -mkdir -p /druid/segments
+hdfs dfs -chown -R druid:druid /druid
+hdfs dfs -mkdir -p /user/druid
+hdfs dfs -chown -R druid:druid /user/druid
+
+```
+######  5. YARN
+######  6. MapReduce
+######  7. Druid启动
+Druid和Astro依赖Postgres数据库，需在Postgres安装节点分别创建druid数据库和sugo_astro数据库
+```
+cd /opt/apps/postgres_sugo
+bin/psql -p 15432 -U postgres -d postgres -c "CREATE DATABASE druid WITH OWNER = postgres ENCODING = UTF8;"
+bin/psql -p 15432 -U postgres -d postgres -c "select datname from pg_database"
+bin/psql -p 15432 -U postgres -d postgres -c "CREATE DATABASE sugo_astro WITH OWNER = postgres ENCODING = UTF8;"
+bin/psql -p 15432 -U postgres -d postgres -c "select datname from pg_database"
+```
+启动Druid
+######  8.Astro
+######  9.Kafka
+######  10.OpenResty
+    
+    
+    
+    
+### 3.2 Web安装
+
+#### 3.2.1  Postgresql安装  ###
 添加服务  
 勾选想要安装的组件，点击下一步  
 分配该服务安装在哪些节点上  
@@ -94,43 +213,49 @@ port: 15432
 安装启动和测试，等待安装完成  
 安装完成
 
-### 3.2  Redis安装 ###
+#### 3.2.2  Redis安装 ###
 
-### 3.3  Zookeeper安装 ###
+#### 3.2.3  Zookeeper安装 ###
 注：生产环境中至少部署三个节点
 
-### 3.4  HDFS安装 ###
-#### 3.4.1 环境要求：
+#### 3.2.4  HDFS安装 ###
+###### a 环境要求：  
 保证两个目录地址NameNode.dfs.namenode.name.dir不存在
 两个NameNode的hdfs用户能互相免密码登录
 
-#### 3.4.2 可修改参数：
+###### b 可修改参数：  
+```
 dfs.namenode.name.dir  
 dfs.namenode.data.dir  
 hadoop.log.dir  
 dfs.journalnode.edits.dir  
 hadoop.tmp.dir  
+```
 
-#### 3.4.3 安装：
+###### c 安装：  
 此处的HDFS为HA模式，有两个NameNode，假设NN1为Active Namenode，NN2为Standby Namenode。
  
-正常情况下会报错ZKFailoverController(zkfc)启动失败，不报错表示已经安装过HDFS，跳过失败，点击下一步，按照以下顺序操作：
-1) 在NN1节点执行：
+正常情况下会报错ZKFailoverController(zkfc)启动失败，不报错表示已经安装过HDFS，跳过失败，点击下一步，按照以下顺序操作：  
+
+1) 在NN1节点执行：  
+```
 su - hdfs -c "hdfs zkfc -formatZK -nonInteractive"
- 
-2) 启动所有zkfc
- 
-重新启动2个ZKFailoverController
-3) 在NN1节点执行格式化：
-su - hdfs -c "hdfs namenode -format"
+```
+2) 启动所有zkfc  
+重新启动所有ZKFailoverController
+3) 在NN1节点执行格式化：  
+```
+su - hdfs -c "hdfs namenode -format"  
+```
 4) 启动NN1
- 
-5) 在NN2节点执行格式化后的数据同步：
-su - hdfs -c "hdfs namenode -bootstrapStandby"
-6) 启动NN2(与启动NN1相同)
+5) 在NN2节点执行格式化后的数据同步：  
+```
+su - hdfs -c "hdfs namenode -bootstrapStandby"  
+```
+6) 启动NN2
 7) 重启所有DataNode
 
-### 3.5  Yarn安装
+#### 3.2.5  Yarn安装
 可修改参数：  
 YARN Log Dir Prefix  
 yarn.nodemanager.log-dirs  
@@ -145,7 +270,7 @@ hdfs dfs -chown -R yarn:hadoop  /remote-app-log
 hdfs dfs -chmod 777 /remote-app-log/logs
 ```
 
-### 3.6  MapReduce安装
+#### 3.2.6  MapReduce安装
 可修改参数：  
 MapRduce Log Dir Prefix  
 yarn.app.mapreduce.am.staging-dir  
@@ -153,6 +278,7 @@ yarn.app.mapreduce.am.staging-dir
 hdfs目录创建： 
 
 ```
+su - hdfs
 hdfs dfs -mkdir -p /mr_history/tmp  
 hdfs dfs -chmod 777 /mr_history/tmp  
 hdfs dfs -mkdir -p /mr_history/done  
@@ -161,12 +287,12 @@ hdfs dfs -mkdir -p /tmp/hadoop-yarn/staging
 hdfs dfs -chmod 777 /tmp/hadoop-yarn/staging  
 ```
 
-### 3.7  Druid安装
+#### 3.2.7  Druid安装
 环境要求：  
 Postgresql(可通过界面安装)  
-创建druid库(UTF8，Postgres)（2.6.1和2.6.2选一种方法即可）  
+创建druid库(UTF8，Postgres)（3.8.1和3.8.2选一种方法即可，建议3.8.2 ）  
 
-#### 3.7.1 界面建库：  
+###### a 界面建库：  
 下载、安装Postgresql界面管理工具Navicat for PostgreSQL，连接数据库，创建druid库
 
 如果连接时显示密码错误，则进入postgres用户，进行参数设置  
@@ -174,13 +300,12 @@ Postgresql(可通过界面安装)
 /opt/apps/postgres_sugo/bin/psql -d postgres -U postgres -p 15432 -c "ALTER USER postgres PASSWORD '123456';"
 ```  
 
-#### 3.7.2 CLI命令建库：
+###### b CLI命令建库：
 
 ```
 cd /opt/apps
 bin/psql -p 15432 -U postgres -d postgres -c "CREATE DATABASE druid WITH OWNER = postgres ENCODING = UTF8;"
 bin/psql -p 15432 -U postgres -d postgres -c "select datname from pg_database"
-
 ```
 
 建议修改参数：  
@@ -196,11 +321,12 @@ druid.metadata.storage.connector.password: 123456 123456
 ```
 supervisor.kafka.zkHost:
 ```
-如果已准备Zookeeper，则此配置需要加上，host:端口号192.168.1.122:2181,192.168.1.126:2181,192.168.1.240:2181(例)  
-此步骤注意参数的修改！
+如果已有在用的Zookeeper，则此配置需要加上，host:端口号有在用的的  
+192.168.1.122:2181,192.168.1.126:2181,192.168.1.240:2181(例)  
 
 hdfs目录创建：  
 ```
+su - hdfs
 hdfs dfs -mkdir -p /druid/hadoop-tmp
 hdfs dfs -mkdir -p /druid/indexing-logs
 hdfs dfs -mkdir -p /druid/segments
@@ -209,21 +335,21 @@ hdfs dfs -mkdir -p /user/druid
 hdfs dfs -chown -R druid:druid /user/druid
 ```
 
-### 3.8  Kafka安装
+#### 3.2.8  Kafka安装
 可修改参数：
 log.dirs
 
-### 3.9  Astro安装
+#### 3.2.9  Astro安装
 环境要求：  
 Postgresql(可通过界面安装)，并创建sugo_astro库(UTF8，Postgresl)：  
-redis(可通过界面安装)  
+Redis(可通过界面安装)  
 ```
 cd /opt/apps
 bin/psql -p 15432 -U postgres -d postgres -c "CREATE DATABASE sugo_astro WITH OWNER = postgres ENCODING = UTF8;"
 bin/psql -p 15432 -U postgres -d postgres -c "select datname from pg_database"
 ```
 
-下载、解压缩user-group-1.0.tgz并启动  
+下载、解压缩user-group-1.0.tgz并启动  （此步骤可省略 ）
 ```
 wget -P /opt/apps/ http://192.168.10.142/sugo_yum/SG/centos6/1.0/user-group-1.0.tgz
 tar -zxvf user-group-1.0.tgz
@@ -249,7 +375,7 @@ site.websdk_decide_host: test01.sugo.vm:8000
 site.collectGateway: http://test01.sugo.vm
 ```
 
-### 3.10 安装Openresty
+#### 3.2.10 安装Openresty
 环境要求：  
 redis(可通过界面安装)  
 注意：如果前面httpd服务的端口号没有修改，则会与nginx的端口产生冲突  

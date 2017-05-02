@@ -17,7 +17,7 @@ spawn ssh $hn
 	"*assword:" { send "$pw\n" } 
 	}
 		expect "*#*"
-	send "wget http://$http_id\:$http_post/sugo_yum/SG/centos6/1.0/init_centos6.sh\n"
+	send "wget http://$http_id\:$http_post/sugo_yum/deploy_scripts/os/init_centos6.sh\n"
         expect "*#*"
 	send "chmod 755 init_centos6.sh\n"
         expect "*#*"
