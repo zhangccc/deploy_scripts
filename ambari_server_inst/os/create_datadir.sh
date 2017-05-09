@@ -5,8 +5,7 @@
 
 if [ $1 == "" ]
 then
-	mkdir /data1 
-	mkdir /data2
+	mkdir /data1 /data2
 	
 	echo "存储主目录未设定，数据将直接保存在/data1 和 /data2 目录中"
 	
@@ -22,25 +21,27 @@ then
 		"*yes/no*" { send "yes\n"
 		expect "*assword:" { send "$pw\n" } }
 		"*assword:" { send "$pw\n" } 
-		}
-			expect "*#*"
-		send "mkdir /data1 /data2\n"
+			expect "*]#*" 
+		{ send "mkdir /data1 /data2\n" }
+			expect "*]#*" 
+		send "yum install -y wget ntp openssh-clients\n"
+			expect "*]#*" 
+		send "service ntpd start\n"
 			expect "*]#*"
-		send "yum install -y wget\r"
-		expect "*]#*"
-		send "yum install -y ntp\r"
-		expect "*]#*"
-		send "yum install -y openssh-clients\r"
-		expect "*]#*"
-		send "service ntpd start\r"
+		}
+			expect "*#*" 
+		send "mkdir /data1 /data2\n"
+			expect "*]#*" 
+		send "yum install -y wget ntp openssh-clients\n"
+			expect "*]#*" 
+		send "service ntpd start\n"
 			expect "*]#*"
 	EOF
 	done
 
 else
 
-	mkdir -p $1/data1 
-	mkdir -p $1/data2
+	mkdir -p $1/data1 $1/data2 
 	ln -s $1/data1 /data1
 	ln -s $1/data2 /data2
 	
@@ -56,23 +57,29 @@ else
 		"*yes/no*" { send "yes\n"
 		expect "*assword:" { send "$pw\n" } }
 		"*assword:" { send "$pw\n" } 
+		"*]#*" { send "mkdir -p $1/data1 $1/data2\n" }
+			expect "*]#*" 
+		send "ln -s $1/data1 /data1\n" 
+			expect "*]#*" 
+		send "ln -s $1/data2 /data2\n"
+			expect "*]#*" 
+		send "yum install -y wget ntp openssh-clients\n"
+			expect "*]#*" 
+		send "service ntpd start\n"
+			expect "*]#*"
 		}
-			expect "*]#*"
-		send "mkdir -p $1/data1\n"
-			expect "*]#*"
-		send "mkdir -p $1/data2\n"
-			expect "*]#*"
+			expect "*]#*" 
+		send "mkdir -p $1/data1 $1/data2\n"
+			expect "*]#*" 
 		send "ln -s $1/data1 /data1\n"
-			expect "*]#*"
+			expect "*]#*" 
 		send "ln -s $1/data2 /data2\n"
 			expect "*]#*"
-		send "yum install -y wget\r"
-		expect "*]#*"
-		send "yum install -y ntp\r"
-		expect "*]#*"
-		send "yum install -y openssh-clients\r"
-		expect "*]#*"
-		send "service ntpd start\r"
+		send "mkdir /data1 /data2\n"
+			expect "*]#*" 
+		send "yum install -y wget ntp openssh-clients\n"
+			expect "*]#*" 
+		send "service ntpd start\n"
 			expect "*]#*"
 	EOF
 	done

@@ -44,11 +44,10 @@ OpenResty	|OpenResty Server   |√	　	　	　
 
 注：  
 hostname需设为二级域名，如：test01.sugo.vm  
-需要安装的相关软件包：wget、ntp、openssh-clients  
 ambari-server主机的/etc/hosts文件，需添加集群各主机IP与hostname的映射  
 另需在/etc/目录下新建ip.txt文件，并添加ambari-server主机外所有主机的hostname+root密码  
-创建sugo_yum源存放目录，上传sugo_yum源 
-在根目录下创建或上传启动脚本  
+创建sugo_yum源存放目录，上传sugo_yum源  
+进入sugo_yum源内的脚本文件夹：sugo_yum/deploy_scripts/ambari_server_inst/start  
 启动启动脚本进行安装
 
 ```
@@ -60,14 +59,13 @@ vi /etc/ip.txt
 	test03.sugo.vm 123456  
 		...
 mkdir /data
-cd
-vi pre_servers.sh
-vi sugo_yum_inst.sh
-chmod 750 pre_servers.sh sugo_yum_inst.sh
+cd /data/sugo_yum
+chmod -R 750 deploy_scripts
+cd /data/sugo_yum/deploy_scripts/ambari_server_inst/start
 ./pre_servers.sh $httppost $sugo_yum_dir $datadir
 ```
 
-$httppost为http服务需要修改为的端口号  
+$httppost为http服务需要修改为的端口号(若按照默认设置，则输入80)  
 $sugo_yum_dir为sugo_yum源的路径  
 $datadir为数据存放路径  
 例：
@@ -75,7 +73,7 @@ $datadir为数据存放路径
 ./pre_servers.sh 81 /data /data
 ```
 
-如果没有报错信息，则表明Ambari-server安装成功， Web UI默认端口8080，后面的应用主要通过界面安装
+如果没有报错信息，则表明Ambari-server安装成功， Web UI默认端口8080，后面的应用（services）可通过脚本或界面进行安装
  
 
 
@@ -84,10 +82,11 @@ $datadir为数据存放路径
 
   服务(service)的安装可通过两种方式进行，目前建议主机注册、安装AMS通过web操作，其它服务可考虑脚本安装：  
 #### 3.0 主机注册及Ambari Metrics安装  
+按照界面提示操作即可  
 参数：Grafana Admin Password：admin admin  
 
 ###### 脚本安装 ######  
-是通过http服务调用ambari的REST API来安装服务，安装较简单，速度较快，但配置相关属性时需仔细，脚本安装适合对Linux或Unix比较熟悉的人；  
+通过http服务调用ambari的REST API来安装服务，安装较简单，速度较快，但配置相关属性时需仔细，脚本安装适合对Linux或Unix比较熟悉的人；  
 ###### Web安装
 界面友好，但操作较为繁琐，安装时间较长    
     
@@ -112,16 +111,16 @@ python install.py
   安装完成后，修改配置文件，配置NameNode1和NameNode2下的hdfs用户的免密码登录，保证HDFS的高可用，然后按照一定顺序启动服务  
   
 需修改配置：  
-|Services| Files|Parameters|Value(example)|Alter|Attention
-|-------|----------|----------|----------|----------|----------
-|Postgres   |postgres-env|postgres.password | 123456| √	|
-|           |               | port             | 15432 |      |√
-|Druid      |   common.runtime|druid.license.signature|建平提供| √	　	　
-|           |               |druid.metadata.storage.connector.connectURI| jdbc:postgresql://dev220.sugo.net:15432/druid|√
+Services| Files|Parameters|Value(example)|Alter|Attention
+-------|----------|----------|----------|----------|----------
+Postgres   |postgres-env|postgres.password | 123456| √	|
+           |               | port             | 15432 |      |√
+Druid      |   common.runtime|druid.license.signature|建平提供| √	　	　
+||               |druid.metadata.storage.connector.connectURI| jdbc:postgresql://dev220.sugo.net:15432/druid|√
 |||druid.metadata.storage.connector.password|123456|√||　	
 |||druid.zk.service.host|{{zk_address}}||√
-|OpenResty|openresty-site|redis_host|dev220.sugo.net|√|
-|Astro|astro-site|dataConfig.hostAndPorts|dev220.sugo.net:6379|√|
+OpenResty|openresty-site|redis_host|dev220.sugo.net|√|
+Astro|astro-site|dataConfig.hostAndPorts|dev220.sugo.net:6379|√|
 |||db.host|dev220.sugo.net|√||
 |||db.password|123456|√||
 |||db.port|15432|√|
@@ -130,7 +129,7 @@ python install.py
 |||site.sdk_ws_url| ws://dev220.sugo.net:8887|√|
 |||site.websdk_api_host|dev220.sugo.net|√|
 |||site.websdk_decide_host|dev220.sugo.net:8080|√|
-|AMS|ams-grafana-env|Grafana Admin Password|admin|√|
+AMS|ams-grafana-env|Grafana Admin Password|admin|√|
 
 
   
@@ -138,6 +137,7 @@ python install.py
   配置NameNode1和NameNode2下的hdfs用户的免密码登录，启动配置脚本并带上参数（注：passwd为root用户密码）：  
   ```
   ./password-less-ssh-hdfs.sh $NN1 $passwd(NN1) $NN2 $passwd(NN2)
+  例：./password-less-ssh-hdfs.sh test1.sugo.vm 00000001 test2.sugo.vm 00000002
   ```  
 #### 3.1.3  开启服务
 ######  1. Postgres  

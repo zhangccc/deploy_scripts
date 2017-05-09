@@ -15,4 +15,11 @@ cp /root/.ssh/id_rsa.pub /var/www/html/sugo_yum/SG/centos6/1.0/
 ./init_all_hosts.sh
 
 #将ambari-server主机上的公钥加入到authorized_keys文件
+<<<<<<< be84710ea5baab982b6bb4d379b02383b7c86a91:ambari_server_inst/os/init_process.sh
 cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
+=======
+cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
+
+#删除/etc/ip.txt文件
+rm -f /etc/ip.txt
+>>>>>>> b810e6338bf59674e26fb9b0d1a901034ae56e92:ambari_server_inst/os/init_process.sh

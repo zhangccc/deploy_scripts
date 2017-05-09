@@ -11,8 +11,10 @@ spawn scp -r /etc/hosts root@$hn:/etc/
 	expect {
 	"*yes/no*" { send "yes\n"
 	expect "*assword:" { send "$pw\n" } }
-	"*assword:" { send "$pw\n" } 
+	"*assword:" { send "$pw\n" }
+	"*]#*"	
 	}
+	expect "*]#*" { send "pwd\n"}
 	expect "*]#*"
 EOF
 done

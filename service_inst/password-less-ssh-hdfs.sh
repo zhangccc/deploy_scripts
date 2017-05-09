@@ -5,8 +5,6 @@
 #NameNode2 = $3
 #passwd2 = $4
 
-yum install -y expect
-
 #Namenode1上hdfs用户生成ssh秘钥对
 ssh $1 "yum install -y expect"
 /usr/bin/expect <<-EOF
@@ -69,7 +67,8 @@ spawn ssh $1
 		expect {
 	"*yes/no*" { send "yes\n"
 		expect "*assword:" { send "$4\n" } }
-	"*assword:" { send "$4\n" } }
+	"*assword:" { send "$4\n" } 
+	"*]#*" { send "pwd"}}
 		expect "*]#*"}
 EOF
 

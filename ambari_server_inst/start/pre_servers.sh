@@ -6,16 +6,20 @@
 
 #安装yum源
 ./sugo_yum_inst.sh $1 $2
+echo "~~~~~~~~~~~~yum installed~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 
 #创建元数据存储目录
 cd ../os
 ./create_datadir.sh $3
 
+echo "~~~~~~~~~~~~directory has been created~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 #分发hosts文件
 ./scp_hosts.sh
+echo "~~~~~~~~~~~~hosts file has been coped~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 
 #初始化主机
 ./init_process.sh
+echo "~~~~~~~~~~~init centos finished~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 
 #安装ambari-server
 cd ../ambari-server
