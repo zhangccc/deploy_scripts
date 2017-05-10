@@ -14,25 +14,25 @@ spawn ambari-server setup
 expect {
         "*(n)?" { send "\r"
 			expect "*(1):" { send "3\r"
-				expect "JAVA_HOME:" {send "/usr/local/jdk18\r"
-					expect "*(n)?" { send "\r" }
+				expect "JAVA_HOME:" {send "/usr/local/jdk18\n"
+					expect "*(n)?" { send "\n" }
 							}
 						}
-			expect "*(n)?" { send "/r"
-				expect "*(n)?" { send "/r" }
+			expect "*(n)?" { send "/n"
+				expect "*(n)?" { send "/n" }
 			} 						
 				}
 		
-		"(y)?" {send "\r"
+		"(y)?" {send "\n"
 			expect {
-				"*(n)?" { send "\r"
-					expect "*(1):" { send "3\r"
-						expect "JAVA_HOME:" {send "/usr/local/jdk18\r"
-							expect "*(n)?" { send "\r" }
+				"*(n)?" { send "\n"
+					expect "*(1):" { send "3\n"
+						expect "JAVA_HOME:" {send "/usr/local/jdk18\n"
+							expect "*(n)?" { send "\n" }
 											}
 									}
-					expect "*(n)?" { send "/r"
-						expect "*(n)?" { send "/r" }
+					expect "*(n)?" { send "/n"
+						expect "*(n)?" { send "/n" }
 									} 						
 						}
 					}
