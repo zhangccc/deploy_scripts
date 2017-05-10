@@ -112,24 +112,25 @@ python install.py
   安装完成后，修改配置文件，配置NameNode1和NameNode2下的hdfs用户的免密码登录，保证HDFS的高可用，然后按照一定顺序启动服务  
   
 需修改配置：  
+
 Services| Files|Parameters|Value(example)|Alter|Attention
 -------|----------|----------|----------|----------|----------
 Postgres   |postgres-env|postgres.password | 123456| √	|
--|-       | port             | 15432 |      |√
-Druid      |   common.runtime|druid.license.signature|建平提供| √	　	　
--|-      |druid.metadata.storage.connector.connectURI| jdbc:postgresql://dev220.sugo.net:15432/druid|√
--|-|druid.metadata.storage.connector.password|123456|√||　	
--|-|druid.zk.service.host|{{zk_address}}||√
-OpenResty|openresty-site|redis_host|dev220.sugo.net|√|
+||       | port             | 15432 |      |√
+Druid      |   common.runtime|druid.license.signature|建平提供| √|	　	　
+||      |druid.metadata.storage.connector.connectURI| jdbc:postgresql://dev220.sugo.net:15432/druid|√|
+|||druid.metadata.storage.connector.password|123456|√||　	
+|||druid.zk.service.host|{{zk_address}}||√|
+OpenResty|openresty-site|redis_host|dev220.sugo.net|√||
 Astro|astro-site|dataConfig.hostAndPorts|dev220.sugo.net:6379|√|
--|-|db.host|dev220.sugo.net|√||
--|-|db.password|123456|√||
--|-|db.port|15432|√|
--|-|redis.host|dev220.sugo.net|√|
--|-|site.collectGateway|http://dev220.sugo.net|√|
--|-|site.sdk_ws_url| ws://dev220.sugo.net:8887|√|
--|-|site.websdk_api_host|dev220.sugo.net|√|
--|-|site.websdk_decide_host|dev220.sugo.net:8080|√|
+|||db.host|dev220.sugo.net|√||
+|||db.password|123456|√|
+|||db.port|15432|√|
+|||redis.host|dev220.sugo.net|√|
+|||site.collectGateway|http://dev220.sugo.net|√|
+|||site.sdk_ws_url| ws://dev220.sugo.net:8887|√|
+|||site.websdk_api_host|dev220.sugo.net|√|
+|||site.websdk_decide_host|dev220.sugo.net:8080|√|
 AMS|ams-grafana-env|Grafana Admin Password|admin|√|
 
 
