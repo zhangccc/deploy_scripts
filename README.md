@@ -62,16 +62,15 @@ mkdir /data
 cd /data/sugo_yum
 chmod -R 750 deploy_scripts
 cd /data/sugo_yum/deploy_scripts/ambari_server_inst/start
-./pre_servers.sh $httppost $sugo_yum_dir $datadir $ambari_IP
+./pre_servers.sh $httppost $sugo_yum_dir $datadir
 ```
 
 $httppost为http服务需要修改为的端口号(若按照默认设置，则输入80)  
 $sugo_yum_dir为sugo_yum源的路径  
 $datadir为数据存放路径  
-$ambari_IP为ambari-server节点的IP
 例：
 ```
-./pre_servers.sh 81 /data /data 192.168.10.150
+./pre_servers.sh 81 /data /data
 ```
 
 如果没有报错信息，则表明Ambari-server安装成功， Web UI默认端口8080，后面的应用（services）可通过脚本或界面进行安装
@@ -112,25 +111,24 @@ python install.py
   安装完成后，修改配置文件，配置NameNode1和NameNode2下的hdfs用户的免密码登录，保证HDFS的高可用，然后按照一定顺序启动服务  
   
 需修改配置：  
-
 Services| Files|Parameters|Value(example)|Alter|Attention
 -------|----------|----------|----------|----------|----------
 Postgres   |postgres-env|postgres.password | 123456| √	|
-||       | port             | 15432 |      |√
-Druid      |   common.runtime|druid.license.signature|建平提供| √|	　	　
-||      |druid.metadata.storage.connector.connectURI| jdbc:postgresql://dev220.sugo.net:15432/druid|√|
-|||druid.metadata.storage.connector.password|123456|√||　	
-|||druid.zk.service.host|{{zk_address}}||√|
-OpenResty|openresty-site|redis_host|dev220.sugo.net|√||
+-|-       | port             | 15432 |      |√
+Druid      |   common.runtime|druid.license.signature|建平提供| √	　	　
+-|-      |druid.metadata.storage.connector.connectURI| jdbc:postgresql://dev220.sugo.net:15432/druid|√
+-|-|druid.metadata.storage.connector.password|123456|√||　	
+-|-|druid.zk.service.host|{{zk_address}}||√
+OpenResty|openresty-site|redis_host|dev220.sugo.net|√|
 Astro|astro-site|dataConfig.hostAndPorts|dev220.sugo.net:6379|√|
-|||db.host|dev220.sugo.net|√||
-|||db.password|123456|√|
-|||db.port|15432|√|
-|||redis.host|dev220.sugo.net|√|
-|||site.collectGateway|http://dev220.sugo.net|√|
-|||site.sdk_ws_url| ws://dev220.sugo.net:8887|√|
-|||site.websdk_api_host|dev220.sugo.net|√|
-|||site.websdk_decide_host|dev220.sugo.net:8080|√|
+-|-|db.host|dev220.sugo.net|√||
+-|-|db.password|123456|√||
+-|-|db.port|15432|√|
+-|-|redis.host|dev220.sugo.net|√|
+-|-|site.collectGateway|http://dev220.sugo.net|√|
+-|-|site.sdk_ws_url| ws://dev220.sugo.net:8887|√|
+-|-|site.websdk_api_host|dev220.sugo.net|√|
+-|-|site.websdk_decide_host|dev220.sugo.net:8080|√|
 AMS|ams-grafana-env|Grafana Admin Password|admin|√|
 
 
