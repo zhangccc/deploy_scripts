@@ -21,11 +21,9 @@ class Parse_xml:
             name = property.getElementsByTagName('name')[0].childNodes[0].data
             value = property.getElementsByTagName('value')
             if value is None or len(value) == 0:
-                print 'null'
                 continue
 
             if len(value[0].childNodes) == 0:
-                print 'childNodes null'
                 continue
             value = value[0].childNodes[0].data
             json_obj[name] = value
