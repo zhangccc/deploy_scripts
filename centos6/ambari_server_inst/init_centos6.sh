@@ -1,33 +1,7 @@
 #!/bin/bash
-function print_usage(){
-  echo "Usage: init_centos6 [-options]"
-  echo " where options include:"
-  echo "     -help                  帮助文档"
-  echo "     -yum_baseurl <url>     yum服务器根路径"
-  echo "     -skip_ssh              不安装ssh密码"
-  echo "     -skip_jdk              不安装jdk"
-}
-
-cd `dirname $0`
-skip_ssh=0
-skip_jdk=0
-while [[ $# -gt 0 ]]; do
-    case "$1" in
-           -help)  print_usage; exit 0 ;;
-       -yum_baseurl) yum_baseurl=$2 && shift 2;;
-       -skip_ssh) skip_ssh=1 && shift ;;
-       -skip_jdk) skip_jdk=1 && shift ;;
-    esac
-done
-
-if [ $skip_ssh -eq 0 ] && [ $skip_jdk -eq 0 ] && [ "$yum_baseurl" = "" ]
-  then
-    echo "-yum_baseurl is required!"
-    exit 1
-fi
 
 /usr/sbin/ntpdate -u 202.108.6.95
-service ntpd start
+service ntpd restart
 
 
 ### set the limits
@@ -97,45 +71,5 @@ fi
 
 sysctl -p
 
-##ssh 免密码
-if [ $skip_ssh -eq 0 ]
- then
-    rm -rf /root/.ssh
-    ssh-keygen -t rsa -P ''<< EOF
-/root/.ssh/id_rsa
-EOF
-    pub_key=`curl "${yum_baseurl}/SG/centos6/1.0/id_rsa.pub"`
-
-    res=`grep "$pub_key" /root/.ssh/authorized_keys`
-    if [ "$res" = "" ]
-      then
-         echo $pub_key >>  /root/.ssh/authorized_keys
-    fi
-fi
-
 yum upgrade openssl -y 
 
-#安装jdk
-if [ $skip_jdk -eq 0 ]
- then
-    pushd /usr/local/
-    packagename="jdk-8u91-linux-x64.tar.gz"
-    wget ${yum_baseurl}/SG/centos6/1.0/${packagename}
-    echo "tar -zxf ${packagename}  ..."
-    tar -zxf ${packagename}
-    rm -rf jdk18
-    mv jdk1.8.0_91 jdk18
-    rm -rf ${packagename}
-    popd 
-	
-fi
-
-#添加java环境变量
-res=`grep "export JAVA_HOME=" /etc/profile`
-if [ "$res" = "" ]
-   then
-	 echo 'export JAVA_HOME=/usr/local/jdk18' >> /etc/profile
-	 echo 'export PATH=$JAVA_HOME/bin:$PATH' >> /etc/profile
-fi
-
-source /etc/profile

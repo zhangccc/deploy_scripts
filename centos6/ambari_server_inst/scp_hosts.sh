@@ -1,6 +1,8 @@
 #!/bin/bash
 
-cat /etc/ip.txt|while read line;
+
+
+cat ip.txt|while read line;
 do
 hn=`echo $line|awk '{print $1}'`
 pw=`echo $line|awk '{print $2}'`
@@ -14,7 +16,6 @@ spawn scp -r /etc/hosts root@$hn:/etc/
 	"*assword:" { send "$pw\n" }
 	"*]#*"	
 	}
-	expect "*]#*" { send "pwd\n"}
 	expect "*]#*"
 EOF
 done
