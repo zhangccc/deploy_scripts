@@ -10,7 +10,7 @@ init_url=$baseurl/deploy_scripts/centos6/ambari_server_inst
 rm -rf ../../../SG/centos6/1.0/id_rsa.pub
 cp /root/.ssh/id_rsa.pub ../../../SG/centos6/1.0/
 
-cat ~/.ssh/id_rsa.pub >> authorized_keys
+cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
 
 cat ip.txt|while read line;
 do

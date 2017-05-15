@@ -16,7 +16,7 @@ function print_usage(){
 #cd `dirname $0`
 http_port=0
 ambari_ip=""
-hostname=""
+hostname="skip_hostname"
 skip_http=0
 skip_createdir=0
 skip_ssh=0
@@ -92,7 +92,7 @@ fi
 echo "~~~~~~~~~~~init centos ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 
 #修改ambari-server节点的hostname
-if [ $skip_hostname -eq 0 ]
+if [ $skip_hostname != "skip_hostname" ]
   then
     hostname $hostname
     sed -i "s/HOSTNAME=.*/HOSTNAME=${hostname}/g" /etc/sysconfig/network
