@@ -68,7 +68,7 @@ spawn ssh $1
 	"*yes/no*" { send "yes\n"
 		expect "*assword:" { send "$4\n" } }
 	"*assword:" { send "$4\n" } 
-	"*]#*" { send "pwd"}}
+	"*]#*" { send "\n"}}
 		expect "*]#*"}
 EOF
 
