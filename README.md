@@ -1,12 +1,12 @@
 # 集群部署文档 #
 
 ## 1 前期准备 ##
-### 1.1 主机配置要求  
-建议机器最低配置（也可根据实际情况降低配置，但不建议这样做）  
+### 1.1 主机配置要求
+建议机器最低配置（也可根据实际情况降低配置，但不建议这样做）
 * CPU ：8核
 * 内存：32g
 * 磁盘：根据数据量而定，可用空间 > 数据量 * 3， 尽量不要用lvm和raid，否则会影响接入和查询性能，可挂载多个磁盘，提高并发
-* 数量：3 
+* 数量：3
 
 系统要求： CentOS6.8（其他版本未测试）  
 不能连接外网的，请搭好局域网CentOS yum源。  
@@ -44,41 +44,37 @@ OpenResty	|OpenResty Server   |√	　	　	　
 
 
 ## 2 Ambari-server安装 
-做好主机规划并准备主机，配置静态IP，修改主机hostname，安装相关软件包，规划数据存储目录，如果是离线主机，需配置本地安装源库
+做好主机规划并准备主机，配置静态IP，修改主机hostname，规划数据存储目录，如果是离线主机，需配置本地安装源库
 
 注：  
 hostname需设为二级域名，如：test01.sugo.vm  
-ambari-server主机的/etc/hosts文件，需添加集群各主机IP与hostname的映射  
-另需在/etc/目录下新建ip.txt文件，并添加ambari-server主机外所有主机的hostname+root密码  
-创建sugo_yum源存放目录，上传sugo_yum源  
-进入sugo_yum源内的脚本文件夹：sugo_yum/deploy_scripts/ambari_server_inst/start  
+创建sugo_yum源存放目录，上传（或下载）sugo_yum源  
+解压缩yum源安装包
+修改sugo_yum/deploy_scripts/centos6/ambari_server_inst/下的配置文件host和ip.txt文件
+host文件为各主机ip与hostname的映射，ip.txt文件为ambari-server所在主机以外，其它所有主机的hostname+root用户密码  
+对执行脚本赋予执行执行权限
 启动启动脚本进行安装
 
 ```
-vi /etc/hosts  
+vi {yum源存放目录}/sugo_yum/deploy_scripts/centos6/ambari_server_inst/host  
 	192.168.10.1 test01.sugo.vm
 		...
-vi /etc/ip.txt
+vi {yum源存放目录}/sugo_yum/deploy_scripts/centos6/ambari_server_inst/ip.txt
 	test02.sugo.vm 123456
 	test03.sugo.vm 123456  
 		...
-mkdir /data
-cd /data/sugo_yum
+
 chmod -R 750 deploy_scripts
-cd /data/sugo_yum/deploy_scripts/ambari_server_inst/start
-./pre_servers.sh $httppost $sugo_yum_dir $datadir $ambari_IP
+cd {yum源存放目录}/sugo_yum/deploy_scripts/centos6/ambari_server_inst
 ```
 
-$httppost为http服务需要修改为的端口号(若按照默认设置，则输入80)  
-$sugo_yum_dir为sugo_yum源的路径  
-$datadir为数据存放路径  
-$ambari_IP为ambari-server节点的IP
+start.sh脚本的具体使用方法可通过./start -help查看
 例：
 ```
-./pre_servers.sh 81 /data /data 192.168.10.150
+./start.sh -http_port 81 -ambari_ip 192.168.10.150 -hostname skip_hostname
 ```
 
-如果没有报错信息，则表明Ambari-server安装成功， Web UI默认端口8080，后面的应用（services）可通过脚本或界面进行安装
+如果没有报错信息，则基本表明Ambari-server安装成功， Web UI默认端口8080，后面的应用（services）可通过脚本或界面进行安装
  
 
 
@@ -98,12 +94,12 @@ $ambari_IP为ambari-server节点的IP
 ### 3.1 脚本安装service
 
 #### 3.1.1 准备：  
-在安装服务（service）之前，需要做好集群组件安装规划，此部分在脚本自动化部署的上半部分已经准备好，将规划好的组件及主机信息转换格式，按照格式完成目录下的host-service.json文件  
+在安装服务（service）之前，需要做好集群组件安装规划，此部分在脚本自动化部署的上半部分已经准备好，将规划好的组件及主机信息转换格式，按照格式完成目录下的host_service.json文件  
 修改脚本install.py内的base_url  
 需修改的脚本或文件：  
 ```
-host-service.json  
-install.py
+deploy_scripts/service_inst/host_service.json  
+deploy_scripts/service_inst/install.py
 
 ```
 
@@ -115,7 +111,7 @@ python install.py
   
   安装完成后，修改配置文件，配置NameNode1和NameNode2下的hdfs用户的免密码登录，保证HDFS的高可用，然后按照一定顺序启动服务  
   
-需修改配置：  
+需修改配置： 
 
 Services| Files|Parameters|Value(example)|Alter|Attention
 -------|----------|----------|----------|----------|----------
@@ -124,7 +120,6 @@ Postgres   |postgres-env|postgres.password | 123456| √	|
 Druid      |   common.runtime|druid.license.signature|建平提供| √	　	　
 ||      |druid.metadata.storage.connector.connectURI| jdbc:postgresql://dev220.sugo.net:15432/druid|√
 |||druid.metadata.storage.connector.password|123456|√|	
-|||druid.zk.service.host|{{zk_address}}||√
 OpenResty|openresty-site|redis_host|dev220.sugo.net|√|
 Astro|astro-site|dataConfig.hostAndPorts|dev220.sugo.net:6379|√|
 |||db.host|dev220.sugo.net|√|
@@ -133,12 +128,17 @@ Astro|astro-site|dataConfig.hostAndPorts|dev220.sugo.net:6379|√|
 |||redis.host|dev220.sugo.net|√|
 |||site.collectGateway|http://dev220.sugo.net|√|
 |||site.sdk_ws_url| ws://dev220.sugo.net:8887|√|
-|||site.websdk_api_host|dev220.sugo.net|√|
-|||site.websdk_decide_host|dev220.sugo.net:8080|√|
+|||site.websdk_api_host|dev220.sugo.net:8000|√|
+|||site.websdk_app_host|dev220.sugo.net:8000|√|
+|||site.websdk_decide_host|dev220.sugo.net:8000|√|
+|||site.file_server_secret| 暂时可随意填写|√|
+|||site.file_server_token|暂时可随意填写|√|
+|||site.file_server_url|暂时可随意填写|√|
 AMS|ams-grafana-env|Grafana Admin Password|admin|√|
 
 
   
+
 
   配置NameNode1和NameNode2下的hdfs用户的免密码登录，启动配置脚本并带上参数（注：passwd为root用户密码）：  
   ```
@@ -190,12 +190,12 @@ hdfs dfs -chown -R druid:druid /user/druid
 ######  5. YARN
 ######  6. MapReduce
 ######  7. Druid启动
-Druid和Astro依赖Postgres数据库，需在Postgres安装节点分别创建druid数据库和sugo_astro数据库
+Druid和Astro等服务依赖Postgres数据库，需在Postgres安装节点分别创建druid数据库和sugo_astro数据库，注意postgres的端口号及用户
 ```
 cd /opt/apps/postgres_sugo
 bin/psql -p 15432 -U postgres -d postgres -c "CREATE DATABASE druid WITH OWNER = postgres ENCODING = UTF8;"
-bin/psql -p 15432 -U postgres -d postgres -c "select datname from pg_database"
 bin/psql -p 15432 -U postgres -d postgres -c "CREATE DATABASE sugo_astro WITH OWNER = postgres ENCODING = UTF8;"
+bin/psql -p 15432 -U postgres -d postgres -c "CREATE DATABASE pio WITH OWNER = postgres ENCODING = UTF8;"
 bin/psql -p 15432 -U postgres -d postgres -c "select datname from pg_database"
 ```
 启动Druid
@@ -226,7 +226,7 @@ port: 15432
 
 #### 3.2.4  HDFS安装 ###
 ###### a 环境要求：  
-保证两个目录地址NameNode.dfs.namenode.name.dir不存在
+保证两个目录地址NameNode.dfs.namenode.name.dir不存在  
 两个NameNode的hdfs用户能互相免密码登录
 
 ###### b 可修改参数：  
