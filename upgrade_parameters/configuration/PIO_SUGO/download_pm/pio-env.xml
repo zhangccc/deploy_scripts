@@ -1,0 +1,8 @@
+  <configuration>
+    
+    <property>
+      <name>pio.package.name</name>
+      <value>analysis_sugo.tar.gz-new</value>
+    </property>
+    
+  </configuration>
