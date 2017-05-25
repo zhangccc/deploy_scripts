@@ -7,6 +7,7 @@ import json
 
 class Parse_xml:
     def Parse_xml(self, xml_file):
+
         # 使用minidom解析器打开 XML 文档
         DOMTree = xml.dom.minidom.parse(xml_file)
         collection = DOMTree.documentElement

@@ -1,17 +1,13 @@
-# encoding:utf-8
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
 
 # 使用DOM树的形式从空白文件生成一个XML
 
 from xml.dom.minidom import Document
-import json
+import re
 
 
 def dicttoxml(inputfile):
-
-    # 定义输入文件和输出文件
-    # c = open(input_file)
-    # d = open(output_file, "wb")
-    # inputfile = json.loads(input_file)
 
     # 创建DOM文档对象
     doc = Document()
@@ -42,7 +38,5 @@ def dicttoxml(inputfile):
         value.appendChild(value_text)
         property.appendChild(value)
 
-    # 将DOM对象doc写入文件
-    return doc.toprettyxml(indent='')
-    # d.write(doc.toprettyxml(indent=''))
-    # d.close()
+    # 返回DOM对象doc
+    return re.sub(r'(<[^/][^<>]*[^/]>)\s*([^<>]*?)\s*(</[^<>]*>)', r'\1\2\3', doc.toprettyxml(indent='    '))

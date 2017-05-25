@@ -14,9 +14,6 @@ def xmltodict(input_file):
     DOMTree = xml.dom.minidom.parse(input_file)
     collection = DOMTree.documentElement
 
-    # 打开输出文件
-    #d = open(output_file, "wb")
-
     # 在集合中获取所有配置信息
     properties = collection.getElementsByTagName("property")
 
@@ -37,5 +34,3 @@ def xmltodict(input_file):
 
     encode_json = json.dumps(json_obj)
     return encode_json
-    #d.write(encode_json)
-    #d.close()
