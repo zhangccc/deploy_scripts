@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<configuration>
+    <property>
+        <name>pio.package.name</name>
+        <value>analysis_sugo.tar.gz-new</value>
+    </property>
+    <property>
+        <name>test_add_pm</name>
+        <value>123</value>
+    </property>
+</configuration>

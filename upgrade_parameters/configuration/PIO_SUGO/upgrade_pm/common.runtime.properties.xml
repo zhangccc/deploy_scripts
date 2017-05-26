@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<configuration>
+    <property>
+        <name>pio.metadata.storage.connector.connectURI</name>
+        <value>jdbc:postgresql://192.168.0.159:15432/pio</value>
+    </property>
+    <property>
+        <name>pio.broker.data.fetcher.hostAndPorts</name>
+        <value>test01.sugo.vm:6379</value>
+    </property>
+    <property>
+        <name>pio.metadata.storage.connector.user</name>
+        <value>postgres</value>
+    </property>
+    <property>
+        <name>pio.extensions.loadList</name>
+        <value>[&quot;postgresql-metadata-storage&quot;, &quot;python-extensions&quot;]</value>
+    </property>
+    <property>
+        <name>pio.metadata.storage.type</name>
+        <value>postgresql</value>
+    </property>
+    <property>
+        <name>pio.broker.data.fetcher.url</name>
+        <value>http://192.168.0.160:8082/druid/v2?pretty</value>
+    </property>
+    <property>
+        <name>pio.metadata.storage.connector.password</name>
+        <value>123456</value>
+    </property>
+    <property>
+        <name>test</name>
+        <value>add_pm</value>
+    </property>
+    <property>
+        <name>pio.broker.data.fetcher.clusterMode</name>
+        <value>false</value>
+    </property>
+    <property>
+        <name>pio.extensions.directory</name>
+        <value>/opt/apps/pio_sugo/extensions</value>
+    </property>
+    <property>
+        <name>pio.broker.data.fetcher.type</name>
+        <value>redis</value>
+    </property>
+    <property>
+        <name>pio.metadata.storage.connector.createTables</name>
+        <value>true</value>
+    </property>
+</configuration>

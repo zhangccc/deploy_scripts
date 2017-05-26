@@ -2,9 +2,9 @@
 # -*- coding: UTF-8 -*-
 
 import json, urllib2, time, os
-from Parse_xml import Parse_xml
+from xml_to_dict import *
 
-parse_xml = Parse_xml()
+xml_to_dict = Xmltodict()
 
 conf_version = "version" + str(time.time())
 
@@ -18,7 +18,7 @@ for dirPath1, dirNames1, fileNames1 in os.walk(conf_dir):
     for f1 in fileNames1:
         pm_name1 = os.path.join(f1)
         pm1 = os.path.join(dirPath1, f1)
-        pm_json1 = parse_xml.Parse_xml(pm1)
+        pm_json1 = json.loads(xml_to_dict.xmltodict(pm1))
 
         # 去除配置文件名的后缀.xml
         pos = pm_name1.rfind(".")
