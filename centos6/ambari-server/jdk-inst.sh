@@ -1,11 +1,13 @@
 #!/bin/bash
 
 baseurl=$1
-init_url=$baseurl/deploy_scripts/centos6/ambari_server_inst
+conf_file=$2
+init_url=$baseurl/deploy_scripts/centos6/ambari-server
+
 
 ./jdk.sh $baseurl
 
-cat ip.txt| while read line;
+cat $conf_file | while read line;
 do
 hn=`echo $line|awk '{print $1}'`
 pw=`echo $line|awk '{print $2}'`

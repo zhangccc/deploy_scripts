@@ -1,8 +1,9 @@
 #!/bin/bash
 
+conf_file=$1
 
 ### set hostname
-cat ip.txt|while read line;
+cat $conf_file |while read line;
 do
 hn=`echo $line|awk '{print $1}'`
 pw=`echo $line|awk '{print $2}'`
