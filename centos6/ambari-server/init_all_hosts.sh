@@ -2,7 +2,7 @@
 #$1 -- ambari-server的IP
 
 baseurl=$1
-initurl=$baseurl/deploy_scripts/centos6/ambari_server_inst
+initurl=$baseurl/deploy_scripts/centos6/ambari-server
 
 cat ip.txt|while read line;
 do

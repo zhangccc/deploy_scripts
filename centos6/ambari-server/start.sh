@@ -6,7 +6,7 @@ function print_usage(){
   echo "     -help                    帮助文档"
   echo "     -http_port <port>        http服务端口号"
   echo "     -ambari_ip <ip>          ambari-server所在主机的IP"
-  echo "     -hostname <hostname>     ambari-server节点需修改的hostname，如果不需要修改，则加skip_hostname"
+  echo "     -hostname <hostname>     暂不支持在此脚本内修改，此处不添加该参数或设定参数为skip_hostname。如需修改可通过脚本hostname.sh"
   echo "     -skip_http <skip_http>   不安装yum源服务"
   echo "     -skip_createdir <skip_createdir>   不创建元数据存储目录"
   echo "     -skip_ssh <skip_ssh>     不安装ssh免密码"
@@ -81,7 +81,7 @@ fi
 #创建元数据存储目录
 if [ $skip_createdir -eq 0 ]
   then
-    ./create_datadir.sh
+    ./create_datadir.sh ambari-server/ip.txt
     echo "~~~~~~~~~~~datadir success created~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
   else
     echo "~~~~~~~~~~~create datadir skipped~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
@@ -97,7 +97,8 @@ if [ $skip_hostname != "skip_hostname" ]
     hostname $hostname
     sed -i "s/HOSTNAME=.*/HOSTNAME=${hostname}/g" /etc/sysconfig/network
     #按照ip.txt内的域名修改其它所有节点的hostname
-    ./hostname.sh
+    ./hostname.sh ip.txt
+    cat new_hostname >> /etc/hosts
     echo "~~~~~~~~~~~hostname success changed~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
   else 
     echo "~~~~~~~~~~~change hostname skipped~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
@@ -106,7 +107,7 @@ fi
 #配置ssh免密码登录
 if [ $skip_ssh -eq 0 ]
   then
-    ./ssh-inst.sh $baseurl
+    ./ssh-inst.sh $baseurl ip.txt
     echo "~~~~~~~~~~~ssh-password-less configured~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
   else
     echo "~~~~~~~~~~~ssh-password-less skipped~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
@@ -115,7 +116,7 @@ fi
 #安装jdk
 if [ $skip_jdk -eq 0 ]
   then
-    ./jdk-inst.sh $baseurl
+    ./jdk-inst.sh $baseurl ip.txt
     echo "~~~~~~~~~~~jdk success installed~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
   else
     echo "~~~~~~~~~~~jdk install skipped~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"

@@ -1,7 +1,8 @@
 #!/bin/bash
 
 baseurl=$1
-init_url=$baseurl/deploy_scripts/centos6/ambari_server_inst
+conf_dir=$2
+init_url=$baseurl/deploy_scripts/centos6/ambari-server
 
 #在ambari-server节点配置ssh
 ./ssh.sh $baseurl
@@ -12,7 +13,7 @@ cp /root/.ssh/id_rsa.pub ../../../SG/centos6/1.0/
 
 cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
 
-cat ip.txt|while read line;
+cat $conf_dir |while read line;
 do
 hn=`echo $line|awk '{print $1}'`
 pw=`echo $line|awk '{print $2}'`
