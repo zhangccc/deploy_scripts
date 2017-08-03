@@ -186,37 +186,59 @@ hdfs dfs -chown -R druid:druid /druid
 hdfs dfs -mkdir -p /user/druid
 hdfs dfs -chown -R druid:druid /user/druid
 
+hdfs dfs -mkdir -p /tmp/spark-events
+hdfs dfs -chmod 777 /tmp/spark-events
+hdfs dfs -mkdir -p /user/spark
+hdfs dfs -chmod 777 /user/spark
+hdfs dfs -chown -R spark:spark /user/spark
+
+hdfs dfs -mkdir -p /tmp/hive
+hdfs dfs -chmod 777 /tmp/hive
+hdfs dfs -chown -R hive:hadoop /tmp/hive
+hdfs dfs -mkdir -p /user/hive
+hdfs dfs -chmod 777 /user/hive
+hdfs dfs -chown -R hive:hadoop /user/hive
+
 ```
 ######  5. YARN
 ######  6. MapReduce
-######  7. Druid启动
-Druid和Astro等服务依赖Postgres数据库，需在Postgres安装节点分别创建druid数据库和sugo_astro数据库，注意postgres的端口号及用户
+######  7. Kafka
+######  8. Gateway
+######  9. Druid启动
+
+Druid和Astro等服务依赖Postgres数据库，需在Postgres安装节点分别创建druid数据库和sugo_astro数据库，注意postgres的端口号及用户(pio库和hive库是为可能安装pio或hive准备的)
 ```
 cd /opt/apps/postgres_sugo
 bin/psql -p 15432 -U postgres -d postgres -c "CREATE DATABASE druid WITH OWNER = postgres ENCODING = UTF8;"
 bin/psql -p 15432 -U postgres -d postgres -c "CREATE DATABASE sugo_astro WITH OWNER = postgres ENCODING = UTF8;"
 bin/psql -p 15432 -U postgres -d postgres -c "CREATE DATABASE pio WITH OWNER = postgres ENCODING = UTF8;"
+bin/psql -p 15432 -U postgres -d postgres -c "CREATE DATABASE hive WITH OWNER = postgres ENCODING = UTF8;"
 bin/psql -p 15432 -U postgres -d postgres -c "select datname from pg_database"
 ```
 启动Druid
-######  8.Astro
-######  9.Kafka
-######  10.OpenResty
-    
-    
-    
-    
+######  10. Astro
+######  11. Spark(可选,需要上传安装包)
+######  12. Hive(可选,需要上传安装包)
+修改配置项javax.jdo.option.ConnectionURL的值为：jdbc:postgresql://ds1.sugo.io:15432/hive?createDatabaseIfNotExist=true
+重启hive的所有服务
+######  13. Pio(可选,需要上传安装包)
+安装python2.7运行环境:
+下载python2.7环境安装包，解压缩到目录/usr/local/下
+
+
+
+
 ### 3.2 Web安装
 
 #### 3.2.1  Postgresql安装  ###
-添加服务  
-勾选想要安装的组件，点击下一步  
-分配该服务安装在哪些节点上  
-完成配置文件(安装PostgreSQL需要修改端口号，其它组件一般不需要修改)  
-postgres.password: 123456 123456  
-port: 15432  
-检查配置信息、部署  
-安装启动和测试，等待安装完成  
+添加服务
+勾选想要安装的组件，点击下一步
+分配该服务安装在哪些节点上
+完成配置文件(安装PostgreSQL需要修改端口号，其它组件一般不需要修改)
+postgres.password: 123456 123456
+port: 15432
+检查配置信息、部署
+安装启动和测试，等待安装完成
 安装完成
 
 #### 3.2.2  Redis安装 ###
@@ -225,86 +247,86 @@ port: 15432
 注：生产环境中至少部署三个节点
 
 #### 3.2.4  HDFS安装 ###
-###### a 环境要求：  
-保证两个目录地址NameNode.dfs.namenode.name.dir不存在  
+###### a 环境要求：
+保证两个目录地址NameNode.dfs.namenode.name.dir不存在
 两个NameNode的hdfs用户能互相免密码登录
 
-###### b 可修改参数：  
+###### b 可修改参数：
 ```
-dfs.namenode.name.dir  
-dfs.namenode.data.dir  
-hadoop.log.dir  
-dfs.journalnode.edits.dir  
-hadoop.tmp.dir  
+dfs.namenode.name.dir
+dfs.namenode.data.dir
+hadoop.log.dir
+dfs.journalnode.edits.dir
+hadoop.tmp.dir
 ```
 
-###### c 安装：  
+###### c 安装：
 此处的HDFS为HA模式，有两个NameNode，假设NN1为Active Namenode，NN2为Standby Namenode。
- 
-正常情况下会报错ZKFailoverController(zkfc)启动失败，不报错表示已经安装过HDFS，跳过失败，点击下一步，按照以下顺序操作：  
 
-1) 在NN1节点执行：  
+正常情况下会报错ZKFailoverController(zkfc)启动失败，不报错表示已经安装过HDFS，跳过失败，点击下一步，按照以下顺序操作：
+
+1) 在NN1节点执行：
 ```
 su - hdfs -c "hdfs zkfc -formatZK -nonInteractive"
 ```
-2) 启动所有zkfc  
+2) 启动所有zkfc
 重新启动所有ZKFailoverController
-3) 在NN1节点执行格式化：  
+3) 在NN1节点执行格式化：
 ```
-su - hdfs -c "hdfs namenode -format"  
+su - hdfs -c "hdfs namenode -format"
 ```
 4) 启动NN1
-5) 在NN2节点执行格式化后的数据同步：  
+5) 在NN2节点执行格式化后的数据同步：
 ```
-su - hdfs -c "hdfs namenode -bootstrapStandby"  
+su - hdfs -c "hdfs namenode -bootstrapStandby"
 ```
 6) 启动NN2
 7) 重启所有DataNode
 
 #### 3.2.5  Yarn安装
-可修改参数：  
-YARN Log Dir Prefix  
-yarn.nodemanager.log-dirs  
-yarn.nodemanager.local-dirs  
+可修改参数：
+YARN Log Dir Prefix
+yarn.nodemanager.log-dirs
+yarn.nodemanager.local-dirs
 
-hdfs目录创建：  
-此处假设yarn.nodemanager.remote-app-log-dir为默认hdfs目录/remote-app-log/logs:  
+hdfs目录创建：
+此处假设yarn.nodemanager.remote-app-log-dir为默认hdfs目录/remote-app-log/logs:
 ```
-su - hdfs  
+su - hdfs
 hdfs dfs -mkdir -p /remote-app-log/logs
 hdfs dfs -chown -R yarn:hadoop  /remote-app-log
 hdfs dfs -chmod 777 /remote-app-log/logs
 ```
 
 #### 3.2.6  MapReduce安装
-可修改参数：  
-MapRduce Log Dir Prefix  
-yarn.app.mapreduce.am.staging-dir  
+可修改参数：
+MapRduce Log Dir Prefix
+yarn.app.mapreduce.am.staging-dir
 
-hdfs目录创建： 
+hdfs目录创建：
 
 ```
 su - hdfs
-hdfs dfs -mkdir -p /mr_history/tmp  
-hdfs dfs -chmod 777 /mr_history/tmp  
-hdfs dfs -mkdir -p /mr_history/done  
-hdfs dfs -chmod 777 /mr_history/done  
-hdfs dfs -mkdir -p /tmp/hadoop-yarn/staging  
-hdfs dfs -chmod 777 /tmp/hadoop-yarn/staging  
+hdfs dfs -mkdir -p /mr_history/tmp
+hdfs dfs -chmod 777 /mr_history/tmp
+hdfs dfs -mkdir -p /mr_history/done
+hdfs dfs -chmod 777 /mr_history/done
+hdfs dfs -mkdir -p /tmp/hadoop-yarn/staging
+hdfs dfs -chmod 777 /tmp/hadoop-yarn/staging
 ```
 
 #### 3.2.7  Druid安装
-环境要求：  
-Postgresql(可通过界面安装)  
-创建druid库(UTF8，Postgres)（3.8.1和3.8.2选一种方法即可，建议3.8.2 ）  
+环境要求：
+Postgresql(可通过界面安装)
+创建druid库(UTF8，Postgres)（3.8.1和3.8.2选一种方法即可，建议3.8.2 ）
 
-###### a 界面建库：  
+###### a 界面建库：
 下载、安装Postgresql界面管理工具Navicat for PostgreSQL，连接数据库，创建druid库
 
-如果连接时显示密码错误，则进入postgres用户，进行参数设置  
+如果连接时显示密码错误，则进入postgres用户，进行参数设置
 ```
 /opt/apps/postgres_sugo/bin/psql -d postgres -U postgres -p 15432 -c "ALTER USER postgres PASSWORD '123456';"
-```  
+```
 
 ###### b CLI命令建库：
 
@@ -314,23 +336,23 @@ bin/psql -p 15432 -U postgres -d postgres -c "CREATE DATABASE druid WITH OWNER =
 bin/psql -p 15432 -U postgres -d postgres -c "select datname from pg_database"
 ```
 
-建议修改参数：  
+建议修改参数：
 
 ```druid.metadata.storage.connector
-druid.license.signature: 
+druid.license.signature:
 druid.metadata.storage.connector.connectURI: jdbc:postgresql://test01.sugo.vm:15432/druid
 druid.metadata.storage.connector.password: 123456 123456
 ```
 
-自定义参数：  
+自定义参数：
 
 ```
 supervisor.kafka.zkHost:
 ```
-如果已有在用的Zookeeper，则此配置需要加上，host:端口号有在用的的  
-192.168.1.122:2181,192.168.1.126:2181,192.168.1.240:2181(例)  
+如果已有在用的Zookeeper，则此配置需要加上，host:端口号有在用的的
+192.168.1.122:2181,192.168.1.126:2181,192.168.1.240:2181(例)
 
-hdfs目录创建：  
+hdfs目录创建：
 ```
 su - hdfs
 hdfs dfs -mkdir -p /druid/hadoop-tmp
@@ -346,28 +368,18 @@ hdfs dfs -chown -R druid:druid /user/druid
 log.dirs
 
 #### 3.2.9  Astro安装
-环境要求：  
-Postgresql(可通过界面安装)，并创建sugo_astro库(UTF8，Postgresl)：  
-Redis(可通过界面安装)  
+环境要求：
+Postgresql(可通过界面安装)，并创建sugo_astro库(UTF8，Postgresl)：
+Redis(可通过界面安装)
 ```
 cd /opt/apps
 bin/psql -p 15432 -U postgres -d postgres -c "CREATE DATABASE sugo_astro WITH OWNER = postgres ENCODING = UTF8;"
 bin/psql -p 15432 -U postgres -d postgres -c "select datname from pg_database"
 ```
 
-下载、解压缩user-group-1.0.tgz并启动  （此步骤可省略 ）
-```
-wget -P /opt/apps/ http://192.168.10.142/sugo_yum/SG/centos6/1.0/user-group-1.0.tgz
-tar -zxvf user-group-1.0.tgz
-cd user-group-1.0
-./start.sh  
-```
-查看端口情况：
-```
-netstat -nap | grep 2626
-``` 
 
-建议修改参数（视频上安装user_group可以不安装）：  
+
+建议修改参数：
 ```
 postgres.host: test01.sugo.vm
 dataConfig.hostAndPorts: test01.sugo.vm:6379
@@ -381,22 +393,51 @@ site.websdk_decide_host: test01.sugo.vm:8000
 site.collectGateway: http://test01.sugo.vm
 ```
 
-#### 3.2.10 安装Openresty
-环境要求：  
-redis(可通过界面安装)  
-注意：如果前面httpd服务的端口号没有修改，则会与nginx的端口产生冲突  
+#### 3.2.10 安装Openresty(可选,需要上传安装包)
+环境要求：
+redis(可通过界面安装)
+注意：如果前面httpd服务的端口号没有修改，则会与nginx的端口产生冲突
 可修改参数：
 ```
-log.bakcup.dir:  
-nginx.working_directory:  
-redis_host:  
+log.bakcup.dir:
+nginx.working_directory:
+redis_host:
 ```
-自定义参数（此参数在使用非sugo提供的kafka时添加，使用sugo安装kafka时不需要添加）：  
+自定义参数（此参数在使用非sugo提供的kafka时添加，使用sugo安装kafka时不需要添加）：
 kafka.brokers: 192.168.1.122:59092,192.168.1.126:59092,192.168.1.240:59092（例）
 
+####  3.2.11 Spark(可选,需要上传安装包)
+hdfs目录创建：
+```
+su hdfs
+hdfs dfs -mkdir -p /tmp/spark-events
+hdfs dfs -chmod 777 /tmp/spark-events
+hdfs dfs -mkdir -p /user/spark
+hdfs dfs -chmod 777 /user/spark
+hdfs dfs -chown -R spark:spark /user/spark
+```
+####  3.2.12 Hive(可选,需要上传安装包)
+修改配置项javax.jdo.option.ConnectionURL的值为：jdbc:postgresql://ds1.sugo.io:15432/hive?createDatabaseIfNotExist=true
+重启hive的所有服务
+
+hdfs目录创建：
+```
+su hdfs
+hdfs dfs -mkdir -p /tmp/hive
+hdfs dfs -chmod 777 /tmp/hive
+hdfs dfs -chown -R hive:hadoop /tmp/hive
+hdfs dfs -mkdir -p /user/hive
+hdfs dfs -chmod 777 /user/hive
+hdfs dfs -chown -R hive:hadoop /user/hive
+```
+
+####  3.2.13 Pio(可选,需要上传安装包)
+安装python2.7运行环境:
+下载python2.7环境安装包，解压缩到目录/usr/local/下
+
 ## 4 验证安装是否成功
-至此，服务安装完成，查看Web界面、导入数据验证安装成功，具体可查看视频  
-查看的服务：  
-HDFS（包括activeNamenode，standbyNamenode）  
-DruidIO  
-Astro（admin:admin123456,创建项目、导入数据、采集数据）
+至此，服务安装完成，查看Web界面、导入数据验证安装成功，具体可查看视频
+查看的服务：
+HDFS（包括activeNamenode，standbyNamenode）
+DruidIO
+Astro（admin:admin123456,创建项目、导入数据、采集数据、查询数据）
