@@ -277,6 +277,7 @@ test3.sugo.vm 123456
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图5 Ambari安装向导页面
 
 &emsp;&emsp;第2步：创建集群
+
 &emsp;&emsp;命名集群，选择服务栈（此处仅勾选redhat6），浏览器打开http服务地址（如图6所示），选择1.0所在的目录，复制链接粘贴到Ambari界面的”基础URL”内（如图6所示）。
 
 ![](media/45009e03fd13af2bc78deca47a16802a.png)
@@ -288,6 +289,7 @@ test3.sugo.vm 123456
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图7 选择服务栈
 
 &emsp;&emsp;第3步：填写秘钥
+
 &emsp;&emsp;点击下一步后，如图8所示，获取秘钥（在Ambari-server所在节点的终端查询），复制粘贴到安装选项界面（如图9所示），同时在界面填写目标主机：
 
 ```
@@ -303,6 +305,7 @@ cat ~/.ssh/id_rsa
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图9 安装选项界面
 
 &emsp;&emsp;第4步：注册
+
 &emsp;&emsp;确认注册，Ambari-Server便开始注册主机并检测环境，图10表明主机注册成功，点击下一步，勾选Ambari Metrics，点击下一步，分配主从节点，可打开下拉框选择将Ambari Metrics安装在您规划的主机上，一般默认即可，按照提示填写参数Grafana Admin Password（admin,admin。也可自行填写其它密码），下一步，部署，然后等待安装完成。
 
 ![](media/ce2c73b9dc770e46da01a775db45f7d9.png)
@@ -366,12 +369,11 @@ python install.py
 |              | site.websdk_app_host                        | test1.sugo.vm:8000                          | Web获取埋点事件服务端                     |
 |              |    site.websdk_js_cdn                       | test1.sugo.vm:8000                          | Web埋点埋点js服务cdn                      |
 
-**表4 修改的服务和参数**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;表4 修改的服务和参数
 
 ##### a. 修改Postgres参数 #####
 
-如图14 所示，
-&emsp;&emsp;修改Postgres的参数，具体[参数](#参数表)如表3所示，修改完成后保存，启动Postgres。
+&emsp;&emsp;如图14 所示,修改Postgres的参数，具体[参数](#参数表)如表3所示，修改完成后保存，启动Postgres。
 
 ![](media/2f6a68ab9e4c8090697b750ee68f6771.png)
 
@@ -536,7 +538,7 @@ su – hdfs ssh \$NameNode1 ssh \$NameNode2
 ```
 
 
-在此例中，命令为：
+&emsp;&emsp;在此例中，命令为：
 
 ```
 su – hdfs ssh test1.sugo.vm ssh test2.sugo.vm
@@ -551,7 +553,7 @@ su – hdfs ssh test1.sugo.vm ssh test2.sugo.vm
 
 ##### e. Gateway #####
 
-&emsp;&emsp;根据[参数表](#参数表)修改参数，保存后启动即可
+&emsp;&emsp;根据参数表修改参数，保存后启动即可
 
 ![](media/c315ebb351339282982c139475363f80.png)
 
@@ -559,7 +561,7 @@ su – hdfs ssh test1.sugo.vm ssh test2.sugo.vm
 
 ##### f. Tindex #####
 
-&emsp;&emsp;根据[参数表](#参数表)修改参数，保存后启动即可
+&emsp;&emsp;根据参数表修改参数，保存后启动即可
 
 ![](media/0e729c9e121e16a0a8783b4887a0ce57.png)
 
@@ -728,25 +730,25 @@ bin/psql -p 15432 -U postgres -d postgres -c "select datname from pg_database"
 
 ## 5.4 分布式集群测试 ##
 
-第1步：打开前端Web界面IP:8000（如图44所示，帐号密码分别为：admin,admin123456)
+&emsp;&emsp;第1步：打开前端Web界面IP:8000（如图44所示，帐号密码分别为：admin,admin123456)
 
 ![](media/a70f39f7f1dc2dc6814dafc5322e5faa.png)
 
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图44前端Astro登录界面
 
-第2步：进入数据管理，项目管理（如图45所示）
+&emsp;&emsp;第2步：进入数据管理，项目管理（如图45所示）
 
 ![](media/691ca04fd2c85ad285b621ce4d843c72.png)
 
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图45前端Astro进入项目管理操作
 
-第3步：新建项目，输入项目名称，提交后选择Csv文件接入，执行下一步（如图46所示）
+&emsp;&emsp;第3步：新建项目，输入项目名称，提交后选择Csv文件接入，执行下一步（如图46所示）
 
 ![](media/c2938c96f4779b13284be16d5012d4cd.png)
 
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图46选择接入数据类型
 
-第4步：选择文件，进入下一步（如图50所示），输入名称，选择维度字段（全选），提交采集维度（如图49所示），开始采集，查看采集是否成功
+&emsp;&emsp;第4步：选择文件，进入下一步（如图50所示），输入名称，选择维度字段（全选），提交采集维度（如图49所示），开始采集，查看采集是否成功
 
 ![](media/d0ba9f714523a71bd482fa8dfdc42cda.png)
 
@@ -756,7 +758,7 @@ bin/psql -p 15432 -U postgres -d postgres -c "select datname from pg_database"
 
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图48配置采集维度
 
-第5步：点击自助分析（如图49所示），执行查询，出现总记录数且与源数据相同，证明部署成功（如图49所示）
+&emsp;&emsp;第5步：点击自助分析（如图49所示），执行查询，出现总记录数且与源数据相同，证明部署成功（如图49所示）
 
 ![](media/9d0fa06dc05253610581108820e1b056.png)
 
@@ -766,7 +768,7 @@ bin/psql -p 15432 -U postgres -d postgres -c "select datname from pg_database"
 
 ## 6.1 启动集群 ##
 
-启动集群时，由于各组件之间具有依赖关系，需要按照一定的顺序启动各组件，可以**按照图53所示的顺序启动各组件**:
+&emsp;&emsp;启动集群时，由于各组件之间具有依赖关系，需要按照一定的顺序启动各组件，可以**按照图53所示的顺序启动各组件**:
 
 ![](media/a1230070bdbce29357e3348cad08c2b2.png)
 
@@ -774,11 +776,11 @@ bin/psql -p 15432 -U postgres -d postgres -c "select datname from pg_database"
 
 ## 6.2 更新服务 ##
 
-通过Ambari界面更新数果智能自研组件，无需重复配置参数，暂时仅适用于数果智能自研组件。
+&emsp;&emsp;通过Ambari界面更新数果智能自研组件，无需重复配置参数，暂时仅适用于数果智能自研组件。
 
 更新服务具体步骤如下:
 
-第1步：下载更新安装包到http服务所在目录，即Ambari指向的基础URL地址（如图54所示），在Ambari界面的管理员中查看，Linux系统上的位置一般为：/var/www/html/sugo_yum/SG/centos6/1.0，操作命令如下:
+&emsp;&emsp;第1步：下载更新安装包到http服务所在目录，即Ambari指向的基础URL地址（如图54所示），在Ambari界面的管理员中查看，Linux系统上的位置一般为：/var/www/html/sugo_yum/SG/centos6/1.0，操作命令如下:
 
 ```
 cd /var/www/html/sugo_yum/SG/centos6/1.0
@@ -789,19 +791,19 @@ wget {安装包链接（联系数果智能获取）} service httpd start
 
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图51查看Ambari的基础URL地址
 
-**第2步：**修改安装包包名，需与该服务配置文件中的package.name保持一致，之前的安装包可修改名称作为备份；
+&emsp;&emsp;第2步：修改安装包包名，需与该服务配置文件中的package.name保持一致，之前的安装包可修改名称作为备份；
 
 ![](media/16414230d4021e9f9dce5bda956bc3a9.png)
 
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图52查看该服务配置文件中的package name
 
-第3步：点击该服务的Client（如图56所示），选择该服务所在主机（如果该服务部署在多台主机上，每台主机都需要更新操作）
+&emsp;&emsp;第3步：点击该服务的Client（如图56所示），选择该服务所在主机（如果该服务部署在多台主机上，每台主机都需要更新操作）
 
 ![](media/b9201a6d8dc4c6d74c3089ddac787f3f.png)
 
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图53选择该服务的客户端
 
-第4步：选择主机后，下拉页面到最底端，点击更新按钮（如图54所示），即可一键更新服务
+&emsp;&emsp;第4步：选择主机后，下拉页面到最底端，点击更新按钮（如图54所示），即可一键更新服务
 
 ![](media/fdfdd354a339729f0b65a6562ceb8625.png)
 
@@ -809,13 +811,13 @@ wget {安装包链接（联系数果智能获取）} service httpd start
 
 ## 6.3 删除服务 ##
 
-删除服务的功能尚未集成到Ambari管理界面，暂时只能通过API的方式删除服务。
+&emsp;&emsp;删除服务的功能尚未集成到Ambari管理界面，暂时只能通过API的方式删除服务。
 
 删除服务具体步骤如下:
 
-第1步：进入到ambari-server所在主机
+&emsp;&emsp;第1步：进入到ambari-server所在主机
 
-第2步：执行以下命令，需修改的部分：ambari-server的IP，集群名称和服务名称，各服务服务名称如下
+&emsp;&emsp;第2步：执行以下命令，需修改的部分：ambari-server的IP，集群名称和服务名称，各服务服务名称如下
 
 | **服务**   | **服务名称**   |
 |------------|----------------|
@@ -841,7 +843,7 @@ curl -u admin:admin -H "X-Requested-By: ambari" -X PUT -d '{"RequestInfo":{"cont
 
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图55停止服务操作
 
-执行完上面这条命令后，在ambari界面查看该服务是否已经停止，如果停止了，则执行以下命令，否则请等待服务停止，然后再执行以下命令：
+&emsp;&emsp;执行完上面这条命令后，在ambari界面查看该服务是否已经停止，如果停止了，则执行以下命令，否则请等待服务停止，然后再执行以下命令：
 
 ![](media/330469e8e46b9f47dea02e557ec9d47a.png)
 
@@ -855,7 +857,7 @@ curl -u admin:admin -H "X-Requested-By: ambari" -X DELETE http://192.168.0.220:8
 
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图57删除服务操作
 
-如果命令没有返回错误，则可查看ambari界面，刷新后即可看到该服务已经被删除(如下图)。
+&emsp;&emsp;如果命令没有返回错误，则可查看ambari界面，刷新后即可看到该服务已经被删除(如下图)。
 
 ![](media/25203eb03778b22c372ce70020d95c15.png)
 
@@ -863,19 +865,19 @@ curl -u admin:admin -H "X-Requested-By: ambari" -X DELETE http://192.168.0.220:8
 
 ## 6.4 增删Ambari-Agent ##
 
-在已有Ambari的情况下，可能会遇到添加机器、扩展集群和迁移服务的需求，为了方便对集群的统一管理，增加Ambari-Agent则是一种比较合适的选择，增加Ambari-Agent后，通过Ambari对各服务进行迁移、增删等操作更加简便、友好。
+&emsp;&emsp;在已有Ambari的情况下，可能会遇到添加机器、扩展集群和迁移服务的需求，为了方便对集群的统一管理，增加Ambari-Agent则是一种比较合适的选择，增加Ambari-Agent后，通过Ambari对各服务进行迁移、增删等操作更加简便、友好。
 
-增添Ambari-Agent主要分为主机准备、主机注册两个步骤，在完成主机注册后，即可在Ambari集群上对服务进行增删、迁移等。注：以下终端操作部分全部在Ambari-Server节点主机执行
+&emsp;&emsp;增添Ambari-Agent主要分为主机准备、主机注册两个步骤，在完成主机注册后，即可在Ambari集群上对服务进行增删、迁移等。注：以下终端操作部分全部在Ambari-Server节点主机执行
 
 ### 6.4.1 增加Agent ###
 
 第1步：主机准备
 
-配置待添加主机的静态IP，修改hostname，注意hostname需要为二级域名，如：test1.sugo.vm，如果是离线主机，需要配置本地yum安装源库。
+&emsp;&emsp;配置待添加主机的静态IP，修改hostname，注意hostname需要为二级域名，如：test1.sugo.vm，如果是离线主机，需要配置本地yum安装源库。
 
 第2步：Agent环境准备
 
-进入ambari-server所在主机终端，进入脚本目录/{安装包存储目录}/sugo_yum/deploy_scripts/centos6/ambari-agent(注：此处您的主机上可能不存在此目录，或者sugo_yum目录实际为yum，可以在github上下载脚本：<https://github.com/Datafruit/deploy_scripts>)，修改hosts文件，hosts文件用于写入需要添加的agent的主机名,
+&emsp;&emsp;进入ambari-server所在主机终端，进入脚本目录/{安装包存储目录}/sugo_yum/deploy_scripts/centos6/ambari-agent(注：此处您的主机上可能不存在此目录，或者sugo_yum目录实际为yum，可以在github上下载脚本：<https://github.com/Datafruit/deploy_scripts>)，修改hosts文件，hosts文件用于写入需要添加的agent的主机名,
 root用户的密码，该主机的IP地址
 按行写入，每行代表一个主机(ambari-agent)，各项目之间以空格“ ”分割，例：
 
@@ -883,7 +885,7 @@ root用户的密码，该主机的IP地址
 test3.sugo.vm 123456789 192.168.0.122
 ```
 
-修改完成后保存，执行脚本pre_add_agent.sh，此脚本用于安装agent前的主机准备，包括安装jdk、配置ambari-server到该agent的ssh免密码登录、系统优化等，且jdk、ssh免密码可选择性安装，具体使用可通过如下命令进行查看
+&emsp;&emsp;修改完成后保存，执行脚本pre_add_agent.sh，此脚本用于安装agent前的主机准备，包括安装jdk、配置ambari-server到该agent的ssh免密码登录、系统优化等，且jdk、ssh免密码可选择性安装，具体使用可通过如下命令进行查看
 
 ```
 ./pre_add_agent.sh –help
@@ -891,9 +893,9 @@ test3.sugo.vm 123456789 192.168.0.122
 ./pre_add_agent.sh -http_port 81 -ambari_ip 192.168.0.120
 ```
 
-第3步：注册主机
+&emsp;&emsp;第3步：注册主机
 
-运行脚本add_agent.py，此脚本用于安装、注册ambari-agent，会在hosts文件中列出的主机上安装注册agent，运行此脚本需输入参数：集群名称 ambari-server的IP地址 例：
+&emsp;&emsp;运行脚本add_agent.py，此脚本用于安装、注册ambari-agent，会在hosts文件中列出的主机上安装注册agent，运行此脚本需输入参数：集群名称 ambari-server的IP地址 例：
 
 ```
 python add_agent.py testCluster 192.168.0.120
@@ -905,7 +907,7 @@ python add_agent.py testCluster 192.168.0.120
 
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图59注册Ambari-Agent
 
-注册如果没有报错，则表明Agent注册成功，查看Web管理界面，如下图显示test3.sugo.vm注册成功，即可在此基础上管理相关服务。
+&emsp;&emsp;注册如果没有报错，则表明Agent注册成功，查看Web管理界面，如下图显示test3.sugo.vm注册成功，即可在此基础上管理相关服务。
 
 ![](media/9e8048e5db30567cc86cf00adcdc320f.png)
 
@@ -913,33 +915,32 @@ python add_agent.py testCluster 192.168.0.120
 
 ### 6.4.2 迁移服务 ###
 
-在迁移服务之前，请注意，需要将下线节点所在的服务的数据转移到其它节点，所以需要先添加服务，此处以kafka为例：
+&emsp;&emsp;在迁移服务之前，请注意，需要将下线节点所在的服务的数据转移到其它节点，所以需要先添加服务，此处以kafka为例：
 
-第1步：添加kafka服务的组件kafka broker
+&emsp;&emsp;第1步：添加kafka服务的组件kafka broker
 
-选择新添加的主机，如此处的test3.sugo.vm，点击增加，选择Kafka Broker，如图61所示：
+&emsp;&emsp;选择新添加的主机，如此处的test3.sugo.vm，点击增加，选择Kafka Broker，如图61所示：
 
 ![](media/b26eda869292062a6a734835d0c456fa.png)
 
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图61 增加Kafka Broker
 
-此时，返回kafka主界面，会看到Kafka Broker从1个变成了2个，如图63所示：
+&emsp;&emsp;此时，返回kafka主界面，会看到Kafka Broker从1个变成了2个，如图63所示：
 
 ![](media/e0f89dc780b8217027d616711c1f4c71.png)
 
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图62 增加Kafka Broker后的Kafka主界面
 
-第2步：迁移数据
+&emsp;&emsp;第2步：迁移数据
 
-手工将test1.sugo.vm主机上Kafka的数据迁移至test3.sugo.vm上
+&emsp;&emsp;手工将test1.sugo.vm主机上Kafka的数据迁移至test3.sugo.vm上
 
-第3步：删除旧的Kafka Broker
+&emsp;&emsp;第3步：删除旧的Kafka Broker
 
-进入到Ambari界面旧主机（此处为test1.sugo.vm），停止该主机的Kafka Broker，如图63所示：
+&emsp;&emsp;进入到Ambari界面旧主机（此处为test1.sugo.vm），停止该主机的Kafka Broker，如图63所示：
 
 ![](media/571c242d35436320d56b395873270c21.png)
 
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图63 停止旧主机的Kafka Broker
 
-正确停止该Kafka
-Broker后，点击该选项的删除按钮，删除完成后即将Kafka从test1.sugo.vm迁移到test3.sugo.vm上。如果只需要添加Kafka Broker，省略第3步。
+&emsp;&emsp;正确停止该Kafka Broker后，点击该选项的删除按钮，删除完成后即将Kafka从test1.sugo.vm迁移到test3.sugo.vm上。如果只需要添加Kafka Broker，省略第3步。
