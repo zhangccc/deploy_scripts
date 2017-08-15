@@ -17,19 +17,18 @@
     vi /etc/hosts
     最底下添加ip和hostname
         192.168.233.128 test01.sugo.vm
-    ssh-keygen -t rsa 按回车
-    提示Overwrite(y/n)? 输入:y  然后不停的回车
-    ssh-copy-id test01.sugo.vm(看情况更改)
-    输入:yes
-    输入密码:
-    
-    测试:ssh test01.sugo.vm 看看是否需要密码 如果不需要密码就证明成功
-    成功后记得用 exit 退出
     
     退出来后建立两个目录用来保存各个服务的日志
-    mkdir /data1
+    这里需要通过df -h 查看客户的机器情况，看哪个目录容量比较大，
+    如果/目录下的容量较小，不能直接创建/data1和/data2，否则会撑爆客户磁盘，而应该创建符号连接
+    当前假设/根目录容量够大
+    mkdir /data1
     mkdir /data2
     
+    若不够大,先在大容量的目录下创建 上面两个目录然后
+    ln -s /刚刚创建的目录绝对路径 /
+    
+
 1.2 配置jdk环境变量
 
     vi /etc/profile
@@ -39,7 +38,7 @@
     export PATH=$JAVA_HOME/bin:$PATH
     
     source /etc/profile
-    ln -s /usr/local/jdk18/bin/java /usr/bin/java 
+
     
     测试:
         java -version
@@ -66,16 +65,16 @@
     
     //初始化postgres数据库
     /opt/apps/postgres_sugo/bin/initdb --no-locale -E UTF-8 -D /data1/postgres/data
-    //让postgres数据库所有的ip都能访问
+    //访问权限设置
     echo 'host    all   all         0.0.0.0/0          md5' >> /data1/postgres/data/pg_hba.conf
     //启动
     /opt/apps/postgres_sugo/bin/pg_ctl -D /data1/postgres/data -l /data1/postgres/log/postgres.log start
     //设置密码为123456和设置端口号为5432
-    /opt/apps/postgres_sugo/bin/psql -d postgres -U postgres -p 5432 -c "ALTER USER postgres PASSWORD '123456' ;" (和上面同一行)
+    /opt/apps/postgres_sugo/bin/psql -d postgres -U postgres -p 5432 -c "ALTER USER postgres PASSWORD '123456' ;" 
     
     //登录
     /opt/apps/postgres_sugo/bin/psql
-    //创建两个数据库 (一个是前端一个是druid)
+    //创建两个数据库 用于存储其它服务（astro/druid）的数据
     create database  astro_sugo with owner = postgres encoding = UTF8;
     create database  druid with owner = postgres encoding = UTF8;
     //创建好后 退出postgres数据库    用 ctrl+d 即可退出
@@ -177,8 +176,8 @@
     启动
     /opt/apps/zookeeper_sugo/bin/zkServer.sh start
     
-    
-如果系统原因提示环境变量不行就建个脚本启动
+    
+云平台会因系统原因提示环境变量不行需要建个脚本启动
 
 创建脚本
 
@@ -215,9 +214,8 @@
     或者打开网页查看
     http://192.168.233.128:80
     
-    如果:
-    启动报错jdk找不到
-    建立脚本启动:
+    
+    如果是云平台，则创建启动脚本
     
     vi start.sh 
     
