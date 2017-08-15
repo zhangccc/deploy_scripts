@@ -378,7 +378,7 @@ python install.py
 
 ##### a. 修改Postgres参数 #####
 
-&emsp;&emsp;如图14 所示,修改Postgres的参数，具体[参数表]如表3所示，修改完成后保存，启动Postgres。
+&emsp;&emsp;如图14 所示,修改Postgres的参数，具体参数表如表3所示，修改完成后保存，启动Postgres。
 
 ![](media/2f6a68ab9e4c8090697b750ee68f6771.png)
 
@@ -479,6 +479,7 @@ su - hdfs -c "hdfs namenode -bootstrapStandby"
 &emsp;&emsp;第9步：创建其它服务依赖的文件目录，在HDFS Client节点的终端执行如下命令：
 
 ```
+
 su - hdfs
 hdfs dfs -mkdir -p /remote-app-log/logs
 hdfs dfs -chown -R yarn:hadoop /remote-app-log
@@ -496,8 +497,8 @@ hdfs dfs -mkdir -p /druid/segments
 hdfs dfs -chown -R druid:druid /druid
 hdfs dfs -mkdir -p /user/druid
 hdfs dfs -chown -R druid:druid /user/druid
-```
 
+```
 
 ![](media/ea41d1a22657ab4fb440ff348586760f.png)
 
@@ -506,12 +507,14 @@ hdfs dfs -chown -R druid:druid /user/druid
 &emsp;&emsp;第10步：在浏览器上打开NameNode的IP:50070页面，通过Amabari主机名打开页面时，需要在windows的host文件中配置IP与hostname的映射
 
 ```
+
 打开文件C:\Windows\System32\drivers\etc\host
 复制Linux下/etc/hosts文件内的映射，追加到Windows的host文件末尾
 
 192.168.10.1 test1.sugo.vm
 192.168.10.2 test2.sugo.vm
 192.168.10.3 test3.sugo.vm
+
 ```
 
 ![](media/c83a5689f8d162aab3e79fa06cf7cf56.png)
@@ -528,18 +531,20 @@ hdfs dfs -chown -R druid:druid /user/druid
 &emsp;&emsp;hdfs用户下的免密码登录，启动配置脚本（注：passwd为root用户密码）：
 
 ```
+
 cd {脚本存储目录}/sugo_yum/deploy_scripts/service
-./password-less-ssh-hdfs.sh \$namenode1 \$passwd(NN1) \$namenode2 \$passwd(NN2)
+./password-less-ssh-hdfs.sh $namenode1 $passwd(NN1) $namenode2 $passwd(NN2)
 
 例：
 ./password-less-ssh-hdfs.sh test1.sugo.vm 00000001 test2.sugo.vm 00000002
+
 ```
 
 
 &emsp;&emsp;执行完成后检查hdfs用户免密码登录是否成功，在NameNode1或NameNode2上执行以下命令：
 
 ```
-su – hdfs ssh \$NameNode1 ssh \$NameNode2
+su – hdfs ssh $NameNode1 ssh $NameNode2
 ```
 
 
@@ -574,7 +579,7 @@ su – hdfs ssh test1.sugo.vm ssh test2.sugo.vm
 
 ##### g. Astro #####
 
-&emsp;&emsp;根据[参数表](#参数表)修改参数，保存后启动即可
+&emsp;&emsp;根据[数表修改参数，保存后启动即可
 
 ![](media/a1665d7612081077558f8f6cb347521c.png)
 
@@ -841,6 +846,7 @@ wget {安装包链接（联系数果智能获取）} service httpd start
 
 ```
 curl -u admin:admin -H "X-Requested-By: ambari" -X PUT -d '{"RequestInfo":{"context":"Stop Service"},"Body":{"ServiceInfo":{"state":"INSTALLED"}}}' http://192.168.0.220:8080/api/v1/clusters/sugo_test/services/ASTRO_SUGO
+
 ```
 
 
@@ -856,6 +862,7 @@ curl -u admin:admin -H "X-Requested-By: ambari" -X PUT -d '{"RequestInfo":{"cont
 
 ```
 curl -u admin:admin -H "X-Requested-By: ambari" -X DELETE http://192.168.0.220:8080/api/v1/clusters/sugo_test/services/ASTRO_SUGO
+
 ```
 
 ![](media/4e72ddecd3f8ddc8bb0d2bd17b10aa03.png)
@@ -882,7 +889,8 @@ curl -u admin:admin -H "X-Requested-By: ambari" -X DELETE http://192.168.0.220:8
 
 &emsp;&emsp;第2步：Agent环境准备
 
-&emsp;&emsp;进入ambari-server所在主机终端，进入脚本目录/{安装包存储目录}/sugo_yum/deploy_scripts/centos6/ambari-agent(注：此处您的主机上可能不存在此目录，或者sugo_yum目录实际为yum，可以在github上下载脚本：<https://github.com/Datafruit/deploy_scripts>)，修改hosts文件，hosts文件用于写入需要添加的agent的主机名,root用户的密码，该主机的IP地址按行写入，每行代表一个主机(ambari-agent)，各项目之间以空格“ ”分割，例：
+&emsp;&emsp;进入ambari-server所在主机终端，进入脚本目录/{安装包存储目录}/sugo_yum/deploy_scripts/centos6/ambari-agent(注：此处您的主机上可能不存在此目录，或者sugo_yum目录实际为yum，可以在github上下载脚本：<https://github.com/Datafruit/deploy_scripts>)，修改hosts文件，hosts文件用于写入需要添加的agent的主机名,root用户的密码，该主机的IP地址按行写入，每行代表一个主机(ambari-agent)，各项目之间以空格“ ”分割，
+例：
 
 ```
 test3.sugo.vm 123456789 192.168.0.122
@@ -891,9 +899,11 @@ test3.sugo.vm 123456789 192.168.0.122
 &emsp;&emsp;修改完成后保存，执行脚本pre_add_agent.sh，此脚本用于安装agent前的主机准备，包括安装jdk、配置ambari-server到该agent的ssh免密码登录、系统优化等，且jdk、ssh免密码可选择性安装，具体使用可通过如下命令进行查看
 
 ```
+
 ./pre_add_agent.sh –help
 例：
 ./pre_add_agent.sh -http_port 81 -ambari_ip 192.168.0.120
+
 ```
 
 &emsp;&emsp;第3步：注册主机
