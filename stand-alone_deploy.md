@@ -1,7 +1,8 @@
 ﻿# sugo单机版部署
  
-##1.环境初始化
-###1.1 执行脚本和免密登录
+1.环境初始化
+1.1 执行脚本和免密登录
+
     mkdir -p /opt/apps
     cd /opt/apps
     yum install -y wget
@@ -11,10 +12,7 @@
     chmod 755 init_centos6.sh
     ./init_centos6.sh -hostname test01.sugo.vm -yum_baseurl http://192.168.0.200:81/yum
     (执行好上面的脚本会进行一系列的环境初始化!关闭防火墙.下载jdk改好名字...等等..)
-    (脚本问题到了配环境变量的哪一步出现问题.出现:
-                    tar -zxf jdk jdk-8u91-linux-x64.tar.gz ...
-                    /opt/apps
-                    的时候就按ctrl+c停止)
+    (脚本问题到了配环境变量的哪一步出现问题.出现:tar -zxf jdk jdk-8u91-linux-x64.tar.gz ...  /opt/apps 的时候就按ctrl+c停止)
     
     rm -rf ./init_centos6.sh
     vi /etc/hosts
