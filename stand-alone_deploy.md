@@ -81,7 +81,8 @@
     create database  druid with owner = postgres encoding = UTF8;
     //创建好后 退出postgres数据库    用 ctrl+d 即可退出
     
-修改配置文件:
+    修改配置文件:
+    
     cd /data1/postgres/data
     vi postgresql.conf(把里面的全删掉)
 
@@ -99,9 +100,9 @@
     shared_buffers=128MB
     unix_socket_directories = '/tmp' 
 
-重启数据库
+    重启数据库
 
-/opt/apps/postgres_sugo/bin/pg_ctl -D /data1/postgres/data -l /data1/postgres/log/postgres.log restart
+    /opt/apps/postgres_sugo/bin/pg_ctl -D /data1/postgres/data -l /data1/postgres/log/postgres.log restart
     
     以上为安装postgres数据库!
     exit 退出当前用户回到root用户
@@ -287,12 +288,12 @@ vi broker/jvm.config
     -Dlog.file.path=/data1/druid/logs
     -Dlog.file.type=broker
 
-vi broker/runtime.properties
+    vi broker/runtime.properties
 
     修改
     druid.host=10.29.253.251 (修改成自己ip)
 
-vi _common/common.runtime.properties
+    vi _common/common.runtime.properties
     
     (添加到配置文件最后)
     druid.license.signature=48710FA3F1CDBA39DD3D7589262F2D066767C05CDF6AF1006D5B4B77A62063111DE60AA0BD309BF3
@@ -309,7 +310,7 @@ vi _common/common.runtime.properties
     com.metamx.metrics.JvmMonitor=[] 括号里面的全部删掉
     druid-kafka-eight   搜索删掉
 
-vi coordinator/jvm.config
+    vi coordinator/jvm.config
     
     -Djava.io.tmpdir=/data1/druid/task  修改 
     最底下添加
@@ -322,14 +323,14 @@ vi coordinator/runtime.properties
 
     druid.host=192.168.233.128
 
-vi historical/jvm.config
+    vi historical/jvm.config
  
     -Djava.io.tmpdir=/data1/druid/task          修改
     底下添加
     -Dlog.file.path=/data1/druid/logs
     -Dlog.file.type=historical
 
-vi historical/runtime.properties
+    vi historical/runtime.properties
 
     修改
     druid.host=192.168.233.128
@@ -344,7 +345,7 @@ vi historical/runtime.properties
     druid.lookup.lru.cache.expireAfterAccess=3600
     druid.lucene.query.select.maxResults=100000
 
-vi middleManager/jvm.config
+    vi middleManager/jvm.config
     
     修改
     -Djava.io.tmpdir=/data1/druid/task
@@ -353,7 +354,7 @@ vi middleManager/jvm.config
     -Dlog.file.type=middleManager
     -Dlog.configurationFile=/opt/apps/druidio_sugo/conf/druid/_common/log4j2-default.xml
 
-vi middleManager/runtime.properties
+    vi middleManager/runtime.properties
 
     修改
     druid.host=192.168.233.128
@@ -361,7 +362,7 @@ vi middleManager/runtime.properties
     druid.indexer.task.baseTaskDir=/data1/druid/task/base
     druid.processing.buffer.sizeBytes=268435456
 
-vi overlord/jvm.config
+    vi overlord/jvm.config
     
     修改
     -Djava.io.tmpdir=/data1/druid/task
@@ -370,7 +371,8 @@ vi overlord/jvm.config
     -Dlog.file.type=overlord
 
     vi overlord/runtime.properties
-修改
+    
+    修改
 
     druid.host=192.168.233.128
 
@@ -386,9 +388,9 @@ vi overlord/jvm.config
 
     cd /opt/apps/druidio_sugo/bin
     
-创建启动脚本
+    创建启动脚本
 
-vim start-all.sh
+    vim start-all.sh
 
 
     #!/usr/bin/env bash
@@ -403,9 +405,9 @@ vim start-all.sh
     chmod 755 ./st*
     ./bin/start-all.sh
     
-这个是关闭脚本
+    这个是关闭脚本
 
-vim stop-all.sh
+    vim stop-all.sh
 
     #!/usr/bin/env bash
     usage="Usage: stop-all.sh"
@@ -417,7 +419,7 @@ vim stop-all.sh
     
     
     
-mkdir -p var/druid/pids
+    mkdir -p var/druid/pids
 
     启动
         cd /opt/apps/druidio_sugo
@@ -426,7 +428,7 @@ mkdir -p var/druid/pids
     
     
     
-##8.安装astro
+8.安装astro
 
     cd /opt/apps
     wget http://192.168.0.200:81/yum/SG/centos6/release/sugo-analytics-fl0.16.7-1739650.tar.gz
@@ -437,7 +439,7 @@ mkdir -p var/druid/pids
     cd /opt/apps/astro_sugo/analytics
     cp config.default.js config.js
     
-vi config.js
+    vi config.js
 
     collectGateway: 'http://192.168.233.128'
     sdk_ws_url: 'ws://192.168.233.128:8887'
