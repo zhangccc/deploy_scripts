@@ -4,16 +4,18 @@
 
 1.1 执行脚本和免密登录
 
-    mkdir -p /opt/apps
+    将下载好的安装包解压到 当前用户目录
+    
+    tar -zxf stand-alone_deploy.tar.gz -C ~
+    cd ~/stand-alone_deploy
+    mkdir -p /opt/apps
     cd /opt/apps
     yum install -y wget openssh-clients vim 
-    wget http://192.168.0.200:81/yum/SG/centos6/1.0/init_centos6.sh
-    chmod 755 init_centos6.sh
-    ./init_centos6.sh -hostname test01.sugo.vm -yum_baseurl http://192.168.0.200:81/yum
-    (执行好上面的脚本会进行一系列的环境初始化!关闭防火墙.下载jdk改好名字...等等..)
-    (脚本问题到了配环境变量的哪一步出现问题.出现:tar -zxf jdk jdk-8u91-linux-x64.tar.gz ...  /opt/apps 的时候就按ctrl+c停止)
+    ./init_centos6.sh -hostname test01.sugo.vm
     
-    rm -rf ./init_centos6.sh
+    测试:
+        java -version
+    
     vi /etc/hosts
     最底下添加ip和hostname
         192.168.233.128 test01.sugo.vm
@@ -28,20 +30,8 @@
     若不够大,先在大容量的目录下创建 上面两个目录然后
     ln -s /刚刚创建的目录绝对路径 /
     
-
-1.2 配置jdk环境变量
-
-    vi /etc/profile
     
-    export JAVA_HOME=/usr/local/jdk18
-    export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
-    export PATH=$JAVA_HOME/bin:$PATH
-    
-    source /etc/profile
 
-    
-    测试:
-        java -version
     
 2.安装postgres数据库
 
@@ -50,9 +40,8 @@
         adduser postgres
         passwd postgres
         
-    wget http://192.168.0.200:81/yum/SG/centos6/1.0/postgresql-9.5.4-1-linux-x64-binaries.tar.gz
     
-    tar -zxf postgresql-9.5.4-1-linux-x64-binaries.tar.gz -C /opt/apps/ 
+    tar -zxf ~/stand-alone_deploy/postgresql-9.5.4-1-linux-x64-binaries.tar.gz -C /opt/apps/ 
     mv pgsql postgres_sugo
     rm postgresql-9.5.4-1-linux-x64-binaries.tar.gz 
     mkdir -p /data1/postgres/data
@@ -113,8 +102,7 @@
     yum install -y gcc g++-c++
     
     cd /opt/apps
-    wget http://download.redis.io/releases/redis-3.0.7.tar.gz
-    tar -zxf redis-3.0.7.tar.gz
+    tar -zxf ~/stand-alone_deploy/redis-3.0.7.tar.gz /opt/apps/
     mv redis-3.0.7 redis_sugo
     rm redis-3.0.7.tar.gz
     cd redis_sugo
@@ -143,8 +131,7 @@
 
     cd /opt/apps/
     
-    wget http://192.168.0.200:81/yum/SG/centos6/1.0/zookeeper-3.4.8.tar.gz
-    tar -zxf zookeeper-3.4.8.tar.gz
+    tar -zxf ~/stand-alone_deploy/zookeeper-3.4.8.tar.gz /opt/apps/
     mv zookeeper-3.4.8 zookeeper_sugo
     rm zookeeper-3.4.8.tar.gz
     
@@ -194,9 +181,7 @@
 
     cd /opt/apps/
     yum install -y libjpeg libpng freetype fontconfig
-
-    wget http://58.63.110.97:8888/yum/nginx-clojure-0.4.4.tar.gz
-    tar -zxf nginx-clojure-0.4.4.tar.gz
+    tar -zxf ~/stand-alone_deploy/nginx-clojure-0.4.4.tar.gz /opt/apps/
     mv nginx-clojure-0.4.4 gateway_sugo
     rm nginx-clojure-0.4.4.tar.gz
     export JAVA_HOME=/usr/local/jdk18
@@ -229,8 +214,7 @@
 6.安装kafka
 
     cd /opt/apps/
-    wget http://192.168.0.200:81/yum/SG/centos6/1.0/kafka_2.10-0.10.0.0.tgz
-    tar -zxf kafka_2.10-0.10.0.0.tgz
+    tar -zxf ~/stand-alone_deploy/kafka_2.10-0.10.0.0.tgz /opt/apps/
     mv kafka_2.10-0.10.0.0 kafka_sugo
     rm kafka_2.10-0.10.0.0.tgz
     
@@ -258,8 +242,7 @@ vi config/server.properties
 7.安装druid
 
     cd /opt/apps/
-    wget http://192.168.0.202/yum/deploy_yum/druid-1.0.0-bin.tar.gz
-    tar -zxf druid-1.0.0-bin.tar.gz
+    tar -zxf ~/stand-alone_deploy/druid-1.0.0-bin.tar.gz /opt/apps/
     mv druid-1.0.0 druidio_sugo
     rm druid-1.0.0-bin.tar.gz
     
@@ -425,8 +408,7 @@ vi config/server.properties
 8.安装astro
 
     cd /opt/apps
-    wget http://192.168.0.200:81/yum/SG/centos6/release/sugo-analytics-fl0.16.7-1739650.tar.gz
-    tar -zxf sugo-analytics-fl0.16.7-1739650.tar.gz
+    tar -zxf ~/stand-alone_deploy/sugo-analytics-fl0.16.7-1739650.tar.gz /opt/apps/
     mv sugo-analytics astro_sugo
     rm sugo-analytics-fl0.16.7-1739650.tar.gz
     useradd astro 
