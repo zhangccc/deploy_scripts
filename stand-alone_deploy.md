@@ -4,17 +4,17 @@
 
 1.1 执行脚本和免密登录
 
-    将下载好的安装包解压到 当前用户目录
-    
-    tar -zxf stand-alone_deploy.tar.gz -C ~
+    将下载好的安装包解压到 当前用户目录
+
+    tar -zxf stand-alone_deploy.tar.gz -C ~
     cd ~/stand-alone_deploy
-    mkdir -p /opt/apps
+    mkdir -p /opt/apps
     cd /opt/apps
     yum install -y wget openssh-clients vim 
     ./init_centos6.sh -hostname test01.sugo.vm
-    
-    测试:
-        java -version
+
+    测试
+    java -version
     
     vi /etc/hosts
     最底下添加ip和hostname
@@ -31,7 +31,6 @@
     ln -s /刚刚创建的目录绝对路径 /
     
     
-
     
 2.安装postgres数据库
 
