@@ -20,9 +20,9 @@
     最底下添加ip和hostname
         192.168.233.128 test01.sugo.vm
     
-    退出来后建立两个目录用来保存各个服务的日志
+    建立两个目录用来保存各个服务的日志
     这里需要通过df -h 查看客户的机器情况，看哪个目录容量比较大，
-    如果/目录下的容量较小，不能直接创建/data1和/data2，否则会撑爆客户磁盘，而应该创建符号连接
+    如果/目录下的容量较小，不能直接创建/data1和/data2，而应该创建符号连接 ln -s /创建的目录绝对路径 /
     当前假设/根目录容量够大
 
     mkdir /data1
@@ -30,7 +30,7 @@
 
     若不够大,先在大容量的目录下创建 上面两个目录然后
 
-    ln -s /刚刚创建的目录绝对路径 /
+    
     
     
     
@@ -59,8 +59,8 @@
     echo 'host    all   all         0.0.0.0/0          md5' >> /data1/postgres/data/pg_hba.conf
     //启动
     /opt/apps/postgres_sugo/bin/pg_ctl -D /data1/postgres/data -l /data1/postgres/log/postgres.log start
-    //设置密码为123456和设置端口号为5432
-    /opt/apps/postgres_sugo/bin/psql -d postgres -U postgres -p 5432 -c "ALTER USER postgres PASSWORD '123456' ;" 
+    //设置密码和端口号
+    /opt/apps/postgres_sugo/bin/psql -d postgres -U postgres -p 5432 -c "ALTER USER postgres PASSWORD '123456' ;" 
     
     //登录
     /opt/apps/postgres_sugo/bin/psql
@@ -72,7 +72,7 @@
     修改配置文件:
     
     cd /data1/postgres/data
-    vi postgresql.conf(把里面的全删掉)
+    vi postgresql.conf(把里面全部内容替换成以下内容)
 
     datestyle='iso, mdy'
     default_text_search_config='pg_catalog.english'
@@ -114,7 +114,7 @@
     
     vi redis.conf
 
-最底下添加
+添加内容
 
     bind 0.0.0.0
     daemonize yes
@@ -130,8 +130,8 @@
 
 4.安装zookeeper
 
+
     cd /opt/apps/
-    
     tar -zxf ~/stand-alone_deploy/zookeeper-3.4.8.tar.gz /opt/apps/
     mv zookeeper-3.4.8 zookeeper_sugo
     rm zookeeper-3.4.8.tar.gz
@@ -146,7 +146,8 @@
 
 
     cp zoo_sample.cfg zoo.cfg
-    vi zoo.cfg        (里面信息全删除了!!注意修改ip!!)
+    
+    vi zoo.cfg        (全部内容替换成以下内容)
     
     clientPort=2181
     syncLimit=5
@@ -165,9 +166,9 @@
     /opt/apps/zookeeper_sugo/bin/zkServer.sh start
     
     
-云平台会因系统原因提示环境变量不行需要建个脚本启动
+    主机在云平台会因环境变量问题而需要创建脚本启动
 
-创建脚本
+    创建脚本
 
     vim sugo_zookeeper_server.sh
 
@@ -201,7 +202,7 @@
     http://192.168.233.128:80
     
     
-    如果是云平台，则创建启动脚本
+    主机在云平台会因环境变量问题而需要创建脚本启动
     
     vi start.sh 
     
@@ -221,9 +222,9 @@
     
     cd /opt/apps/kafka_sugo
     
-修改配置文件
+    修改配置文件
 
-vi config/server.properties
+    vi config/server.properties
 
     zookeeper.connect=192.168.233.128:2181/kafka
     log.dirs=/data2/kafka/data
@@ -269,7 +270,7 @@ vi config/server.properties
     vi broker/runtime.properties
 
     修改
-    druid.host=10.29.253.251 (修改成自己ip)
+    druid.host=10.29.253.251
 
     vi _common/common.runtime.properties
     
@@ -283,14 +284,15 @@ vi config/server.properties
     druid.metadata.storage.connector.password=123456
     druid.storage.type=local     (去掉注释)
     druid.storage.storageDirectory=/druid/segments      (去掉注释) 并修改druid.storage.storageDirectory=/data1/druid/indexing-logs
-    druid.indexer.logs.type=hdfs        用#号在前面注释掉
-    druid.indexer.logs.directory=/druid/indexing-logs       用#号在前面注释掉
-    com.metamx.metrics.JvmMonitor=[] 括号里面的全部删掉
+    druid.indexer.logs.type=hdfs        注释掉
+    druid.indexer.logs.directory=/druid/indexing-logs       注释掉
+    com.metamx.metrics.JvmMonitor=[] 方括号里面的全部删掉
     druid-kafka-eight   搜索删掉
 
     vi coordinator/jvm.config
     
-    -Djava.io.tmpdir=/data1/druid/task  修改 
+    修改
+    -Djava.io.tmpdir=/data1/druid/task   
     最底下添加
     -Dlog.file.path=/data1/druid/logs
     -Dlog.file.type=coordinator
@@ -302,8 +304,9 @@ vi config/server.properties
     druid.host=192.168.233.128
 
     vi historical/jvm.config
- 
-    -Djava.io.tmpdir=/data1/druid/task          修改
+    
+    修改
+    -Djava.io.tmpdir=/data1/druid/task
     底下添加
     -Dlog.file.path=/data1/druid/logs
     -Dlog.file.type=historical
@@ -351,7 +354,6 @@ vi config/server.properties
     vi overlord/runtime.properties
     
     修改
-
     druid.host=192.168.233.128
 
 
@@ -378,7 +380,7 @@ vi config/server.properties
     do
         sh $CUR_DIR/node.sh $nodeType start
     done
-    注意前面有空格!要删掉
+    
     
     chmod 755 ./st*
     ./bin/start-all.sh
