@@ -51,12 +51,12 @@
 
 
 
-#1. 项目介绍#
+# 1. 项目介绍 #
 ========
 
 &emsp;&emsp;数果Tindex平台是数果智能自主研发的产品，用于解决大数据行业中实现大规模（PB级）行为数据实时接入、高效存储和快速查询，满足数据分析和数据挖掘等领域的需求。
 
-#2. 技术架构#
+# 2. 技术架构 #
 
 &emsp;数果Tindex平台核心组件包含Broker, Coordinator, MiddleManager, Overlord,Historical，整体架构如如图1所示：
 
