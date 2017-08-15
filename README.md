@@ -768,7 +768,7 @@ bin/psql -p 15432 -U postgres -d postgres -c "select datname from pg_database"
 
 ## 6.1 启动集群 ##
 
-&emsp;&emsp;启动集群时，由于各组件之间具有依赖关系，需要按照一定的顺序启动各组件，可以**按照图53所示的顺序启动各组件**:
+&emsp;&emsp;启动集群时，由于各组件之间具有依赖关系，需要按照一定的顺序启动各组件，可以按照图53所示的顺序启动各组件:
 
 ![](media/a1230070bdbce29357e3348cad08c2b2.png)
 
@@ -871,15 +871,13 @@ curl -u admin:admin -H "X-Requested-By: ambari" -X DELETE http://192.168.0.220:8
 
 ### 6.4.1 增加Agent ###
 
-第1步：主机准备
+&emsp;&emsp;第1步：主机准备
 
 &emsp;&emsp;配置待添加主机的静态IP，修改hostname，注意hostname需要为二级域名，如：test1.sugo.vm，如果是离线主机，需要配置本地yum安装源库。
 
-第2步：Agent环境准备
+&emsp;&emsp;第2步：Agent环境准备
 
-&emsp;&emsp;进入ambari-server所在主机终端，进入脚本目录/{安装包存储目录}/sugo_yum/deploy_scripts/centos6/ambari-agent(注：此处您的主机上可能不存在此目录，或者sugo_yum目录实际为yum，可以在github上下载脚本：<https://github.com/Datafruit/deploy_scripts>)，修改hosts文件，hosts文件用于写入需要添加的agent的主机名,
-root用户的密码，该主机的IP地址
-按行写入，每行代表一个主机(ambari-agent)，各项目之间以空格“ ”分割，例：
+&emsp;&emsp;进入ambari-server所在主机终端，进入脚本目录/{安装包存储目录}/sugo_yum/deploy_scripts/centos6/ambari-agent(注：此处您的主机上可能不存在此目录，或者sugo_yum目录实际为yum，可以在github上下载脚本：<https://github.com/Datafruit/deploy_scripts>)，修改hosts文件，hosts文件用于写入需要添加的agent的主机名,root用户的密码，该主机的IP地址按行写入，每行代表一个主机(ambari-agent)，各项目之间以空格“ ”分割，例：
 
 ```
 test3.sugo.vm 123456789 192.168.0.122
