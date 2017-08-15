@@ -32,7 +32,8 @@
     mkdir /data1
     mkdir /data2
     
-###1.2 配置jdk环境变量
+1.2 配置jdk环境变量
+
     vi /etc/profile
     
     export JAVA_HOME=/usr/local/jdk18
@@ -45,7 +46,8 @@
     测试:
         java -version
     
-##2.安装postgres数据库
+2.安装postgres数据库
+
     Linux 创建一个  postgres 用户
         adduser postgres
         passwd postgres
@@ -80,30 +82,32 @@
     //创建好后 退出postgres数据库    用 ctrl+d 即可退出
     
 修改配置文件:
-cd /data1/postgres/data
-vi postgresql.conf(把里面的全删掉)
-    
-datestyle='iso, mdy'
-default_text_search_config='pg_catalog.english'
-dynamic_shared_memory_type=posix
-lc_messages='C'
-lc_monetary='C'
-lc_numeric='C'
-lc_time='C'
-listen_addresses='0.0.0.0'
-log_timezone='PRC'
-max_connections=100
-port=5432    
-shared_buffers=128MB
-unix_socket_directories = '/tmp' 
+    cd /data1/postgres/data
+    vi postgresql.conf(把里面的全删掉)
+
+    datestyle='iso, mdy'
+    default_text_search_config='pg_catalog.english'
+    dynamic_shared_memory_type=posix
+    lc_messages='C'
+    lc_monetary='C'
+    lc_numeric='C'
+    lc_time='C'
+    listen_addresses='0.0.0.0'
+    log_timezone='PRC'
+    max_connections=100
+    port=5432    
+    shared_buffers=128MB
+    unix_socket_directories = '/tmp' 
 
 重启数据库
+
 /opt/apps/postgres_sugo/bin/pg_ctl -D /data1/postgres/data -l /data1/postgres/log/postgres.log restart
     
     以上为安装postgres数据库!
     exit 退出当前用户回到root用户
 
-##3.安装redis
+3.安装redis
+
     yum remove -y epel-release
     
     安装gcc编译器
@@ -123,11 +127,11 @@ unix_socket_directories = '/tmp' 
     vi redis.conf
 
 最底下添加
-bind 0.0.0.0
-daemonize yes
-port 6379
-dir /data1/redis
-pidfile /opt/apps/redis_sugo/redis.pid
+    bind 0.0.0.0
+    daemonize yes
+    port 6379
+    dir /data1/redis
+    pidfile /opt/apps/redis_sugo/redis.pid
 
     启动
     /opt/apps/redis_sugo/src/redis-server /opt/apps/redis_sugo/redis.conf
@@ -135,7 +139,8 @@ pidfile /opt/apps/redis_sugo/redis.pid
     ./src/redis-cli
     127.0.0.1:6379>   出现这样证明启动成功
 
-##4.安装zookeeper
+4.安装zookeeper
+
     cd /opt/apps/
     
     wget http://192.168.0.200:81/yum/SG/centos6/1.0/zookeeper-3.4.8.tar.gz
@@ -155,17 +160,17 @@ pidfile /opt/apps/redis_sugo/redis.pid
     cp zoo_sample.cfg zoo.cfg
     vi zoo.cfg        (里面信息全删除了!!注意修改ip!!)
     
-clientPort=2181
-syncLimit=5
-autopurge.purgeInterval=24
-maxClientCnxns=800
-dataDir=/data1/zookeeper/data
-dataLogDir=/data1/zookeeper/dataLog
-initLimit=10
-maxSessionTimeout=120000
-tickTime=2000
-autopurge.snapRetainCount=100
-server.1=192.168.233.128:2888:3888
+    clientPort=2181
+    syncLimit=5
+    autopurge.purgeInterval=24
+    maxClientCnxns=800
+    dataDir=/data1/zookeeper/data
+    dataLogDir=/data1/zookeeper/dataLog
+    initLimit=10
+    maxSessionTimeout=120000
+    tickTime=2000
+    autopurge.snapRetainCount=100
+    server.1=192.168.233.128:2888:3888
 
 
     启动
@@ -173,19 +178,20 @@ server.1=192.168.233.128:2888:3888
     
     
 如果系统原因提示环境变量不行就建个脚本启动
-    
+
 创建脚本
 
     vim sugo_zookeeper_server.sh
 
-export JAVA_HOME=/usr/local/jdk18
-/opt/apps/zookeeper_sugo/bin/zkServer.sh start
+    export JAVA_HOME=/usr/local/jdk18
+    /opt/apps/zookeeper_sugo/bin/zkServer.sh start
 
 
     chmod 755 sugo_zookeeper_server.sh
     ./sugo_zookeeper_server.sh
     
-##5.安装gateway
+5.安装gateway
+
     cd /opt/apps/
     yum install -y libjpeg 
     yum install -y libpng
@@ -224,7 +230,8 @@ export JAVA_HOME=/usr/local/jdk18
     
     chmod +x start.sh
     
-##6.安装kafka
+6.安装kafka
+
     cd /opt/apps/
     wget http://192.168.0.200:81/yum/SG/centos6/1.0/kafka_2.10-0.10.0.0.tgz
     tar -zxf kafka_2.10-0.10.0.0.tgz
@@ -251,7 +258,8 @@ log.dirs=/data2/kafka/data
     检查:
     ps -ef |grep kafka
     
-##7.安装druid
+7.安装druid
+
     cd /opt/apps/
     wget http://192.168.0.202/yum/deploy_yum/druid-1.0.0-bin.tar.gz
     tar -zxf druid-1.0.0-bin.tar.gz
