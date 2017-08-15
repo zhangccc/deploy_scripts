@@ -48,7 +48,8 @@
     
 2.安装postgres数据库
 
-    Linux 创建一个  postgres 用户
+    创建一个  postgres 用户
+    
         adduser postgres
         passwd postgres
         
