@@ -273,11 +273,11 @@
     druid.host=10.29.253.251
 
     vi _common/common.runtime.properties
-    
-    (添加到配置文件最后)
+
+
     druid.license.signature=48710FA3F1CDBA39DD3D7589262F2D066767C05CDF6AF1006D5B4B77A62063111DE60AA0BD309BF3
-     (添加到配置文件的最后面)
     druid.emitter.composing.emitters=["logging"]  
+    (上面两条添加到配置文件的最后面) 
     druid.zk.service.host=192.168.233.128
     druid.metadata.storage.connector.connectURI=jdbc:postgresql://192.168.233.128:5432/druid
     druid.metadata.storage.connector.user=postgres
@@ -287,11 +287,11 @@
     druid.indexer.logs.type=hdfs        注释掉
     druid.indexer.logs.directory=/druid/indexing-logs       注释掉
     com.metamx.metrics.JvmMonitor=[] 方括号里面的全部删掉
-    
     druid-kafka-eight   搜索删掉
 
+
     vi coordinator/jvm.config
-    
+     
     修改
     -Djava.io.tmpdir=/data1/druid/task   
     最底下添加
