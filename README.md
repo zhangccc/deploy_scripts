@@ -98,13 +98,13 @@
 
 具体安装流程如下：
 
->   1）安装Ambari-Server，注册主机
+&emsp;&emsp;1）安装Ambari-Server，注册主机
 
->   2）部署集群
+&emsp;&emsp;2）部署集群
 
->   3）修改配置、启动组件
+&emsp;&emsp;3）修改配置、启动组件
 
->   4）集群测试
+&emsp;&emsp;4）集群测试
 
 部署集群有两种方式供选择，一键部署和独立部署。
 
@@ -136,12 +136,14 @@
 
 &emsp;&emsp;解压单机版安装包，启动安装脚本，如果内网无法访问，需要通过公网IP对服务进行访问时，请绑定公网IP，且启动安装脚本时，参数选择会略有不同。
 ```
+
 tar –zxvf single_deploy.tar.gz
 cd single_deploy
-&emsp;&emsp;1)无需公网IP时执行：
+1)无需公网IP时执行：
 source single-deploy.sh –IP 192.168.0.120
-&emsp;&emsp;2)需要公网IP时执行：
+)需要公网IP时执行：
 source single-deploy.sh –IP 192.168.0.120 -public_IP 192.168.0.121
+
 ```
 
 &emsp;&emsp;此时，所有服务安装完成并启动，如果需要公网IP才能访问，请开放端口80、8000、8887和8090，如果不需要公网IP，可以直接访问，则无需设置端口转发。
@@ -149,6 +151,7 @@ source single-deploy.sh –IP 192.168.0.120 -public_IP 192.168.0.121
 &emsp;&emsp;如果安装是通过无需公网IP的方式执行部署脚本，而安装完成后因其它原因需要通过公网IP才能访问时，请开放端口，且将以下参数的IP地址修改为公网IP：
 
 ```
+
 cd /opt/apps/astro_sugo/analytics
 vim config.js
 collectGateway: 'http://192.168.0.122',
@@ -236,6 +239,7 @@ websdk_api_host: '192.168.0.122:8000'
 -   修改完成后保存，执行脚本start.sh（http的端口号建议设置为81，因为安装网关时会占用端口号80），具体操作如下：
 
 ```
+
 mkdir ${数据存储目录}
 cd ${数据存储目录}
 wget ${yum源下载链接}
@@ -250,14 +254,15 @@ vi host
 vi ip.txt
 test2.sugo.vm 123456
 test3.sugo.vm 123456
+
 ```
 
 ```
+
 ./start.sh -http_port 端口号 –ambari_ip Ambari-Server节点IP
-
 例：
-
 ./start.sh -http_port 81 –ambari_ip 192.168.10.1
+
 ```
 
 &emsp;&emsp;如果没有报错信息，则表明ambari-server安装成功。登陆界面如图4所示， web UI默认端口8080(admin,admin)，组件的安装可通过一键部署或独立部署实现。
@@ -373,7 +378,7 @@ python install.py
 
 ##### a. 修改Postgres参数 #####
 
-&emsp;&emsp;如图14 所示,修改Postgres的参数，具体[参数](#参数表)如表3所示，修改完成后保存，启动Postgres。
+&emsp;&emsp;如图14 所示,修改Postgres的参数，具体[参数表]如表3所示，修改完成后保存，启动Postgres。
 
 ![](media/2f6a68ab9e4c8090697b750ee68f6771.png)
 
