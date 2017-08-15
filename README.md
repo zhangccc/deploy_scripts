@@ -296,7 +296,7 @@ cat ~/.ssh/id_rsa
 
 ![](media/7e5d8b40a9360ce897e919dbe9b426e7.png)
 
-**图8 SSH秘钥**
+****图8 SSH秘钥****
 
 ![](media/8ab31938375d320ef5352cfcd7af1845.png)
 
