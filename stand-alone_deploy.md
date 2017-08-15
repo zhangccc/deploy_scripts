@@ -286,7 +286,8 @@
     druid.storage.storageDirectory=/druid/segments      (去掉注释) 并修改druid.storage.storageDirectory=/data1/druid/indexing-logs
     druid.indexer.logs.type=hdfs        注释掉
     druid.indexer.logs.directory=/druid/indexing-logs       注释掉
-    com.metamx.metrics.JvmMonitor=[] 方括号里面的全部删掉
+    com.metamx.metrics.JvmMonitor=[] 方括号里面的全部删掉
+    
     druid-kafka-eight   搜索删掉
 
     vi coordinator/jvm.config
