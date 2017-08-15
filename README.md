@@ -58,11 +58,11 @@
 
 # 2. 技术架构 #
 
-&emsp;数果Tindex平台核心组件包含Broker, Coordinator, MiddleManager, Overlord,Historical，整体架构如如图1所示：
+&emsp;&emsp;数果Tindex平台核心组件包含Broker, Coordinator, MiddleManager, Overlord,Historical，整体架构如如图1所示：
 
 ![](media/a490c303198379f78bb8fe6aa031250f.png)
 
-###### &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; 图1 Tindex技术架构图 ######
+###### 图1 Tindex技术架构图 ######
 
 -   Broker节点：接受客户端请求，分发至各历史/实时节点，然后汇总返回客户端的节点
 
