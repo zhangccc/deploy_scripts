@@ -136,9 +136,12 @@
 
 &emsp;&emsp;解压单机版安装包，启动安装脚本，如果内网无法访问，需要通过公网IP对服务进行访问时，请绑定公网IP，且启动安装脚本时，参数选择会略有不同。
 ```
-tar –zxvf single_deploy.tar.gz cd single_deploy
-1)无需公网IP时执行： source single-deploy.sh –IP 192.168.0.120
-2)需要公网IP时执行： source single-deploy.sh –IP 192.168.0.120 -public_IP 192.168.0.121
+tar –zxvf single_deploy.tar.gz
+cd single_deploy
+1)无需公网IP时执行：
+source single-deploy.sh –IP 192.168.0.120
+2)需要公网IP时执行：
+source single-deploy.sh –IP 192.168.0.120 -public_IP 192.168.0.121
 ```
 
 &emsp;&emsp;此时，所有服务安装完成并启动，如果需要公网IP才能访问，请开放端口80、8000、8887和8090，如果不需要公网IP，可以直接访问，则无需设置端口转发。
@@ -148,16 +151,16 @@ tar –zxvf single_deploy.tar.gz cd single_deploy
 ```
 cd /opt/apps/astro_sugo/analytics
 vim config.js
-&emsp;&emsp;collectGateway: 'http://192.168.0.122'
-&emsp;&emsp;sdk_ws_url: 'ws://192.168.0.122:8887'
-&emsp;&emsp;websdk_api_host: '192.168.0.122:8000'
+collectGateway: 'http://192.168.0.122',
+sdk_ws_url: 'ws://192.168.0.122:8887',
+websdk_api_host: '192.168.0.122:8000'
 
 ```
 
 
 ## 4.3 环境测试 ##
 
-&emsp;&emsp;测试方法与分布式集群测试一致，具体请参考[分布式集群测试](#分布式集群测试)步骤。
+&emsp;&emsp;测试方法与分布式集群测试一致，具体请参考分布式集群测试步骤。
 
 
 
@@ -165,7 +168,7 @@ vim config.js
 
 ## 5.1 前期准备 ##
 
-### 5.1.1主机配置要求 ###
+### 5.1.1 主机配置要求 ###
 
 | **项目** | **要求** | **备注**                 |
 |----------|----------|--------------------------|
@@ -211,6 +214,7 @@ vim config.js
 
 &emsp;&emsp;做好主机规划后，配置好各主机的静态IP，修改hostname，注意hostname需要为二级域名，如：test1.sugo.vm，如果是离线主机，需要配置本地yum安装源库。这部分的具体操作不做描述。
 
+
 ## 5.2 安装Ambari-Server ##
 
 安装Ambari-Server的不同场景：
@@ -232,56 +236,47 @@ vim config.js
 -   修改完成后保存，执行脚本start.sh（http的端口号建议设置为81，因为安装网关时会占用端口号80），具体操作如下：
 
 ```
-mkdir \${数据存储目录}
-cd \${数据存储目录}
-wget \${yum源下载链接}
-tar –zxvf \${yum源下载目录}/sugo_yum.tar.gz
-cd \${yum源下载目录}/sugo_yum/deploy_scripts/centos6/ambari-server/
+mkdir ${数据存储目录}
+cd ${数据存储目录}
+wget ${yum源下载链接}
+tar –zxvf ${yum源下载目录}/sugo_yum.tar.gz
+cd ${yum源下载目录}/sugo_yum/deploy_scripts/centos6/ambari-server/
+
 vi host
-&emsp;&emsp;192.168.10.1 test1.sugo.vm
-```
-
-
->   192.168.10.2 test2.sugo.vm
-
->   192.168.10.3 test3.sugo.vm
-
-...
+192.168.10.1 test1.sugo.vm
+192.168.10.2 test2.sugo.vm
+192.168.10.3 test3.sugo.vm
 
 vi ip.txt
+test2.sugo.vm 123456
+test3.sugo.vm 123456
+```
 
->   test2.sugo.vm 123456
-
->   test3.sugo.vm 123456
-
-...
-
-./start.sh -http_port *端口号* –ambari_ip *Ambari-Server节点IP*
+```
+./start.sh -http_port 端口号 –ambari_ip Ambari-Server节点IP
 
 例：
 
 ./start.sh -http_port 81 –ambari_ip 192.168.10.1
+```
 
-如果没有报错信息，则表明ambari-server安装成功。登陆界面如图4所示， web
-UI默认端口8080(admin,admin)，组件的安装可通过一键部署或独立部署实现。
+&emsp;&emsp;如果没有报错信息，则表明ambari-server安装成功。登陆界面如图4所示， web UI默认端口8080(admin,admin)，组件的安装可通过一键部署或独立部署实现。
 
 ![](media/117abb489766863acbc8e9bcb01a1028.png)
 
 **图4 ambari-server登陆界面**
 
-5.3集群部署
+## 5.3 集群部署 ##
 
-主机注册及Ambari
-Metrics安装，通过Web界面登录后会提示注册集群、主机，ssh秘钥及安装Ambari
-Metrics，具体操作如下：
+&emsp;&emsp;主机注册及Ambari Metrics安装，通过Web界面登录后会提示注册集群、主机，ssh秘钥及安装Ambari Metrics，具体操作如下：
 
-**第1步：**启动安装向导（如图5所示）；
+#### 第1步：启动安装向导（如图5所示）；
 
 ![](media/c59d3a24ff914b5d3a2f94a9f0bc9417.png)
 
 **图5 Ambari安装向导页面**
 
-**第2步：**命名集群，选择服务栈（此处仅勾选redhat6），浏览器打开http服务地址（如图6所示），选择1.0所在的目录，复制链接粘贴到Ambari界面的”基础URL”内（如图7所示）。
+#### 第2步：命名集群，选择服务栈（此处仅勾选redhat6），浏览器打开http服务地址（如图6所示），选择1.0所在的目录，复制链接粘贴到Ambari界面的”基础URL”内（如图7所示）。
 
 ![](media/45009e03fd13af2bc78deca47a16802a.png)
 
@@ -291,11 +286,11 @@ Metrics，具体操作如下：
 
 **图7 选择服务栈**
 
-**第3步：**点击下一步后，如图8所示，获取秘钥（在Ambari-server所在节点的终端查询），复制粘贴到安装选项界面（如图9所示），同时在界面填写目标主机：
+#### 第3步：点击下一步后，如图8所示，获取秘钥（在Ambari-server所在节点的终端查询），复制粘贴到安装选项界面（如图9所示），同时在界面填写目标主机：
 
-| cat \~/.ssh/id_rsa |
-|--------------------|
-
+```
+cat \~/.ssh/id_rsa
+```
 
 ![](media/7e5d8b40a9360ce897e919dbe9b426e7.png)
 
@@ -305,10 +300,7 @@ Metrics，具体操作如下：
 
 **图9 安装选项界面**
 
-**第4步：**确认注册，Ambari-Server便开始注册主机并检测环境，图10表明主机注册成功，点击下一步，勾选Ambari
-Metrics，点击下一步，分配主从节点，可打开下拉框选择将Ambari
-Metrics安装在您规划的主机上，一般默认即可，按照提示填写参数Grafana Admin
-Password（admin,admin。也可自行填写其它密码），下一步，部署，然后等待安装完成。
+#### 第4步：确认注册，Ambari-Server便开始注册主机并检测环境，图10表明主机注册成功，点击下一步，勾选Ambari Metrics，点击下一步，分配主从节点，可打开下拉框选择将Ambari Metrics安装在您规划的主机上，一般默认即可，按照提示填写参数Grafana Admin Password（admin,admin。也可自行填写其它密码），下一步，部署，然后等待安装完成。
 
 ![](media/ce2c73b9dc770e46da01a775db45f7d9.png)
 
@@ -318,11 +310,11 @@ Password（admin,admin。也可自行填写其它密码），下一步，部署�
 
 **图10 主机注册及Ambari Metrics安装成功界面**
 
-**5.3.1 一键部署**
+### 5.3.1 一键部署 ###
 
-**1）部署服务**
+#### 1）部署服务 ####
 
-首先，打开终端，进入部署脚本目录，按照部署架构或组件规划修改配置文件host_server.json（建议在其它编辑器上编辑，如notepad++，完成后复制到该文件内），修改install.py脚本，修改Ambari-Server节点的IP和界面注册时填写的集群名称，如图11所示。
+&emsp;&emsp;首先，打开终端，进入部署脚本目录，按照部署架构或组件规划修改配置文件host_server.json（建议在其它编辑器上编辑，如notepad++，完成后复制到该文件内），修改install.py脚本，修改Ambari-Server节点的IP和界面注册时填写的集群名称，如图11所示。
 
 ![](media/4f95dbab1c070af3ee40d0d6d84c5204.png)
 
@@ -330,50 +322,50 @@ Password（admin,admin。也可自行填写其它密码），下一步，部署�
 
 **图11 修改配置设置**
 
-接着，启动一键部署脚本，等待脚本执行完成，如图12所示，完成后打开Web界面：
+&emsp;&emsp;接着，启动一键部署脚本，等待脚本执行完成，如图12所示，完成后打开Web界面：
 
-| python install.py |
-|-------------------|
-
+```
+python install.py
+```
 
 ![](media/2598a330d6bdc1fc447009013e669766.png)
 
 **图12 正在安装服务界面**
 
-图12显示正在安装相关组件，等待安装完成，完成后如图13所示，即可开始修改配置。
+图12 显示正在安装相关组件，等待安装完成，完成后如图13所示，即可开始修改配置。
 
 ![](media/2db3e7fa7a6a59a2cc519979696b302c.png)
 
 **图13 成功安装服务界面**
 
-**2）修改配置，启动服务**
+#### 2）修改配置，启动服务 ####
 
 表4为需要修改的服务和参数：
 
-| **Services** | **Parameters**                              | **Value(example)**                          | **备注**                                  |
-|--------------|---------------------------------------------|---------------------------------------------|-------------------------------------------|
-| Postgres     | postgres.password                           | 123456                                      | Postgres数据库密码                        |
-|              | port                                        | 15432                                       | Postgres数据库端口号                      |
-| Gateway      | bootstrap.servers                           | test1.sugo.vm:9092                          | Kafka主机名:9092，多个kafka之间以逗号分割 |
-| Druid        | druid.license.signature                     |                                             | 联系数果智能获取秘钥                      |
-|              | druid.metadata.storage.connector.connectURI | jdbc:postgresql://test1.sugo.vm:15432/druid | 连接到Postgres的druid库地址               |
-|              | druid.metadata.storage.connector.password   | 123456                                      | Postgres数据库密码                        |
-| Astro        | postgres.host                               | test1.sugo.vm                               | Postgres数据库主机名                      |
-|              | dataConfig.hostAndPorts                     | test1.sugo.vm:6379                          | Redis数据库主机及端口号                   |
-|              | db.host                                     | test1.sugo.vm                               | Postgres数据库主机名                      |
-|              | db.port                                     | 15432                                       | Postgres数据库端口号                      |
-|              | db.password                                 | 123456 123456                               | Postgres数据库密码                        |
-|              | redis.host                                  | test1.sugo.vm                               | Redis数据库主机                           |
-|              | site.collectGateway                         | http://test1.sugo.vm                        | 数据上报网关                              |
-|              | site.sdk_ws_url                             | ws://test1.sugo.vm:8887                     | App可视化埋点socket链接                   |
-|              | site.websdk_api_host                        | test1.sugo.vm                               | Web数据上报网关                           |
-|              | site.websdk_decide_host                     | test1.sugo.vm:8000                          | Web获取埋点事件服务端                     |
-|              | site.websdk_app_host                        | test1.sugo.vm:8000                          | Web获取埋点事件服务端                     |
-|              | site.websdk_js_cdn                          | test1.sugo.vm:8000                          | Web埋点埋点js服务cdn                      |
+| **Services** | **Parameters**         | **Value(example)**  | **备注**                                  |
+|----------|-------------------------|------------------------|-------------------------------------------|
+| Postgres | postgres.password       | 123456                 | Postgres数据库密码                        |
+|          | port                    | 15432                  | Postgres数据库端口号                      |
+| Gateway  | bootstrap.servers       | test1.sugo.vm:9092     | Kafka主机名:9092，多个kafka之间以逗号分割 |
+| Druid    | druid.license.signature |                        | 联系数果智能获取秘钥                      |
+|          | druid.metadata.storage.connector.connectURI | jdbc:postgresql://test1.sugo.vm:15432/druid | 连接到Postgres的druid库地址               |
+|          | druid.metadata.storage.connector.password   | 123456                                      | Postgres数据库密码                        |
+| Astro    | postgres.host            | test1.sugo.vm         | Postgres数据库主机名                      |
+|          | dataConfig.hostAndPorts  | test1.sugo.vm:6379     | Redis数据库主机及端口号                   |
+|          | db.host                  | test1.sugo.vm          | Postgres数据库主机名                      |
+|          | db.port                  | 15432                  | Postgres数据库端口号                      |
+|          | db.password              | 123456 123456          | Postgres数据库密码                        |
+|          | redis.host               | test1.sugo.vm          | Redis数据库主机                           |
+|          | site.collectGateway      | http://test1.sugo.vm   | 数据上报网关                              |
+|          | site.sdk_ws_url          | ws://test1.sugo.vm:8887| App可视化埋点socket链接                   |
+|          | site.websdk_api_host     | test1.sugo.vm          | Web数据上报网关                           |
+|          | site.websdk_decide_host  | test1.sugo.vm:8000     | Web获取埋点事件服务端                     |
+|          | site.websdk_app_host     | test1.sugo.vm:8000     | Web获取埋点事件服务端                     |
+|               site.websdk_js_cdn    | test1.sugo.vm:8000     | Web埋点埋点js服务cdn                      |
 
 **表4 修改的服务和参数**
 
-1.  **修改Postgres参数**
+##### a. 修改Postgres参数 #####
 
 如图14 所示，
 修改Postgres的参数，具体[参数](#参数表)如表3所示，修改完成后保存，启动Postgres。
@@ -384,19 +376,23 @@ Password（admin,admin。也可自行填写其它密码），下一步，部署�
 
 正常启动后，创建其它服务的依赖库（如图15所示）：
 
-| cd /opt/apps/postgres_sugo bin/psql -p 15432 -U postgres -d postgres -c "CREATE DATABASE druid WITH OWNER = postgres ENCODING = UTF8;" bin/psql -p 15432 -U postgres -d postgres -c "CREATE DATABASE sugo_astro WITH OWNER = postgres ENCODING = UTF8;" bin/psql -p 15432 -U postgres -d postgres -c "select datname from pg_database" |
-|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+```
+cd /opt/apps/postgres_sugo
+bin/psql -p 15432 -U postgres -d postgres -c "CREATE DATABASE druid WITH OWNER = postgres ENCODING = UTF8;"
+bin/psql -p 15432 -U postgres -d postgres -c "CREATE DATABASE sugo_astro WITH OWNER = postgres ENCODING = UTF8;"
+bin/psql -p 15432 -U postgres -d postgres -c "select datname from pg_database"
+```
 
 
 ![](media/a6b3757d18d92691fbeebdcd60997a95.png)
 
 **图15 创建依赖库窗口**
 
-1.  **Redis、Zookeeper**
+##### b. Redis、Zookeeper #####
 
 直接点击启动按钮即可。
 
-1.  **HDFS**
+##### c. HDFS #####
 
 第1步：点击启动所有，启动完成后HDFS会出现如下报错信息（如图16所示），属正常现象。
 
@@ -406,9 +402,9 @@ Password（admin,admin。也可自行填写其它密码），下一步，部署�
 
 第2步：在NameNode1节点上执行zkfc格式化（如图17所示）：
 
-| su - hdfs -c "hdfs zkfc -formatZK -nonInteractive" |
-|----------------------------------------------------|
-
+```
+su - hdfs -c "hdfs zkfc -formatZK -nonInteractive"
+```
 
 ![](media/8f5766192ec71b1c1ab0f0bb21ee3402.png)
 
@@ -426,9 +422,9 @@ Password（admin,admin。也可自行填写其它密码），下一步，部署�
 
 第4步：zkfc重启完成后，界面会显示zkfc处于启动状态，然后在NameNode1上执行格式化操作：
 
-| su - hdfs -c "hdfs namenode -format" |
-|--------------------------------------|
-
+```
+su - hdfs -c "hdfs namenode -format"
+```
 
 ![](media/9ea3bb5eaa8e53d53b8d4ce90e9fa399.png)
 
@@ -450,9 +446,9 @@ Password（admin,admin。也可自行填写其它密码），下一步，部署�
 
 第7步：在NameNode2节点执行格式化后的数据同步（如图22所示）。
 
-| su - hdfs -c "hdfs namenode -bootstrapStandby" |
-|------------------------------------------------|
-
+```
+su - hdfs -c "hdfs namenode -bootstrapStandby"
+```
 
 ![](media/8c3b3b4a62ca24927d27cd3683b0a248.png)
 
@@ -472,8 +468,25 @@ Password（admin,admin。也可自行填写其它密码），下一步，部署�
 
 第9步：创建其它服务依赖的文件目录，在HDFS Client节点的终端执行如下命令：
 
-| su - hdfs hdfs dfs -mkdir -p /remote-app-log/logs hdfs dfs -chown -R yarn:hadoop /remote-app-log hdfs dfs -chmod 777 /remote-app-log/logs hdfs dfs -mkdir -p /mr_history/tmp hdfs dfs -mkdir -p /mr_history/done hdfs dfs -chmod 777 /mr_history/ hdfs dfs -mkdir -p /tmp/hadoop-yarn/staging hdfs dfs -chmod 777 /tmp/hadoop-yarn/staging hdfs dfs -mkdir -p /druid/hadoop-tmp hdfs dfs -mkdir -p /druid/indexing-logs hdfs dfs -mkdir -p /druid/segments hdfs dfs -chown -R druid:druid /druid hdfs dfs -mkdir -p /user/druid hdfs dfs -chown -R druid:druid /user/druid |
-|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+```
+su - hdfs
+hdfs dfs -mkdir -p /remote-app-log/logs
+hdfs dfs -chown -R yarn:hadoop /remote-app-log
+hdfs dfs -chmod 777 /remote-app-log/logs
+
+hdfs dfs -mkdir -p /mr_history/tmp
+hdfs dfs -mkdir -p /mr_history/done
+hdfs dfs -chmod 777 /mr_history/
+hdfs dfs -mkdir -p /tmp/hadoop-yarn/staging
+hdfs dfs -chmod 777 /tmp/hadoop-yarn/staging
+
+hdfs dfs -mkdir -p /druid/hadoop-tmp
+hdfs dfs -mkdir -p /druid/indexing-logs
+hdfs dfs -mkdir -p /druid/segments
+hdfs dfs -chown -R druid:druid /druid
+hdfs dfs -mkdir -p /user/druid
+hdfs dfs -chown -R druid:druid /user/druid
+```
 
 
 ![](media/ea41d1a22657ab4fb440ff348586760f.png)
@@ -482,13 +495,14 @@ Password（admin,admin。也可自行填写其它密码），下一步，部署�
 
 第10步：在浏览器上打开NameNode的IP:50070页面，通过Amabari主机名打开页面时，需要在windows的host文件中配置IP与hostname的映射
 
-| 打开文件C:\\Windows\\System32\\drivers\\etc\\host 复制Linux下/etc/hosts文件内的映射，追加到Windows的host文件末尾 *192.168.10.1 test1.sugo.vm* |
-|-----------------------------------------------------------------------------------------------------------------------------------------------|
+```
+打开文件C:\\Windows\\System32\\drivers\\etc\\host
+复制Linux下/etc/hosts文件内的映射，追加到Windows的host文件末尾
 
-
->   *192.168.10.2 test2.sugo.vm*
-
->   *192.168.10.3 test3.sugo.vm*
+192.168.10.1 test1.sugo.vm
+192.168.10.2 test2.sugo.vm
+192.168.10.3 test3.sugo.vm
+```
 
 ![](media/c83a5689f8d162aab3e79fa06cf7cf56.png)
 
@@ -503,67 +517,64 @@ Password（admin,admin。也可自行填写其它密码），下一步，部署�
 第11步：配置NameNode1和NameNode2在
 hdfs用户下的免密码登录，启动配置脚本（注：passwd为root用户密码）：
 
-| cd {脚本存储目录}/sugo_yum/deploy_scripts/service ./password-less-ssh-hdfs.sh \$namenode1 \$passwd(NN1) \$namenode2 \$passwd(NN2) 例：./password-less-ssh-hdfs.sh test1.sugo.vm 00000001 test2.sugo.vm 00000002 |
-|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+```
+cd {脚本存储目录}/sugo_yum/deploy_scripts/service
+./password-less-ssh-hdfs.sh \$namenode1 \$passwd(NN1) \$namenode2 \$passwd(NN2)
+
+例：
+./password-less-ssh-hdfs.sh test1.sugo.vm 00000001 test2.sugo.vm 00000002
+```
 
 
 执行完成后检查hdfs用户免密码登录是否成功，在NameNode1或NameNode2上执行以下命令：
 
-| su – hdfs ssh \$NameNode1 ssh \$NameNode2 |
-|-------------------------------------------|
+```
+su – hdfs ssh \$NameNode1 ssh \$NameNode2
+```
 
 
 在此例中，命令为：
 
-| su – hdfs ssh test1.sugo.vm ssh test2.sugo.vm |
-|-----------------------------------------------|
+```
+su – hdfs ssh test1.sugo.vm ssh test2.sugo.vm
+```
 
 
 如果能够成功的切换到两个NameNode的hdfs用户，则说明配置成功
 
-1.  **Kafka、YARN、MapReduce**
+##### d. Kafka、YARN、MapReduce #####
 
 直接按顺序启动即可
 
-1.  **Gateway**
-
-通过以下命令在Gateway所在的主机上安装依赖：
-
-| yum install -y libjpeg libpng freetype fontconfig |
-|---------------------------------------------------|
-
-
-![](media/3e64d7d3f3f4632611b59ac0900ba488.png)
-
-**图29 安装Gateway相关依赖包**
+##### e. Gateway #####
 
 根据[参数表](#参数表)修改参数，保存后启动即可
 
 ![](media/c315ebb351339282982c139475363f80.png)
 
-**图30 修改Gateway参数**
+**图29 修改Gateway参数**
 
-1.  **Tindex**
+##### f. Tindex #####
 
 根据[参数表](#参数表)修改参数，保存后启动即可
 
 ![](media/0e729c9e121e16a0a8783b4887a0ce57.png)
 
-**图31 Tindex启动成功**
+**图30 Tindex启动成功**
 
-1.  **Astro**
+##### g. Astro #####
 
 根据[参数表](#参数表)修改参数，保存后启动即可
 
 ![](media/a1665d7612081077558f8f6cb347521c.png)
 
-**图32 Astro启动成功**
+**图31 Astro启动成功**
 
-**5.3.2 独立部署**
+### 5.3.2 独立部署 ###
 
 独立部署在安装各个服务（如HDFS、YARN，图32所示左侧部分均称为服务）时，需要按照一定的顺序进行安装！
 
-1.  **Postgres**
+##### a. Postgres #####
 
 第1步：添加服务（如图33所示），选择服务，勾选Postgres-sugo，点击下一步
 
