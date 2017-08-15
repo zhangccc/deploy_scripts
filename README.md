@@ -82,7 +82,7 @@
 
 ![](media/b03c38e3c7b6576598a88f7a7070a03c.png)
 
-###### 图2 Ambari架构图 ######
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图2 Ambari架构图
 
 &emsp;&emsp;Apache Ambari是一种基于Web的工具，支持Apache Hadoop集群的供应、管理和监控。Ambari目前已支持大多数Hadoop组件，包括HDFS、MapReduce、Hive、Pig、Hbase、Zookeper、Sqoop和Hcatalog等。
 
@@ -92,7 +92,7 @@
 
 ![](media/5828887ca24ea89f27f69e257c61ffc7.png)
 
-###### 图3 Ambari的部署架构 ######
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图3 Ambari的部署架构
 
 &emsp;&emsp;3台主机对应3个Ambari Agent，其中一台主机安装Ambari Server，每台主机上安装、运行的进程如图，每台主机安装多个组件，节点上安装的进程由该节点主机性能等因素决定，可灵活调整。主机部署规划可咨询数果智能。组件之间具有依赖关系，所以组件的安装需基于上图的顺序（从下往上）进行安装配置。
 
@@ -128,7 +128,7 @@
 | 总内存   | 16G以上  |                          |
 | 磁盘     |          | 根据数据量、存储周期决定 |
 
-**表1 单机版主机配置要求**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;表1 单机版主机配置要求
 
 &emsp;&emsp;也可根据实际情况对主机配置进行调整，但不建议降低配置，主机安装系统(建议CentOS6.8)后，修改静态IP地址，下载单机版安装包，如果无法连接网络，请安装本地yum源。
 
@@ -177,7 +177,7 @@ websdk_api_host: '192.168.0.122:8000'
 | 主机数量 | 3台以上  |                          |
 | 磁盘     |          | 根据数据量、存储周期决定 |
 
-**表2 主机配置要求**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;表2 主机配置要求
 
 &emsp;&emsp;也可根据实际情况对主机配置进行调整，但不建议降低配置
 
@@ -210,7 +210,7 @@ websdk_api_host: '192.168.0.122:8000'
 | Astro          | ASTRO UI             | √         |           |           |
 | Gateway        | Gateway Server       | √         |           |           |
 
-**表3 安装配置要求**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;表3 安装配置要求
 
 &emsp;&emsp;做好主机规划后，配置好各主机的静态IP，修改hostname，注意hostname需要为二级域名，如：test1.sugo.vm，如果是离线主机，需要配置本地yum安装源库。这部分的具体操作不做描述。
 
@@ -264,7 +264,7 @@ test3.sugo.vm 123456
 
 ![](media/117abb489766863acbc8e9bcb01a1028.png)
 
-**图4 ambari-server登陆界面**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图4 ambari-server登陆界面
 
 ## 5.3 集群部署 ##
 
@@ -274,18 +274,18 @@ test3.sugo.vm 123456
 
 ![](media/c59d3a24ff914b5d3a2f94a9f0bc9417.png)
 
-**图5 Ambari安装向导页面**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图5 Ambari安装向导页面
 
 #### 第2步：创建集群 ####
-&emsp;&emsp;命名集群，选择服务栈（此处仅勾选redhat6），浏览器打开http服务地址（如图6所示），选择1.0所在的目录，复制链接粘贴到Ambari界面的”基础URL”内（如图7所示）。
+&emsp;&emsp;命名集群，选择服务栈（此处仅勾选redhat6），浏览器打开http服务地址（如图6所示），选择1.0所在的目录，复制链接粘贴到Ambari界面的”基础URL”内（如图6所示）。
 
 ![](media/45009e03fd13af2bc78deca47a16802a.png)
 
-**图6 基础URL链接**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图6 基础URL链接
 
 ![](media/a793662acf52ccbbdfb6d736cc1a07e1.png)
 
-**图7 选择服务栈**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图7 选择服务栈
 
 #### 第3步：填写秘钥 ####
 &emsp;&emsp;点击下一步后，如图8所示，获取秘钥（在Ambari-server所在节点的终端查询），复制粘贴到安装选项界面（如图9所示），同时在界面填写目标主机：
@@ -296,11 +296,11 @@ cat ~/.ssh/id_rsa
 
 ![](media/7e5d8b40a9360ce897e919dbe9b426e7.png)
 
-###### 图8 SSH秘钥 ######
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图8 SSH秘钥
 
 ![](media/8ab31938375d320ef5352cfcd7af1845.png)
 
-**图9 安装选项界面**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图9 安装选项界面
 
 #### 第4步：注册 ####
 &emsp;&emsp;确认注册，Ambari-Server便开始注册主机并检测环境，图10表明主机注册成功，点击下一步，勾选Ambari Metrics，点击下一步，分配主从节点，可打开下拉框选择将Ambari Metrics安装在您规划的主机上，一般默认即可，按照提示填写参数Grafana Admin Password（admin,admin。也可自行填写其它密码），下一步，部署，然后等待安装完成。
@@ -311,7 +311,7 @@ cat ~/.ssh/id_rsa
 
 ![](media/991867d2f9acf91c6ef8c427f5ccc901.png)
 
-**图10 主机注册及Ambari Metrics安装成功界面**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图10 主机注册及Ambari Metrics安装成功界面
 
 ### 5.3.1 一键部署 ###
 
@@ -323,7 +323,7 @@ cat ~/.ssh/id_rsa
 
 ![](media/1f3b1f1c81b38c212acaafa658488f61.png)
 
-**图11 修改配置设置**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图11 修改配置设置
 
 &emsp;&emsp;接着，启动一键部署脚本，等待脚本执行完成，如图12所示，完成后打开Web界面：
 
@@ -333,13 +333,13 @@ python install.py
 
 ![](media/2598a330d6bdc1fc447009013e669766.png)
 
-**图12 正在安装服务界面**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图12 正在安装服务界面
 
 &emsp;&emsp;图12 显示正在安装相关组件，等待安装完成，完成后如图13所示，即可开始修改配置。
 
 ![](media/2db3e7fa7a6a59a2cc519979696b302c.png)
 
-**图13 成功安装服务界面**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图13 成功安装服务界面
 
 #### 2）修改配置，启动服务 ####
 
@@ -375,7 +375,7 @@ python install.py
 
 ![](media/2f6a68ab9e4c8090697b750ee68f6771.png)
 
-**图14 修改Postgres参数**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图14 修改Postgres参数
 
 正常启动后，创建其它服务的依赖库（如图15所示）：
 
@@ -389,7 +389,7 @@ bin/psql -p 15432 -U postgres -d postgres -c "select datname from pg_database"
 
 ![](media/a6b3757d18d92691fbeebdcd60997a95.png)
 
-**图15 创建依赖库窗口**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图15 创建依赖库窗口
 
 ##### b. Redis、Zookeeper #####
 
@@ -401,7 +401,7 @@ bin/psql -p 15432 -U postgres -d postgres -c "select datname from pg_database"
 
 ![](media/9715b0acab30ccf36a40af96121dc38f.png)
 
-**图16 报错提示**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图16 报错提示
 
 第2步：在NameNode1节点上执行zkfc格式化（如图17所示）：
 
@@ -411,17 +411,17 @@ su - hdfs -c "hdfs zkfc -formatZK -nonInteractive"
 
 ![](media/8f5766192ec71b1c1ab0f0bb21ee3402.png)
 
-**图17 zkfc格式化**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图17 zkfc格式化
 
 第3步：格式化完成后，在界面启动所有zkfc（如图18所示）。
 
 ![](media/91182aae1f61afa649a9e5ccca344324.png)
 
-**图18 ZKFC启动界面**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图18 ZKFC启动界面
 
 ![](media/10ccc7f1151ea9a77a5b7e1d337883cf.png)
 
-**图19 ZKFC重启界面**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图19 ZKFC重启界面
 
 第4步：zkfc重启完成后，界面会显示zkfc处于启动状态，然后在NameNode1上执行格式化操作：
 
@@ -431,7 +431,7 @@ su - hdfs -c "hdfs namenode -format"
 
 ![](media/9ea3bb5eaa8e53d53b8d4ce90e9fa399.png)
 
-**图20 NameNode1执行格式化**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图20 NameNode1执行格式化
 
 第5步：格式化完成后，在界面重启NameNode1（如图21）。
 
@@ -439,13 +439,13 @@ su - hdfs -c "hdfs namenode -format"
 
 ![](media/7c4c6148749aab126d81a7dcef3c0b43.png)
 
-**图21重启 NameNode1**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图21重启 NameNode1
 
 第6步：启动完成后，如图22所示，界面会显示test1.sugo.vm上的NameNode已启动。
 
 ![](media/28b268d9cb75a766f990d42649f22023.png)
 
-**图22 成功启动NameNode1**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图22 成功启动NameNode1
 
 第7步：在NameNode2节点执行格式化后的数据同步（如图22所示）。
 
@@ -455,19 +455,19 @@ su - hdfs -c "hdfs namenode -bootstrapStandby"
 
 ![](media/8c3b3b4a62ca24927d27cd3683b0a248.png)
 
-**图23 NameNode2执行格式化后的数据同步**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图23 NameNode2执行格式化后的数据同步
 
 第8步：数据同步命令执行完成后，启动NameNode2
 
 ![](media/bf35f709aa97a0f420a1ea62e1a88115.png)
 
-**图24重启 NameNode**2
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图24重启 NameNode
 
 启动完成后不再显示报错信息
 
 ![](media/5d4337a17029dc0d60ebc19a7c46d945.png)
 
-**图25 HDFS安装启动成功**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图25 HDFS安装启动成功
 
 第9步：创建其它服务依赖的文件目录，在HDFS Client节点的终端执行如下命令：
 
@@ -494,7 +494,7 @@ hdfs dfs -chown -R druid:druid /user/druid
 
 ![](media/ea41d1a22657ab4fb440ff348586760f.png)
 
-**图26 HDFS上创建相关目录**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图26 HDFS上创建相关目录
 
 第10步：在浏览器上打开NameNode的IP:50070页面，通过Amabari主机名打开页面时，需要在windows的host文件中配置IP与hostname的映射
 
@@ -509,13 +509,13 @@ hdfs dfs -chown -R druid:druid /user/druid
 
 ![](media/c83a5689f8d162aab3e79fa06cf7cf56.png)
 
-**图27 打开HDFS文件目录界面**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图27 打开HDFS文件目录界面
 
 通过主机名打开HDFS界面：test1.sugo.vm:50070，查看Utilities，显示文件创建成功
 
 ![](media/73283f31f013e5df95b13e36622d0240.png)
 
-**图28 HDFS文件目录**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图28 HDFS文件目录
 
 第11步：配置NameNode1和NameNode2在
 hdfs用户下的免密码登录，启动配置脚本（注：passwd为root用户密码）：
@@ -555,7 +555,7 @@ su – hdfs ssh test1.sugo.vm ssh test2.sugo.vm
 
 ![](media/c315ebb351339282982c139475363f80.png)
 
-**图29 修改Gateway参数**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图29 修改Gateway参数
 
 ##### f. Tindex #####
 
@@ -563,7 +563,7 @@ su – hdfs ssh test1.sugo.vm ssh test2.sugo.vm
 
 ![](media/0e729c9e121e16a0a8783b4887a0ce57.png)
 
-**图30 Tindex启动成功**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图30 Tindex启动成功
 
 ##### g. Astro #####
 
