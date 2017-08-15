@@ -347,7 +347,7 @@ python install.py
 
 | **Services** | **Parameters**                              | **Value(example)**                          | **备注**                                  |
 |--------------|---------------------------------------------|---------------------------------------------|-------------------------------------------|
-| Postgres     | postgres.password                           | ****123456     ****                         | Postgres数据库密码                        |
+| Postgres     | postgres.password                           | ****123456****                              | Postgres数据库密码                        |
 |              | port                                        | 15432                                       | Postgres数据库端口号                      |
 | Gateway      | bootstrap.servers                           | test1.sugo.vm:9092                          | Kafka主机名:9092，多个kafka之间以逗号分割 |
 | Druid        | druid.license.signature                     |                                             | 联系数果智能获取秘钥                      |
