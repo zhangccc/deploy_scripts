@@ -127,6 +127,7 @@
     vi redis.conf
 
 最底下添加
+
     bind 0.0.0.0
     daemonize yes
     port 6379
