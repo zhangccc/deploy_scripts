@@ -62,7 +62,7 @@
 
 ![](media/a490c303198379f78bb8fe6aa031250f.png)
 
-&emsp;&emsp;&emsp;&emsp;&emsp;图1 Tindex技术架构图
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图1 Tindex技术架构图
 
 -   Broker节点：接受客户端请求，分发至各历史/实时节点，然后汇总返回客户端的节点
 
