@@ -241,10 +241,11 @@
     cd /opt/apps/kafka_sugo
     
 修改配置文件
+
 vi config/server.properties
 
-zookeeper.connect=192.168.233.128:2181/kafka
-log.dirs=/data2/kafka/data
+    zookeeper.connect=192.168.233.128:2181/kafka
+    log.dirs=/data2/kafka/data
 
     mkdir -p /data2/kafka/data
     
@@ -276,101 +277,116 @@ log.dirs=/data2/kafka/data
 修改配置文件：
 
     cd /opt/apps/druidio_sugo/conf/druid
-    vi broker/jvm.config
     
-修改
--Djava.io.tmpdir=/data1/druid/task     
-添加
--Dlog.file.path=/data1/druid/logs
--Dlog.file.type=broker
+vi broker/jvm.config
+    
+    修改
+    -Djava.io.tmpdir=/data1/druid/task     
+    添加
+    -Dlog.file.path=/data1/druid/logs
+    -Dlog.file.type=broker
 
-    vi broker/runtime.properties
-修改
-druid.host=10.29.253.251 (修改成自己ip)
+vi broker/runtime.properties
 
-    vi _common/common.runtime.properties
-(添加到配置文件最后)
-druid.license.signature=48710FA3F1CDBA39DD3D7589262F2D066767C05CDF6AF1006D5B4B77A62063111DE60AA0BD309BF3
- (添加到配置文件的最后面)
-druid.emitter.composing.emitters=["logging"]  
-druid.zk.service.host=192.168.233.128
-druid.metadata.storage.connector.connectURI=jdbc:postgresql://192.168.233.128:5432/druid
-druid.metadata.storage.connector.user=postgres
-druid.metadata.storage.connector.password=123456
-druid.storage.type=local     (去掉注释)
-druid.storage.storageDirectory=/druid/segments      (去掉注释) 并修改druid.storage.storageDirectory=/data1/druid/indexing-logs
-druid.indexer.logs.type=hdfs        用#号在前面注释掉
-druid.indexer.logs.directory=/druid/indexing-logs       用#号在前面注释掉
-com.metamx.metrics.JvmMonitor=[] 括号里面的全部删掉
-druid-kafka-eight   搜索删掉
+    修改
+    druid.host=10.29.253.251 (修改成自己ip)
 
-    vi coordinator/jvm.config
--Djava.io.tmpdir=/data1/druid/task  修改 
-最底下添加
--Dlog.file.path=/data1/druid/logs
--Dlog.file.type=coordinator
+vi _common/common.runtime.properties
+    
+    (添加到配置文件最后)
+    druid.license.signature=48710FA3F1CDBA39DD3D7589262F2D066767C05CDF6AF1006D5B4B77A62063111DE60AA0BD309BF3
+     (添加到配置文件的最后面)
+    druid.emitter.composing.emitters=["logging"]  
+    druid.zk.service.host=192.168.233.128
+    druid.metadata.storage.connector.connectURI=jdbc:postgresql://192.168.233.128:5432/druid
+    druid.metadata.storage.connector.user=postgres
+    druid.metadata.storage.connector.password=123456
+    druid.storage.type=local     (去掉注释)
+    druid.storage.storageDirectory=/druid/segments      (去掉注释) 并修改druid.storage.storageDirectory=/data1/druid/indexing-logs
+    druid.indexer.logs.type=hdfs        用#号在前面注释掉
+    druid.indexer.logs.directory=/druid/indexing-logs       用#号在前面注释掉
+    com.metamx.metrics.JvmMonitor=[] 括号里面的全部删掉
+    druid-kafka-eight   搜索删掉
+
+vi coordinator/jvm.config
+    
+    -Djava.io.tmpdir=/data1/druid/task  修改 
+    最底下添加
+    -Dlog.file.path=/data1/druid/logs
+    -Dlog.file.type=coordinator
 
     mkdir -p /data1/druid/task
-    vi coordinator/runtime.properties
-druid.host=192.168.233.128
+    
+vi coordinator/runtime.properties
 
-    vi historical/jvm.config
--Djava.io.tmpdir=/data1/druid/task          修改
-底下添加
--Dlog.file.path=/data1/druid/logs
--Dlog.file.type=historical
+    druid.host=192.168.233.128
 
-    vi historical/runtime.properties
-修改
-druid.host=192.168.233.128
-druid.processing.buffer.sizeBytes=268435456
-druid.segmentCache.locations=[{"path":"/data1/druid/segment-cache","maxSize"\:130000000000}]
-添加
-druid.historical.segment.type=lucene
-druid.lucene.query.groupBy.defaultStrategy=v2
-druid.processing.numMergeBuffers=3
-druid.lookup.lru.cache.maxEntriesSize=20
-druid.lookup.lru.cache.expireAfterWrite=3600
-druid.lookup.lru.cache.expireAfterAccess=3600
-druid.lucene.query.select.maxResults=100000
+vi historical/jvm.config
+ 
+    -Djava.io.tmpdir=/data1/druid/task          修改
+    底下添加
+    -Dlog.file.path=/data1/druid/logs
+    -Dlog.file.type=historical
 
-    vi middleManager/jvm.config
-修改
--Djava.io.tmpdir=/data1/druid/task
-添加
--Dlog.file.path=/data1/druid/logs
--Dlog.file.type=middleManager
--Dlog.configurationFile=/opt/apps/druidio_sugo/conf/druid/_common/log4j2-default.xml
+vi historical/runtime.properties
 
-    vi middleManager/runtime.properties
-修改
-druid.host=192.168.233.128
-druid.indexer.runner.javaOpts=-server -Xmx2g -XX:MaxDirectMemorySize=2g -Duser.timezone=UTC -Dfile.encoding=UTF-8 -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager
-druid.indexer.task.baseTaskDir=/data1/druid/task/base
-druid.processing.buffer.sizeBytes=268435456
+    修改
+    druid.host=192.168.233.128
+    druid.processing.buffer.sizeBytes=268435456
+    druid.segmentCache.locations=[{"path":"/data1/druid/segment-cache","maxSize"\:130000000000}]
+    添加
+    druid.historical.segment.type=lucene
+    druid.lucene.query.groupBy.defaultStrategy=v2
+    druid.processing.numMergeBuffers=3
+    druid.lookup.lru.cache.maxEntriesSize=20
+    druid.lookup.lru.cache.expireAfterWrite=3600
+    druid.lookup.lru.cache.expireAfterAccess=3600
+    druid.lucene.query.select.maxResults=100000
 
-    vi overlord/jvm.config
-修改
--Djava.io.tmpdir=/data1/druid/task
-添加
--Dlog.file.path=/data1/druid/logs
--Dlog.file.type=overlord
+vi middleManager/jvm.config
+    
+    修改
+    -Djava.io.tmpdir=/data1/druid/task
+    添加
+    -Dlog.file.path=/data1/druid/logs
+    -Dlog.file.type=middleManager
+    -Dlog.configurationFile=/opt/apps/druidio_sugo/conf/druid/_common/log4j2-default.xml
+
+vi middleManager/runtime.properties
+
+    修改
+    druid.host=192.168.233.128
+    druid.indexer.runner.javaOpts=-server -Xmx2g -XX:MaxDirectMemorySize=2g -Duser.timezone=UTC -Dfile.encoding=UTF-8 -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager
+    druid.indexer.task.baseTaskDir=/data1/druid/task/base
+    druid.processing.buffer.sizeBytes=268435456
+
+vi overlord/jvm.config
+    
+    修改
+    -Djava.io.tmpdir=/data1/druid/task
+    添加
+    -Dlog.file.path=/data1/druid/logs
+    -Dlog.file.type=overlord
 
     vi overlord/runtime.properties
 修改
-druid.host=192.168.233.128
+
+    druid.host=192.168.233.128
 
 
     vi overlord/supervisor.properties
-修改
-supervisor.kafka.zkHost=192.168.233.128:2181/kafka
-supervisor.kafka.replication=2
-supervisor.segmentGranularity=DAY
-supervisor.io.taskDuration=PT86400S 
-supervisor.io.useEarliestOffset=true
+    
+    修改
+    supervisor.kafka.zkHost=192.168.233.128:2181/kafka
+    supervisor.kafka.replication=2
+    supervisor.segmentGranularity=DAY
+    supervisor.io.taskDuration=PT86400S 
+    supervisor.io.useEarliestOffset=true
 
     cd /opt/apps/druidio_sugo/bin
+    
 创建启动脚本
+
 vim start-all.sh
 
 
@@ -387,6 +403,7 @@ vim start-all.sh
     ./bin/start-all.sh
     
 这个是关闭脚本
+
 vim stop-all.sh
 
     #!/usr/bin/env bash
@@ -409,6 +426,7 @@ mkdir -p var/druid/pids
     
     
 ##8.安装astro
+
     cd /opt/apps
     wget http://192.168.0.200:81/yum/SG/centos6/release/sugo-analytics-fl0.16.7-1739650.tar.gz
     tar -zxf sugo-analytics-fl0.16.7-1739650.tar.gz
@@ -417,22 +435,24 @@ mkdir -p var/druid/pids
     useradd astro 
     cd /opt/apps/astro_sugo/analytics
     cp config.default.js config.js
+    
 vi config.js
-collectGateway: 'http://192.168.233.128'
-sdk_ws_url: 'ws://192.168.233.128:8887'
-websdk_api_host: '192.168.233.128:8000'
-websdk_app_host: '192.168.233.128:8000'
-websdk_decide_host: '192.168.233.128:8080'
-websdk_js_cdn: '192.168.233.128:8000'
-redis.host: '192.168.233.128'
-db.host: '192.168.233.128'
-db.database: 'astro_sugo',
-druid.host: '192.168.233.128:8082
-supervisorHost: 'http://192.168.233.128:8090'
-lookupHost: 'http://192.168.233.128:8081'
-zookeeperHost: '192.168.233.128:2181/kafka'
-kafkaServerHost: '192.168.233.128:9092
-hostAndPorts: '192.168.233.128:6379
+
+    collectGateway: 'http://192.168.233.128'
+    sdk_ws_url: 'ws://192.168.233.128:8887'
+    websdk_api_host: '192.168.233.128:8000'
+    websdk_app_host: '192.168.233.128:8000'
+    websdk_decide_host: '192.168.233.128:8080'
+    websdk_js_cdn: '192.168.233.128:8000'
+    redis.host: '192.168.233.128'
+    db.host: '192.168.233.128'
+    db.database: 'astro_sugo',
+    druid.host: '192.168.233.128:8082
+    supervisorHost: 'http://192.168.233.128:8090'
+    lookupHost: 'http://192.168.233.128:8081'
+    zookeeperHost: '192.168.233.128:2181/kafka'
+    kafkaServerHost: '192.168.233.128:9092
+    hostAndPorts: '192.168.233.128:6379
 
     创建数据存储目录：
     mkdir -p /data1/astro/log
