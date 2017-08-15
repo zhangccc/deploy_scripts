@@ -351,8 +351,8 @@ python install.py
 |              | port                                        | 15432                                       | Postgres数据库端口号                      |
 | Gateway      | bootstrap.servers                           | test1.sugo.vm:9092                          | Kafka主机名:9092，多个kafka之间以逗号分割 |
 | Druid        | druid.license.signature                     |                                             | 联系数果智能获取秘钥                      |
-|              | druid.metadata.storage.connector.connectURI | jdbc:postgresql://test1.sugo.vm:15432/druid | 连接到Postgres的druid库地址               |
-|              | druid.metadata.storage.connector.password   | 123456                                      | Postgres数据库密码                        |
+|              | druid.metadata.storage.<br>connector.connectURI | jdbc:postgresql://<br>test1.sugo.vm:<br>15432/druid | 连接到Postgres的druid库地址               |
+|              | druid.metadata.storage.<br>connector.password   | 123456                                      | Postgres数据库密码                        |
 | Astro        | postgres.host                               | test1.sugo.vm                               | Postgres数据库主机名                      |
 |              | dataConfig.hostAndPorts                     | test1.sugo.vm:6379                          | Redis数据库主机及端口号                   |
 |              | db.host                                     | test1.sugo.vm                               | Postgres数据库主机名                      |
@@ -571,7 +571,7 @@ su – hdfs ssh test1.sugo.vm ssh test2.sugo.vm
 
 ![](media/a1665d7612081077558f8f6cb347521c.png)
 
-**图31 Astro启动成功**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图31 Astro启动成功
 
 ### 5.3.2 独立部署 ###
 
@@ -583,13 +583,13 @@ su – hdfs ssh test1.sugo.vm ssh test2.sugo.vm
 
 ![](media/3b6fba0b2c920fec268043d3ed1ad26b.png)
 
-**图32 添加服务**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图32 添加服务
 
 第2步：分配主从节点，选择Postgres安装的节点（如图34所示），点击下一步
 
 ![](media/3f58e20f314eb379e164e051441729ac.png)
 
-**图33 分配主节点**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图33 分配主节点
 
 ##### b. Redis #####
 
@@ -602,7 +602,7 @@ Server时，需要点击加号按钮选择多个节点安装同一个组件（�
 
 ![](media/80e67a2ca5140a50a6fe67ac62b6c9d8.png)
 
-**图34 添加Zookeeper主节点**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图34 添加Zookeeper主节点
 
 按照提示完成Zookeeper的安装，配置文件无需修改
 
@@ -612,19 +612,19 @@ Server时，需要点击加号按钮选择多个节点安装同一个组件（�
 
 ![](media/d7dc4d5a886df4259a37edf040ad694a.png)
 
-**图35 添加NameNode主节点**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图35 添加NameNode主节点
 
 第2步：点击下一步，分配从节点和客户端（如图36所示），前面的Postgresql/Redis/Zookeeper都只有主节点，HDFS既有主节点又有从节点，还有些服务只有从节点，点击下一步，部署
 
 ![](media/3b057bde8801e957e151adc199b260f0.png)
 
-**图36 选择从节点和客户端**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图36 选择从节点和客户端
 
 注意：在安装完成后会出现报错信息（如图37所示），为正常现象，点击下一步，完成
 
 ![](media/705ccaf6befd335d4b923ab1544e4cde.png)
 
-**图37 独立部署HDFS报错信息**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图37 独立部署HDFS报错信息
 
 解决办法与一键部署时的启动HDFS过程完全相同，请参考一键部署的启动HDFS部分
 
@@ -636,7 +636,7 @@ Server时，需要点击加号按钮选择多个节点安装同一个组件（�
 
 ![](media/9d27850429208506f4190e4e5aaf72aa.png)
 
-**图38 分配YARN主节点、从节点和客户端**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图38 分配YARN主节点、从节点和客户端
 
 ##### f. MapReduce #####
 
@@ -648,7 +648,7 @@ Server时，需要点击加号按钮选择多个节点安装同一个组件（�
 
 ![](media/3f48833c5a93a28099a76148c5dbc04c.png)
 
-**图39 选择Kafka从节点和客户端**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图39 选择Kafka从节点和客户端
 
 ##### h. Gateway #####
 
@@ -656,11 +656,11 @@ Server时，需要点击加号按钮选择多个节点安装同一个组件（�
 
 修改配置文件参数（如表5，注：如果没有该参数，则无需修改参数，安装包版本更新后，在ambari管理界面没有该参数）
 
-| **配置项（参数）** | **参数值**         | **备注**                                  |
+| **配置项（参数）**    | **参数值**          | **备注**                                  |
 |--------------------|--------------------|-------------------------------------------|
 | bootstrap.servers  | test1.sugo.vm:9092 | Kafka主机名:9092，多个kafka之间以逗号分割 |
 
-**表5 Gateway需修改的参数**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;表5 Gateway需修改的参数
 
 第2步：安装完依赖后，在界面启动Gateway
 
@@ -676,13 +676,13 @@ bin/psql -p 15432 -U postgres -d postgres -c "select datname from pg_database"
 
 ![](media/01943f63a0a0b0d8ffc0c5c3311c3cbc.png)
 
-**图40 在Postgres数据库中创建druid库**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图40 在Postgres数据库中创建druid库
 
 第2步：按照提示进行操作（如图41所示）
 
 ![](media/95a98f096c703fc4a5b4aa6ef9d1a730.png)
 
-**图41 选择druid从节点和客户端**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图41 选择druid从节点和客户端
 
 第3步：修改配置文件（需修改参数如表6所示），然后按提示完成安装
 
@@ -691,11 +691,11 @@ bin/psql -p 15432 -U postgres -d postgres -c "select datname from pg_database"
 | druid.license.signature                     |                                             | 联系数果智能获取秘钥                 |
 | druid.metadata.storage.connector.connectURI | jdbc:postgresql://test1.sugo.vm:15432/druid | Postgresql数据库的druid库            |
 
-**表6 Tindex需修改的参数**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;表6 Tindex需修改的参数
 
 ![](media/c789d1297461a5b32831b8f4fab05f8b.png)
 
-**图42 修改druid参数界面**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图42 修改druid参数界面
 
 ##### j. Astro #####
 
@@ -709,7 +709,7 @@ bin/psql -p 15432 -U postgres -d postgres -c "select datname from pg_database"
 
 ![](media/3e1264b4eb37ae9416135f4f9f2934e5.png)
 
-**图43在Postgres数据库中创建sugo_astro库**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;43在Postgres数据库中创建sugo_astro库
 
 第2步：按提示继续后面的安装，修改配置文件（需修改参数如表7所示），修改完成后按提示完成安装(最新安装包参数会有些不一样，但需要填写的参数值的规则不变)
 
@@ -728,7 +728,7 @@ bin/psql -p 15432 -U postgres -d postgres -c "select datname from pg_database"
 | site.websdk_app_host    | test1.sugo.vm:8000      | Web获取埋点事件服务端   |
 | site.websdk_js_cdn      | test1.sugo.vm:8000      | Web埋点埋点js服务cdn    |
 
-**表7 Astro需修改的参数**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;表7 Astro需修改的参数
 
 ## 5.4 分布式集群测试 ##
 
@@ -736,35 +736,35 @@ bin/psql -p 15432 -U postgres -d postgres -c "select datname from pg_database"
 
 ![](media/a70f39f7f1dc2dc6814dafc5322e5faa.png)
 
-**图44前端Astro登录界面**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图44前端Astro登录界面
 
 第2步：进入数据管理，项目管理（如图45所示）
 
 ![](media/691ca04fd2c85ad285b621ce4d843c72.png)
 
-**图45前端Astro进入项目管理操作**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图45前端Astro进入项目管理操作
 
 第3步：新建项目，输入项目名称，提交后选择Csv文件接入，执行下一步（如图46所示）
 
 ![](media/c2938c96f4779b13284be16d5012d4cd.png)
 
-**图46选择接入数据类型**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图46选择接入数据类型
 
 第4步：选择文件，进入下一步（如图50所示），输入名称，选择维度字段（全选），提交采集维度（如图49所示），开始采集，查看采集是否成功
 
 ![](media/d0ba9f714523a71bd482fa8dfdc42cda.png)
 
-**图47配置接入参数**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图47配置接入参数
 
 ![](media/b69ac237d9d2a860545cb6128275f1e8.png)
 
-**图48配置采集维度**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图48配置采集维度
 
 第5步：点击自助分析（如图49所示），执行查询，出现总记录数且与源数据相同，证明部署成功（如图49所示）
 
 ![](media/9d0fa06dc05253610581108820e1b056.png)
 
-**图49查询总记录数**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图49查询总记录数
 
 # 6 集群管理 #
 
@@ -774,7 +774,7 @@ bin/psql -p 15432 -U postgres -d postgres -c "select datname from pg_database"
 
 ![](media/a1230070bdbce29357e3348cad08c2b2.png)
 
-**图50组件启动顺序参考图**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图50组件启动顺序参考图
 
 ## 6.2 更新服务 ##
 
@@ -791,25 +791,25 @@ wget {安装包链接（联系数果智能获取）} service httpd start
 
 ![](media/dde6ceeaf9c7e7fec391028c56da6095.png)
 
-**图51查看Ambari的基础URL地址**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图51查看Ambari的基础URL地址
 
 **第2步：**修改安装包包名，需与该服务配置文件中的package.name保持一致，之前的安装包可修改名称作为备份；
 
 ![](media/16414230d4021e9f9dce5bda956bc3a9.png)
 
-**图52查看该服务配置文件中的package name**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图52查看该服务配置文件中的package name
 
 第3步：点击该服务的Client（如图56所示），选择该服务所在主机（如果该服务部署在多台主机上，每台主机都需要更新操作）
 
 ![](media/b9201a6d8dc4c6d74c3089ddac787f3f.png)
 
-**图53选择该服务的客户端**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图53选择该服务的客户端
 
 第4步：选择主机后，下拉页面到最底端，点击更新按钮（如图54所示），即可一键更新服务
 
 ![](media/fdfdd354a339729f0b65a6562ceb8625.png)
 
-**图54一键更新服务操作**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图54一键更新服务操作
 
 ## 6.3 删除服务 ##
 
@@ -834,7 +834,7 @@ wget {安装包链接（联系数果智能获取）} service httpd start
 | Tindex     | DRUIDIO_SUGO   |
 | Astro      | ASTRO_SUGO     |
 
-**表8 各服务在删除时，API命令中的服务名称**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;表8 各服务在删除时，API命令中的服务名称
 
 ```
 curl -u admin:admin -H "X-Requested-By: ambari" -X PUT -d '{"RequestInfo":{"context":"Stop Service"},"Body":{"ServiceInfo":{"state":"INSTALLED"}}}' http://192.168.0.220:8080/api/v1/clusters/sugo_test/services/ASTRO_SUGO
@@ -843,13 +843,13 @@ curl -u admin:admin -H "X-Requested-By: ambari" -X PUT -d '{"RequestInfo":{"cont
 
 ![](media/73ac31cdcd6e07a5732bdf785a66b430.png)
 
-**图55停止服务操作**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图55停止服务操作
 
 执行完上面这条命令后，在ambari界面查看该服务是否已经停止，如果停止了，则执行以下命令，否则请等待服务停止，然后再执行以下命令：
 
 ![](media/330469e8e46b9f47dea02e557ec9d47a.png)
 
-**图56停止服务**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图56停止服务
 
 ```
 curl -u admin:admin -H "X-Requested-By: ambari" -X DELETE http://192.168.0.220:8080/api/v1/clusters/sugo_test/services/ASTRO_SUGO
@@ -857,13 +857,13 @@ curl -u admin:admin -H "X-Requested-By: ambari" -X DELETE http://192.168.0.220:8
 
 ![](media/4e72ddecd3f8ddc8bb0d2bd17b10aa03.png)
 
-**图57删除服务操作**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图57删除服务操作
 
 如果命令没有返回错误，则可查看ambari界面，刷新后即可看到该服务已经被删除(如下图)。
 
 ![](media/25203eb03778b22c372ce70020d95c15.png)
 
-**图58删除服务后的ambari界面**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图58删除服务后的ambari界面
 
 ## 6.4 增删Ambari-Agent ##
 
@@ -907,13 +907,13 @@ python add_agent.py testCluster 192.168.0.120
 
 ![](media/3649e50874a8082efeee680ebf273e2a.png)
 
-**图59注册Ambari-Agent**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图59注册Ambari-Agent
 
 注册如果没有报错，则表明Agent注册成功，查看Web管理界面，如下图显示test3.sugo.vm注册成功，即可在此基础上管理相关服务。
 
 ![](media/9e8048e5db30567cc86cf00adcdc320f.png)
 
-**图60 Ambari-Agent注册成功后的Web管理界面**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图60 Ambari-Agent注册成功后的Web管理界面
 
 ### 6.4.2 迁移服务 ###
 
@@ -921,18 +921,17 @@ python add_agent.py testCluster 192.168.0.120
 
 第1步：添加kafka服务的组件kafka broker
 
-选择新添加的主机，如此处的test3.sugo.vm，点击增加，选择Kafka
-Broker，如图61所示：
+选择新添加的主机，如此处的test3.sugo.vm，点击增加，选择Kafka Broker，如图61所示：
 
 ![](media/b26eda869292062a6a734835d0c456fa.png)
 
-**图61 增加Kafka Broker**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图61 增加Kafka Broker
 
 此时，返回kafka主界面，会看到Kafka Broker从1个变成了2个，如图63所示：
 
 ![](media/e0f89dc780b8217027d616711c1f4c71.png)
 
-**图62 增加Kafka Broker后的Kafka主界面**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图62 增加Kafka Broker后的Kafka主界面
 
 第2步：迁移数据
 
@@ -940,12 +939,11 @@ Broker，如图61所示：
 
 第3步：删除旧的Kafka Broker
 
-进入到Ambari界面旧主机（此处为test1.sugo.vm），停止该主机的Kafka
-Broker，如图63所示：
+进入到Ambari界面旧主机（此处为test1.sugo.vm），停止该主机的Kafka Broker，如图63所示：
 
 ![](media/571c242d35436320d56b395873270c21.png)
 
-**图63 停止旧主机的Kafka Broker**
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;图63 停止旧主机的Kafka Broker
 
 正确停止该Kafka
 Broker后，点击该选项的删除按钮，删除完成后即将Kafka从test1.sugo.vm迁移到test3.sugo.vm上。如果只需要添加Kafka Broker，省略第3步。
