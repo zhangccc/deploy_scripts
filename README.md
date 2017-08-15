@@ -1,6 +1,6 @@
 ![](media/11d9e2fcdd89e39d53acf7b9b90d4a36.jpg)
 
-**目录**
+#目录#
 ========
 
 
@@ -49,15 +49,16 @@
 
 &emsp;&emsp;[6.3.2 迁移服务 65](#_Toc487116578)
 
-**1. 项目介绍**
+
+
+#1. 项目介绍#
 ========
 
-数果Tindex平台是数果智能自主研发的产品，用于解决大数据行业中实现大规模（PB级）行为数据实时接入、高效存储和快速查询，满足数据分析和数据挖掘等领域的需求。
+&emsp;&emsp;数果Tindex平台是数果智能自主研发的产品，用于解决大数据行业中实现大规模（PB级）行为数据实时接入、高效存储和快速查询，满足数据分析和数据挖掘等领域的需求。
 
-1.  **技术架构**
+#2. 技术架构#
 
-数果Tindex平台核心组件包含Broker, Coordinator, MiddleManager, Overlord,
-Historical，整体架构如如图1所示：
+&emsp;数果Tindex平台核心组件包含Broker, Coordinator, MiddleManager, Overlord,Historical，整体架构如如图1所示：
 
 ![](media/a490c303198379f78bb8fe6aa031250f.png)
 
