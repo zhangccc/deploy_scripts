@@ -280,7 +280,7 @@ vi config/server.properties
 
     cd /opt/apps/druidio_sugo/conf/druid
     
-vi broker/jvm.config
+    vi broker/jvm.config
     
     修改
     -Djava.io.tmpdir=/data1/druid/task     
@@ -319,7 +319,7 @@ vi broker/jvm.config
 
     mkdir -p /data1/druid/task
     
-vi coordinator/runtime.properties
+    vi coordinator/runtime.properties
 
     druid.host=192.168.233.128
 
