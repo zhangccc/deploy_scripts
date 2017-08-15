@@ -74,49 +74,40 @@
 
 -   Historical节点：用于加载并提供历史数据查询功能的节点。
 
-**3. 集群部署架构**
+# 3. 集群部署架构 #
 
-分布式集群借助Ambari进行部署，并利用Amabri对集群进行统一管理和监控，技术架构中的所有组件均通过Ambari进行部署、监控和管理，这里以3节点为例，介绍分布式集群的部署架构。
+&emsp;&emsp;分布式集群借助Ambari进行部署，并利用Amabri对集群进行统一管理和监控，技术架构中的所有组件均通过Ambari进行部署、监控和管理，这里以3节点为例，介绍分布式集群的部署架构。
 
-数果智能将Ambari汉化及添加自研组件后，改名为Alaska，整体框架基本不变，所以Alaska在此文档中仍称为Amabri，Ambari基本架构如图2所示
+&emsp;&emsp;数果智能将Ambari汉化及添加自研组件后，改名为Alaska，整体框架基本不变，所以Alaska在此文档中仍称为Amabri，Ambari基本架构如图2所示
 
 ![](media/b03c38e3c7b6576598a88f7a7070a03c.png)
 
-**图2 Ambari架构图**
+###### 图2 Ambari架构图 ######
 
-Apache Ambari是一种基于Web的工具，支持Apache
-Hadoop集群的供应、管理和监控。Ambari目前已支持大多数Hadoop组件，包括HDFS、MapReduce、Hive、Pig、
-Hbase、Zookeper、Sqoop和Hcatalog等。
+&emsp;&emsp;Apache Ambari是一种基于Web的工具，支持Apache Hadoop集群的供应、管理和监控。Ambari目前已支持大多数Hadoop组件，包括HDFS、MapReduce、Hive、Pig、Hbase、Zookeper、Sqoop和Hcatalog等。
 
-Ambari主要包括Ambari Server和Amabri Agent两部分，Ambari
-Server在整个架构中只有一个，元数据信息存储在Postgres数据库中，通过心跳信息的传递对多个Ambari
-Agent进行管理，Ambari Agent与主机一一对应，Ambari通过Ambari
-Agent对该主机上的组件进行管理。
+&emsp;&emsp;Ambari主要包括Ambari Server和Amabri Agent两部分，Ambari Server在整个架构中只有一个，元数据信息存储在Postgres数据库中，通过心跳信息的传递对多个Ambari Agent进行管理，Ambari Agent与主机一一对应，Ambari通过Ambari Agent对该主机上的组件进行管理。
 
 如图3所示为基于Ambari的部署架构：
 
 ![](media/5828887ca24ea89f27f69e257c61ffc7.png)
 
-**图3 Ambari的部署架构**
+###### 图3 Ambari的部署架构 ######
 
-3台主机对应3个Ambari Agent，其中一台主机安装Ambari
-Server，每台主机上安装、运行的进程如图，每台主机安装多个组件，节点上安装的进程由该节点主机性能等因素决定，可灵活调整。主机部署规划可咨询数果智能。组件之间具有依赖关系，所以组件的安装需基于上图的顺序（从下往上）进行安装配置。
+&emsp;&emsp;3台主机对应3个Ambari Agent，其中一台主机安装Ambari Server，每台主机上安装、运行的进程如图，每台主机安装多个组件，节点上安装的进程由该节点主机性能等因素决定，可灵活调整。主机部署规划可咨询数果智能。组件之间具有依赖关系，所以组件的安装需基于上图的顺序（从下往上）进行安装配置。
 
 具体安装流程如下：
 
 >   1）安装Ambari-Server，注册主机
-
 >   2）部署集群
-
 >   3）修改配置、启动组件
-
 >   4）集群测试
 
 部署集群有两种方式供选择，一键部署和独立部署。
 
-1）一键部署：主要在终端操作，修改安装所需的配置文件后，运行安装脚本；
+&emsp;&emsp;1）一键部署：主要在终端操作，修改安装所需的配置文件后，运行安装脚本；
 
-2）独立部署：主要是通过Ambari的Web界面进行操作。
+&emsp;&emsp;2）独立部署：主要是通过Ambari的Web界面进行操作。
 
 一键部署适合对Linux系统熟悉，对Json语法规则有所了解的人员。独立部署操作界面更友好，但耗时一些。建议非运维人员通过独立部署方式进行安装，具体操作在分布式集群部署部分有详细介绍，可先查看再决定部署方式。
 
