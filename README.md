@@ -276,7 +276,8 @@ test3.sugo.vm 123456
 
 **图5 Ambari安装向导页面**
 
-#### 第2步：命名集群，选择服务栈（此处仅勾选redhat6），浏览器打开http服务地址（如图6所示），选择1.0所在的目录，复制链接粘贴到Ambari界面的”基础URL”内（如图7所示）。
+#### 第2步：创建集群 ####
+&emsp;&emsp;命名集群，选择服务栈（此处仅勾选redhat6），浏览器打开http服务地址（如图6所示），选择1.0所在的目录，复制链接粘贴到Ambari界面的”基础URL”内（如图7所示）。
 
 ![](media/45009e03fd13af2bc78deca47a16802a.png)
 
@@ -286,10 +287,11 @@ test3.sugo.vm 123456
 
 **图7 选择服务栈**
 
-#### 第3步：点击下一步后，如图8所示，获取秘钥（在Ambari-server所在节点的终端查询），复制粘贴到安装选项界面（如图9所示），同时在界面填写目标主机：
+#### 第3步：填写秘钥 ####
+&emsp;&emsp;点击下一步后，如图8所示，获取秘钥（在Ambari-server所在节点的终端查询），复制粘贴到安装选项界面（如图9所示），同时在界面填写目标主机：
 
 ```
-cat \~/.ssh/id_rsa
+cat ~/.ssh/id_rsa
 ```
 
 ![](media/7e5d8b40a9360ce897e919dbe9b426e7.png)
@@ -300,7 +302,8 @@ cat \~/.ssh/id_rsa
 
 **图9 安装选项界面**
 
-#### 第4步：确认注册，Ambari-Server便开始注册主机并检测环境，图10表明主机注册成功，点击下一步，勾选Ambari Metrics，点击下一步，分配主从节点，可打开下拉框选择将Ambari Metrics安装在您规划的主机上，一般默认即可，按照提示填写参数Grafana Admin Password（admin,admin。也可自行填写其它密码），下一步，部署，然后等待安装完成。
+#### 第4步：注册 ####
+&emsp;&emsp;确认注册，Ambari-Server便开始注册主机并检测环境，图10表明主机注册成功，点击下一步，勾选Ambari Metrics，点击下一步，分配主从节点，可打开下拉框选择将Ambari Metrics安装在您规划的主机上，一般默认即可，按照提示填写参数Grafana Admin Password（admin,admin。也可自行填写其它密码），下一步，部署，然后等待安装完成。
 
 ![](media/ce2c73b9dc770e46da01a775db45f7d9.png)
 
@@ -332,7 +335,7 @@ python install.py
 
 **图12 正在安装服务界面**
 
-图12 显示正在安装相关组件，等待安装完成，完成后如图13所示，即可开始修改配置。
+&emsp;&emsp;图12 显示正在安装相关组件，等待安装完成，完成后如图13所示，即可开始修改配置。
 
 ![](media/2db3e7fa7a6a59a2cc519979696b302c.png)
 
@@ -340,28 +343,28 @@ python install.py
 
 #### 2）修改配置，启动服务 ####
 
-表4为需要修改的服务和参数：
+&emsp;&emsp;表4为需要修改的服务和参数：
 
-| **Services** | **Parameters**         | **Value(example)**  | **备注**                                  |
-|----------|-------------------------|------------------------|-------------------------------------------|
-| Postgres | postgres.password       | 123456                 | Postgres数据库密码                        |
-|          | port                    | 15432                  | Postgres数据库端口号                      |
-| Gateway  | bootstrap.servers       | test1.sugo.vm:9092     | Kafka主机名:9092，多个kafka之间以逗号分割 |
-| Druid    | druid.license.signature |                        | 联系数果智能获取秘钥                      |
-|          | druid.metadata.storage.connector.connectURI | jdbc:postgresql://test1.sugo.vm:15432/druid | 连接到Postgres的druid库地址               |
-|          | druid.metadata.storage.connector.password   | 123456                                      | Postgres数据库密码                        |
-| Astro    | postgres.host            | test1.sugo.vm         | Postgres数据库主机名                      |
-|          | dataConfig.hostAndPorts  | test1.sugo.vm:6379     | Redis数据库主机及端口号                   |
-|          | db.host                  | test1.sugo.vm          | Postgres数据库主机名                      |
-|          | db.port                  | 15432                  | Postgres数据库端口号                      |
-|          | db.password              | 123456 123456          | Postgres数据库密码                        |
-|          | redis.host               | test1.sugo.vm          | Redis数据库主机                           |
-|          | site.collectGateway      | http://test1.sugo.vm   | 数据上报网关                              |
-|          | site.sdk_ws_url          | ws://test1.sugo.vm:8887| App可视化埋点socket链接                   |
-|          | site.websdk_api_host     | test1.sugo.vm          | Web数据上报网关                           |
-|          | site.websdk_decide_host  | test1.sugo.vm:8000     | Web获取埋点事件服务端                     |
-|          | site.websdk_app_host     | test1.sugo.vm:8000     | Web获取埋点事件服务端                     |
-|               site.websdk_js_cdn    | test1.sugo.vm:8000     | Web埋点埋点js服务cdn                      |
+| **Services** | **Parameters**                              | **Value(example)**                          | **备注**                                  |
+|--------------|---------------------------------------------|---------------------------------------------|-------------------------------------------|
+| Postgres     | postgres.password                           | 123456                                      | Postgres数据库密码                        |
+|              | port                                        | 15432                                       | Postgres数据库端口号                      |
+| Gateway      | bootstrap.servers                           | test1.sugo.vm:9092                          | Kafka主机名:9092，多个kafka之间以逗号分割 |
+| Druid        | druid.license.signature                     |                                             | 联系数果智能获取秘钥                      |
+|              | druid.metadata.storage.connector.connectURI | jdbc:postgresql://test1.sugo.vm:15432/druid | 连接到Postgres的druid库地址               |
+|              | druid.metadata.storage.connector.password   | 123456                                      | Postgres数据库密码                        |
+| Astro        | postgres.host                               | test1.sugo.vm                               | Postgres数据库主机名                      |
+|              | dataConfig.hostAndPorts                     | test1.sugo.vm:6379                          | Redis数据库主机及端口号                   |
+|              | db.host                                     | test1.sugo.vm                               | Postgres数据库主机名                      |
+|              | db.port                                     | 15432                                       | Postgres数据库端口号                      |
+|              | db.password                                 | 123456 123456                               | Postgres数据库密码                        |
+|              | redis.host                                  | test1.sugo.vm                               | Redis数据库主机                           |
+|              | site.collectGateway                         | http://test1.sugo.vm                        | 数据上报网关                              |
+|              | site.sdk_ws_url                             | ws://test1.sugo.vm:8887                     | App可视化埋点socket链接                   |
+|              | site.websdk_api_host                        | test1.sugo.vm                               | Web数据上报网关                           |
+|              | site.websdk_decide_host                     | test1.sugo.vm:8000                          | Web获取埋点事件服务端                     |
+|              | site.websdk_app_host                        | test1.sugo.vm:8000                          | Web获取埋点事件服务端                     |
+|              |    site.websdk_js_cdn                       | test1.sugo.vm:8000                          | Web埋点埋点js服务cdn                      |
 
 **表4 修改的服务和参数**
 
