@@ -6,9 +6,7 @@
 
     mkdir -p /opt/apps
     cd /opt/apps
-    yum install -y wget
-    yum -y install openssh-clients
-    yum -y install vim 
+    yum install -y wget openssh-clients vim 
     wget http://192.168.0.200:81/yum/SG/centos6/1.0/init_centos6.sh
     chmod 755 init_centos6.sh
     ./init_centos6.sh -hostname test01.sugo.vm -yum_baseurl http://192.168.0.200:81/yum
@@ -196,11 +194,8 @@
 5.安装gateway
 
     cd /opt/apps/
-    yum install -y libjpeg 
-    yum install -y libpng
-    yum install -y freetype
-    yum install -y fontconfig
-    
+    yum install -y libjpeg libpng freetype fontconfig
+
     wget http://58.63.110.97:8888/yum/nginx-clojure-0.4.4.tar.gz
     tar -zxf nginx-clojure-0.4.4.tar.gz
     mv nginx-clojure-0.4.4 gateway_sugo
