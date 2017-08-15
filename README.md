@@ -583,59 +583,59 @@ su – hdfs ssh test1.sugo.vm ssh test2.sugo.vm
 
 ![](media/3b6fba0b2c920fec268043d3ed1ad26b.png)
 
-**图33 添加服务**
+**图32 添加服务**
 
 第2步：分配主从节点，选择Postgres安装的节点（如图34所示），点击下一步
 
 ![](media/3f58e20f314eb379e164e051441729ac.png)
 
-**图34 分配主节点**
+**图33 分配主节点**
 
 第3步：修改配置文件（由于安装Ambari
 Server时已安装了一个Postgres数据库，所以此处postgresql.conf下的port需要修改，避免端口冲突，建议修改为15432，也可根据实际情况进行调整，其它用到Postgres的服务修改配置时需特别注意），点击下一步，部署，完成后会自动启动该服务。
 
 ![](media/4472b35493a6d3f2f35492e1c58b8174.png)
 
-**图35 修改配置文件**
+**图34 修改配置文件**
 
-1.  **Redis**
+##### b. Redis #####
 
 安装步骤与Postgresql基本相同，且无需修改配置信息，按照提示操作即可
 
-1.  **Zookeeper**
+##### c. Zookeeper #####
 
 添加服务，选择服务，分配主节点，此处有多个Zookeeper
 Server时，需要点击加号按钮选择多个节点安装同一个组件（此处组件为Ambari内的component）
 
 ![](media/80e67a2ca5140a50a6fe67ac62b6c9d8.png)
 
-**图36添加Zookeeper主节点**
+**图35添加Zookeeper主节点**
 
 按照提示完成Zookeeper的安装，配置文件无需修改
 
-1.  **HDFS**
+##### d. HDFS #####
 
 第1步：按提示进行操作，分配主节点时，需要通过加号按钮添加一个NameNode（如图37所示），实现HDFS集群的高可用
 
 ![](media/d7dc4d5a886df4259a37edf040ad694a.png)
 
-**图37 添加NameNode主节点**
+**图36 添加NameNode主节点**
 
-第2步：点击下一步，分配从节点和客户端（如图38所示），前面的Postgresql/Redis/Zookeeper都只有主节点，HDFS既有主节点又有从节点，还有些服务只有从节点，点击下一步，部署
+第2步：点击下一步，分配从节点和客户端（如图37所示），前面的Postgresql/Redis/Zookeeper都只有主节点，HDFS既有主节点又有从节点，还有些服务只有从节点，点击下一步，部署
 
 ![](media/3b057bde8801e957e151adc199b260f0.png)
 
-**图38 选择从节点和客户端**
+**图37 选择从节点和客户端**
 
 注意：在安装完成后会出现报错信息（如图39所示），为正常现象，点击下一步，完成
 
 ![](media/705ccaf6befd335d4b923ab1544e4cde.png)
 
-**图39 独立部署HDFS报错信息**
+**图38 独立部署HDFS报错信息**
 
 解决办法与一键部署时的[启动HDFS](#启动HDFS)过程完全相同
 
-1.  **YARN**
+##### e. YARN #####
 
 按照提示操作即可，注意ResourceManager需要两个（如图40所示），实现YARN的高可用
 
@@ -643,25 +643,25 @@ Server时，需要点击加号按钮选择多个节点安装同一个组件（�
 
 ![](media/9d27850429208506f4190e4e5aaf72aa.png)
 
-**图40 分配YARN主节点、从节点和客户端**
+**图39 分配YARN主节点、从节点和客户端**
 
-1.  **MapReduce**
+##### f. MapReduce #####
 
 按照提示操作即可
 
-1.  **Kafka**
+##### g. Kafka #####
 
 按照提示操作即可
 
 ![](media/3f48833c5a93a28099a76148c5dbc04c.png)
 
-**图41 选择Kafka从节点和客户端**
+**图40 选择Kafka从节点和客户端**
 
-1.  **Gateway**
+##### h. Gateway #####
 
 第1步：Gateway的安装与前两个服务略微有些不同，但是基本没有差异，服务的安装包括三种情况：主节点分配、从节点和客户端分配、两者都有
 
-修改配置文件参数（如表5）
+修改配置文件参数（如表5，注：如果没有该参数，则无需修改参数，安装包版本更新后，在ambari管理界面没有该参数）
 
 | **配置项（参数）** | **参数值**         | **备注**                                  |
 |--------------------|--------------------|-------------------------------------------|
@@ -669,35 +669,27 @@ Server时，需要点击加号按钮选择多个节点安装同一个组件（�
 
 **表5 Gateway需修改的参数**
 
-第2步：安装过程中会显示启动错误信息，是因为没有安装相关依赖，先完成安装，然后在安装Gateway的节点终端执行如下命令（如图42所示）：
+第2步：安装完依赖后，在界面启动Gateway
 
-| yum install -y libjpeg libpng freetype fontconfig |
-|---------------------------------------------------|
+##### i. Tindex #####
 
+第1步：创建Postgres数据库druid（注：在Postgres所在节点执行，参数-p指定Postgres的端口号，如图41所示）:
 
-![](media/579d47f74d900109300f07bcd61582c9.png)
-
-**图42 安装Gateway依赖包**
-
-第3步：安装完依赖后，在界面启动Gateway
-
-1.  **Tindex**
-
-第1步：创建Postgres数据库druid（注：在Postgres所在节点执行，参数-p指定Postgres的端口号，如图43所示）:
-
-| cd /opt/apps/postgres_sugo bin/psql -p 15432 -U postgres -d postgres -c "CREATE DATABASE druid WITH OWNER = postgres ENCODING = UTF8;" bin/psql -p 15432 -U postgres -d postgres -c "select datname from pg_database" |
-|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-
+```
+cd /opt/apps/postgres_sugo
+bin/psql -p 15432 -U postgres -d postgres -c "CREATE DATABASE druid WITH OWNER = postgres ENCODING = UTF8;"
+bin/psql -p 15432 -U postgres -d postgres -c "select datname from pg_database"
+```
 
 ![](media/01943f63a0a0b0d8ffc0c5c3311c3cbc.png)
 
-**图43 在Postgres数据库中创建druid库**
+**图41 在Postgres数据库中创建druid库**
 
 第2步：按照提示进行操作（如图44所示）
 
 ![](media/95a98f096c703fc4a5b4aa6ef9d1a730.png)
 
-**图44 选择druid从节点和客户端**
+**图42 选择druid从节点和客户端**
 
 第3步：修改配置文件（需修改参数如表6所示），然后按提示完成安装
 
@@ -705,27 +697,28 @@ Server时，需要点击加号按钮选择多个节点安装同一个组件（�
 |---------------------------------------------|---------------------------------------------|--------------------------------------|
 | druid.license.signature                     |                                             | 联系数果智能获取秘钥                 |
 | druid.metadata.storage.connector.connectURI | jdbc:postgresql://test1.sugo.vm:15432/druid | Postgresql数据库的druid库            |
-| druid.metadata.storage.connector.password   | 123456，123456                              | Tindex元数据存储连接的密码，自行设置 |
 
 **表6 Tindex需修改的参数**
 
 ![](media/c789d1297461a5b32831b8f4fab05f8b.png)
 
-**图45 修改druid参数界面**
+**图43 修改druid参数界面**
 
-1.  **Astro**
+##### j. Astro #####
 
 第1步：创建Postgres数据库的sugo_astro库（如图46所示）:
 
-| cd /opt/apps/postgres_sugo bin/psql -p 15432 -U postgres -d postgres -c "CREATE DATABASE sugo_astro WITH OWNER = postgres ENCODING = UTF8;" bin/psql -p 15432 -U postgres -d postgres -c "select datname from pg_database" |
-|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-
+```
+cd /opt/apps/postgres_sugo
+bin/psql -p 15432 -U postgres -d postgres -c "CREATE DATABASE sugo_astro WITH OWNER = postgres ENCODING = UTF8;"
+bin/psql -p 15432 -U postgres -d postgres -c "select datname from pg_database"
+```
 
 ![](media/3e1264b4eb37ae9416135f4f9f2934e5.png)
 
-**图46在Postgres数据库中创建sugo_astro库**
+**图44在Postgres数据库中创建sugo_astro库**
 
-第2步：按提示继续后面的安装，修改配置文件（需修改参数如表7所示），修改完成后按提示完成安装
+第2步：按提示继续后面的安装，修改配置文件（需修改参数如表7所示），修改完成后按提示完成安装(最新安装包参数会有些不一样，但需要填写的参数值的规则不变)
 
 | **配置项（参数）**      | **参数值**              | **备注**                |
 |-------------------------|-------------------------|-------------------------|
@@ -744,53 +737,53 @@ Server时，需要点击加号按钮选择多个节点安装同一个组件（�
 
 **表7 Astro需修改的参数**
 
-5.4 分布式集群测试
+## 5.4 分布式集群测试 ##
 
 第1步：打开前端Web界面IP:8000（如图47所示，帐号密码分别为：admin,admin123456)
 
 ![](media/a70f39f7f1dc2dc6814dafc5322e5faa.png)
 
-**图47前端Astro登录界面**
+**图45前端Astro登录界面**
 
-第2步：进入数据管理，项目管理（如图48所示）
+第2步：进入数据管理，项目管理（如图46所示）
 
 ![](media/691ca04fd2c85ad285b621ce4d843c72.png)
 
-**图48前端Astro进入项目管理操作**
+**图46前端Astro进入项目管理操作**
 
-第3步：新建项目，输入项目名称，提交后选择Csv文件接入，执行下一步（如图49所示）
+第3步：新建项目，输入项目名称，提交后选择Csv文件接入，执行下一步（如图47所示）
 
 ![](media/c2938c96f4779b13284be16d5012d4cd.png)
 
-**图49选择接入数据类型**
+**图47选择接入数据类型**
 
-第4步：选择文件，进入下一步（如图50所示），输入名称，选择维度字段（全选），提交采集维度（如图51所示），开始采集，查看采集是否成功
+第4步：选择文件，进入下一步（如图50所示），输入名称，选择维度字段（全选），提交采集维度（如图49所示），开始采集，查看采集是否成功
 
 ![](media/d0ba9f714523a71bd482fa8dfdc42cda.png)
 
-**图50配置接入参数**
+**图48配置接入参数**
 
 ![](media/b69ac237d9d2a860545cb6128275f1e8.png)
 
-**图51配置采集维度**
+**图49配置采集维度**
 
-第5步：点击自助分析（如图51所示），执行查询，出现总记录数且与源数据相同，证明部署成功（如图52所示）
+第5步：点击自助分析（如图49所示），执行查询，出现总记录数且与源数据相同，证明部署成功（如图50所示）
 
 ![](media/9d0fa06dc05253610581108820e1b056.png)
 
-**图52查询总记录数**
+**图50查询总记录数**
 
-**6 集群管理**
+# 6 集群管理 #
 
-6.1 启动集群
+## 6.1 启动集群 ##
 
 启动集群时，由于各组件之间具有依赖关系，需要按照一定的顺序启动各组件，可以**按照图53所示的顺序启动各组件**:
 
 ![](media/a1230070bdbce29357e3348cad08c2b2.png)
 
-**图53组件启动顺序参考图**
+**图51组件启动顺序参考图**
 
-6.2 更新服务
+## 6.2 更新服务 ##
 
 通过Ambari界面更新数果智能自研组件，无需重复配置参数，暂时仅适用于数果智能自研组件。
 
@@ -798,33 +791,34 @@ Server时，需要点击加号按钮选择多个节点安装同一个组件（�
 
 第1步：下载更新安装包到http服务所在目录，即Ambari指向的基础URL地址（如图54所示），在Ambari界面的管理员中查看，Linux系统上的位置一般为：/var/www/html/sugo_yum/SG/centos6/1.0，操作命令如下:
 
-| cd /var/www/html/sugo_yum/SG/centos6/1.0 wget {安装包链接（联系数果智能获取）} service httpd start |
-|----------------------------------------------------------------------------------------------------|
-
+```
+cd /var/www/html/sugo_yum/SG/centos6/1.0
+wget {安装包链接（联系数果智能获取）} service httpd start
+```
 
 ![](media/dde6ceeaf9c7e7fec391028c56da6095.png)
 
-**图54查看Ambari的基础URL地址**
+**图52查看Ambari的基础URL地址**
 
 **第2步：**修改安装包包名，需与该服务配置文件中的package.name保持一致，之前的安装包可修改名称作为备份；
 
 ![](media/16414230d4021e9f9dce5bda956bc3a9.png)
 
-**图55查看该服务配置文件中的package name**
+**图53查看该服务配置文件中的package name**
 
 第3步：点击该服务的Client（如图56所示），选择该服务所在主机（如果该服务部署在多台主机上，每台主机都需要更新操作）
 
 ![](media/b9201a6d8dc4c6d74c3089ddac787f3f.png)
 
-**图56选择该服务的客户端**
+**图54选择该服务的客户端**
 
-第4步：选择主机后，下拉页面到最底端，点击更新按钮（如图56所示），即可一键更新服务
+第4步：选择主机后，下拉页面到最底端，点击更新按钮（如图54所示），即可一键更新服务
 
 ![](media/fdfdd354a339729f0b65a6562ceb8625.png)
 
-**图56一键更新服务操作**
+**图55一键更新服务操作**
 
-6.3 删除服务
+## 6.3 删除服务 ##
 
 删除服务的功能尚未集成到Ambari管理界面，暂时只能通过API的方式删除服务。
 
@@ -849,41 +843,42 @@ Server时，需要点击加号按钮选择多个节点安装同一个组件（�
 
 **表8 各服务在删除时，API命令中的服务名称**
 
-| curl -u admin:admin -H "X-Requested-By: ambari" -X PUT -d '{"RequestInfo":{"context":"Stop Service"},"Body":{"ServiceInfo":{"state":"INSTALLED"}}}' http://192.168.0.220:8080/api/v1/clusters/sugo_test/services/ASTRO_SUGO |
-|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+```
+curl -u admin:admin -H "X-Requested-By: ambari" -X PUT -d '{"RequestInfo":{"context":"Stop Service"},"Body":{"ServiceInfo":{"state":"INSTALLED"}}}' http://192.168.0.220:8080/api/v1/clusters/sugo_test/services/ASTRO_SUGO
+```
 
 
 ![](media/73ac31cdcd6e07a5732bdf785a66b430.png)
 
-**图57停止服务操作**
+**图56停止服务操作**
 
 执行完上面这条命令后，在ambari界面查看该服务是否已经停止，如果停止了，则执行以下命令，否则请等待服务停止，然后再执行以下命令：
 
 ![](media/330469e8e46b9f47dea02e557ec9d47a.png)
 
-**图58停止服务**
+**图57停止服务**
 
-| curl -u admin:admin -H "X-Requested-By: ambari" -X DELETE http://192.168.0.220:8080/api/v1/clusters/sugo_test/services/ASTRO_SUGO |
-|-----------------------------------------------------------------------------------------------------------------------------------|
-
+```
+curl -u admin:admin -H "X-Requested-By: ambari" -X DELETE http://192.168.0.220:8080/api/v1/clusters/sugo_test/services/ASTRO_SUGO
+```
 
 ![](media/4e72ddecd3f8ddc8bb0d2bd17b10aa03.png)
 
-**图59删除服务操作**
+**图58删除服务操作**
 
 如果命令没有返回错误，则可查看ambari界面，刷新后即可看到该服务已经被删除(如下图)。
 
 ![](media/25203eb03778b22c372ce70020d95c15.png)
 
-**图60删除服务后的ambari界面**
+**图59删除服务后的ambari界面**
 
-6.4 增删Ambari-Agent
+## 6.4 增删Ambari-Agent ##
 
 在已有Ambari的情况下，可能会遇到添加机器、扩展集群和迁移服务的需求，为了方便对集群的统一管理，增加Ambari-Agent则是一种比较合适的选择，增加Ambari-Agent后，通过Ambari对各服务进行迁移、增删等操作更加简便、友好。
 
 增添Ambari-Agent主要分为主机准备、主机注册两个步骤，在完成主机注册后，即可在Ambari集群上对服务进行增删、迁移等。注：以下终端操作部分全部在Ambari-Server节点主机执行
 
-**6.4.1 增加Agent**
+### 6.4.1 增加Agent ###
 
 第1步：主机准备
 
@@ -895,55 +890,56 @@ Server时，需要点击加号按钮选择多个节点安装同一个组件（�
 root用户的密码，该主机的IP地址
 按行写入，每行代表一个主机(ambari-agent)，各项目之间以空格“ ”分割，例：
 
-| test3.sugo.vm 123456789 192.168.0.122 |
-|---------------------------------------|
-
+```
+test3.sugo.vm 123456789 192.168.0.122
+```
 
 修改完成后保存，执行脚本pre_add_agent.sh，此脚本用于安装agent前的主机准备，包括安装jdk、配置ambari-server到该agent的ssh免密码登录、系统优化等，且jdk、ssh免密码可选择性安装，具体使用可通过如下命令进行查看
 
-| ./pre_add_agent.sh –help 例： ./pre_add_agent.sh -http_port 81 -ambari_ip 192.168.0.120 |
-|-----------------------------------------------------------------------------------------|
-
+```
+./pre_add_agent.sh –help
+例：
+./pre_add_agent.sh -http_port 81 -ambari_ip 192.168.0.120
+```
 
 第3步：注册主机
 
-运行脚本add_agent.py，此脚本用于安装、注册ambari-agent，会在hosts文件中列出的主机上安装注册agent，运行此脚本需输入参数：集群名称
-ambari-server的IP地址 例：
+运行脚本add_agent.py，此脚本用于安装、注册ambari-agent，会在hosts文件中列出的主机上安装注册agent，运行此脚本需输入参数：集群名称 ambari-server的IP地址 例：
 
-| python add_agent.py testCluster 192.168.0.120 |
-|-----------------------------------------------|
-
+```
+python add_agent.py testCluster 192.168.0.120
+```
 
 注：此脚本包含安装和注册两个部分，由于主机的配置等因素不同，安装所需时间也会不同，而注册需要安装完成后才可执行，此处设置安装等待时间为5秒，若因配置原因，脚本注册部分执行失败，重复执行该脚本即可
 
 ![](media/3649e50874a8082efeee680ebf273e2a.png)
 
-**图61注册Ambari-Agent**
+**图60注册Ambari-Agent**
 
 注册如果没有报错，则表明Agent注册成功，查看Web管理界面，如下图显示test3.sugo.vm注册成功，即可在此基础上管理相关服务。
 
 ![](media/9e8048e5db30567cc86cf00adcdc320f.png)
 
-**图62 Ambari-Agent注册成功后的Web管理界面**
+**图61 Ambari-Agent注册成功后的Web管理界面**
 
-**6.4.2 迁移服务**
+### 6.4.2 迁移服务 ###
 
 在迁移服务之前，请注意，需要将下线节点所在的服务的数据转移到其它节点，所以需要先添加服务，此处以kafka为例：
 
 第1步：添加kafka服务的组件kafka broker
 
 选择新添加的主机，如此处的test3.sugo.vm，点击增加，选择Kafka
-Broker，如图59所示：
+Broker，如图62所示：
 
 ![](media/b26eda869292062a6a734835d0c456fa.png)
 
-**图63 增加Kafka Broker**
+**图62 增加Kafka Broker**
 
-此时，返回kafka主界面，会看到Kafka Broker从1个变成了2个，如图60所示：
+此时，返回kafka主界面，会看到Kafka Broker从1个变成了2个，如图63所示：
 
 ![](media/e0f89dc780b8217027d616711c1f4c71.png)
 
-**图64 增加Kafka Broker后的Kafka主界面**
+**图63 增加Kafka Broker后的Kafka主界面**
 
 第2步：迁移数据
 
@@ -952,12 +948,11 @@ Broker，如图59所示：
 第3步：删除旧的Kafka Broker
 
 进入到Ambari界面旧主机（此处为test1.sugo.vm），停止该主机的Kafka
-Broker，如图61所示：
+Broker，如图64所示：
 
 ![](media/571c242d35436320d56b395873270c21.png)
 
-**图65 停止旧主机的Kafka Broker**
+**图64 停止旧主机的Kafka Broker**
 
 正确停止该Kafka
-Broker后，点击该选项的删除按钮，删除完成后即将Kafka从test1.sugo.vm迁移到test3.sugo.vm上。如果只需要添加Kafka
-Broker，省略第3步。
+Broker后，点击该选项的删除按钮，删除完成后即将Kafka从test1.sugo.vm迁移到test3.sugo.vm上。如果只需要添加Kafka Broker，省略第3步。
