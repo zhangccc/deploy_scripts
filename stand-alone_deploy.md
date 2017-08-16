@@ -2,8 +2,6 @@
  
 1.环境初始化
 
-1.1 执行脚本和免密登录
-
     将下载好的安装包解压到 当前用户目录
 
     tar -zxf stand-alone_deploy.tar.gz -C ~
@@ -28,7 +26,7 @@
     mkdir /data1
     mkdir /data2
 
-    若不够大,先在大容量的目录下创建 上面两个目录然后
+    
 
     
     
@@ -37,42 +35,43 @@
 2.安装postgres数据库
 
     创建一个  postgres 用户
-    
-        adduser postgres
-        passwd postgres
-        
-    
+
+    adduser postgres
+    passwd postgres
+
+
     tar -zxf ~/stand-alone_deploy/postgresql-9.5.4-1-linux-x64-binaries.tar.gz -C /opt/apps/
-    cd /opt/apps
-    mv pgsql postgres_sugo
+
+    cd /opt/apps
+    mv pgsql postgres_sugo
     mkdir -p /data1/postgres/data
     mkdir -p /data1/postgres/log
     chown -f postgres:postgres /opt/apps/postgres_sugo/*
     chown -R postgres:postgres /data1/postgres
-    
+
     //切换用户是为了登录postgres数据库
     su - postgres
-    
+
     //初始化postgres数据库
     /opt/apps/postgres_sugo/bin/initdb --no-locale -E UTF-8 -D /data1/postgres/data
     //访问权限设置
     echo 'host    all   all         0.0.0.0/0          md5' >> /data1/postgres/data/pg_hba.conf
     //启动
     /opt/apps/postgres_sugo/bin/pg_ctl -D /data1/postgres/data -l /data1/postgres/log/postgres.log start
-    //设置密码和端口号
-    /opt/apps/postgres_sugo/bin/psql -d postgres -U postgres -p 5432 -c "ALTER USER postgres PASSWORD '123456' ;" 
-    
+    //设置密码和端口号
+    /opt/apps/postgres_sugo/bin/psql -d postgres -U postgres -p 5432 -c "ALTER USER postgres PASSWORD '123456' ;" 
+
     //登录
     /opt/apps/postgres_sugo/bin/psql
     //创建两个数据库 用于存储其它服务（astro/druid）的数据
     create database  astro_sugo with owner = postgres encoding = UTF8;
     create database  druid with owner = postgres encoding = UTF8;
     //创建好后 退出postgres数据库    用 ctrl+d 即可退出
-    
+
     修改配置文件:
-    
+
     cd /data1/postgres/data
-    vi postgresql.conf (把里面全部内容替换成以下内容)
+    vi postgresql.conf (把里面全部内容替换成以下内容)
 
     datestyle='iso, mdy'
     default_text_search_config='pg_catalog.english'
@@ -91,29 +90,29 @@
     重启数据库
 
     /opt/apps/postgres_sugo/bin/pg_ctl -D /data1/postgres/data -l /data1/postgres/log/postgres.log restart
-    
+
     以上为安装postgres数据库!
     exit 退出当前用户回到root用户
 
 3.安装redis
 
     yum remove -y epel-release
-    
+
     安装gcc编译器
     yum install -y gcc g++-c++
-    
+
     cd /opt/apps
     tar -zxf ~/stand-alone_deploy/redis-3.0.7.tar.gz -C /opt/apps/
     mv redis-3.0.7 redis_sugo
     cd redis_sugo
-    
+
     make
-    
+
     mkdir /data1/redis
-    
+
     vi redis.conf
 
-添加内容
+    添加内容
 
     bind 0.0.0.0
     daemonize yes
@@ -133,20 +132,20 @@
     cd /opt/apps/
     tar -zxf ~/stand-alone_deploy/zookeeper-3.4.8.tar.gz -C /opt/apps/
     mv zookeeper-3.4.8 zookeeper_sugo
-    
+
     mkdir -p /data1/zookeeper/dataLog
     mkdir -p /data1/zookeeper/data
-    
+
     echo 1 >> /data1/zookeeper/data/myid
-    
+
     cd /opt/apps/zookeeper_sugo/conf
-    
+
     cp zoo_sample.cfg zoo.cfg
     grep '^[[:space:]]*dataDir' /opt/apps/zookeeper_sugo/conf/zoo.cfg | sed -e 's/.*=//'
-    
-    
-    vi zoo.cfg        (全部内容替换成以下内容)
-    
+
+
+    vi zoo.cfg        (全部内容替换成以下内容)
+
     clientPort=2181
     syncLimit=5
     autopurge.purgeInterval=24
@@ -162,8 +161,8 @@
 
     启动
     /opt/apps/zookeeper_sugo/bin/zkServer.sh start
-    
-    
+
+
     主机在云平台会因环境变量问题而需要创建脚本启动
 
     创建脚本
@@ -185,29 +184,29 @@
     mv nginx-clojure-0.4.4 gateway_sugo
     export JAVA_HOME=/usr/local/jdk18
     cd gateway_sugo/
-    
+
     vi libs/kafka.properties
     bootstrap.servers=192.168.233.128:9092 (单机版的只有一个ip要修改成自己的ip)
-    
+
     启动:
     /opt/apps/gateway_sugo/nginx-linux-x64
-    
+
     测试:
     查看80端口起来了没有
     netstat -ntlp | grep 80
     或者打开网页查看
     http://192.168.233.128:80
-    
-    
+
+
     主机在云平台会因环境变量问题而需要创建脚本启动
-    
+
     vi start.sh 
-    
+
     #!/bin/bash
     export JAVA_HOME=/usr/local/jdk18
     export PATH=$JAVA_HOME/bin:$PATH
     ./nginx-linux-x64
-    
+
     chmod +x start.sh
     
 6.安装kafka
@@ -215,9 +214,9 @@
     cd /opt/apps/
     tar -zxf ~/stand-alone_deploy/kafka_2.10-0.10.0.0.tgz -C /opt/apps/
     mv kafka_2.10-0.10.0.0 kafka_sugo
-    
+
     cd /opt/apps/kafka_sugo
-    
+
     修改配置文件
 
     vi config/server.properties
@@ -226,14 +225,14 @@
     log.dirs=/data2/kafka/data
 
     mkdir -p /data2/kafka/data
-    
+
     启动:
     bin/kafka-server-start.sh config/server.properties
-    
+
     或者
     启动在后台
     nohup /opt/apps/kafka_sugo/bin/kafka-server-start.sh config/server.properties > /opt/apps/kafka_sugo/kafka.log 2>&1 &
-    
+
     检查:
     ps -ef |grep kafka
     
@@ -243,20 +242,20 @@
     tar -zxf ~/stand-alone_deploy/druid-1.0.0-bin.tar.gz -C /opt/apps/
     mv druid-1.0.0 druidio_sugo
 
-    
+
     mkdir -p /opt/apps/druidio_sugo/var/druid/pids/
     mkdir /opt/apps/druidio_sugo/log
     mkdir -p /data1/druid/storage
     mkdir -p /data1/druid/indexing-logs
     mkdir -p /data1/druid/task
     mkdir -p /data1/druid/segment-cache
-    
-修改配置文件：
+
+    修改配置文件：
 
     cd /opt/apps/druidio_sugo/conf/druid
-    
+
     vi broker/jvm.config
-    
+
     修改
     -Djava.io.tmpdir=/data1/druid/task
     添加
@@ -283,11 +282,11 @@
     druid.indexer.logs.type=hdfs        注释掉
     druid.indexer.logs.directory=/druid/indexing-logs       注释掉
     com.metamx.metrics.JvmMonitor=[] 方括号里面的全部删掉
-    druid-kafka-eight   搜索删掉,注意,双引号和逗号也要删掉
+    druid-kafka-eight   搜索删掉,注意,双引号和逗号也要删掉
 
 
     vi coordinator/jvm.config
-     
+
     修改
     -Djava.io.tmpdir=/data1/druid/task
     最底下添加
@@ -295,13 +294,13 @@
     -Dlog.file.type=coordinator
 
     mkdir -p /data1/druid/task
-    
+
     vi coordinator/runtime.properties
 
     druid.host=192.168.233.128
 
     vi historical/jvm.config
-    
+
     修改
     -Djava.io.tmpdir=/data1/druid/task
     底下添加
@@ -324,7 +323,7 @@
     druid.lucene.query.select.maxResults=100000
 
     vi middleManager/jvm.config
-    
+
     修改
     -Djava.io.tmpdir=/data1/druid/task
     添加
@@ -341,7 +340,7 @@
     druid.processing.buffer.sizeBytes=268435456
 
     vi overlord/jvm.config
-    
+
     修改
     -Djava.io.tmpdir=/data1/druid/task
     添加
@@ -349,13 +348,13 @@
     -Dlog.file.type=overlord
 
     vi overlord/runtime.properties
-    
+
     修改
     druid.host=192.168.233.128
 
 
     vi overlord/supervisor.properties
-    
+
     修改
     supervisor.kafka.zkHost=192.168.233.128:2181/kafka
     supervisor.kafka.replication=2
@@ -364,7 +363,7 @@
     supervisor.io.useEarliestOffset=true
 
     cd /opt/apps/druidio_sugo/bin
-    
+
     创建启动脚本
 
     vim start-all.sh
@@ -377,10 +376,10 @@
     do
         sh $CUR_DIR/node.sh $nodeType start
     done
-    
-    
 
-    
+
+
+
     这个是关闭脚本
 
     vim stop-all.sh
@@ -392,8 +391,8 @@
     do
         sh $CUR_DIR/node.sh $nodeType stop
     done
-    
-    
+
+
     chmod 755 ./st*
     mkdir -p var/druid/pids
 
@@ -407,13 +406,13 @@
 8.安装astro
 
     cd /opt/apps
-    tar -zxf ~/stand-alone_deploy/sugo-analytics-fl0.16.7-1739650.tar.gz -C /opt/apps/
+    tar -zxf ~/stand-alone_deploy/sugo-analytics-fl0.16.7-1739650.tar.gz -C /opt/apps/
     mv sugo-analytics astro_sugo
     useradd astro 
     cd /opt/apps/astro_sugo/analytics
     cp config.default.js config.js
-    
-    vim config.js
+
+    vim config.js
 
     collectGateway: 'http://192.168.233.128'
     sdk_ws_url: 'ws://192.168.233.128:8887'
@@ -436,4 +435,4 @@
     启动：
     cd /opt/apps/astro_sugo/analytics
     ./cmds/run
-    
+
