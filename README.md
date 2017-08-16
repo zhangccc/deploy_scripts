@@ -7,47 +7,47 @@
 
 [1. 项目介绍   ](https://github.com/Datafruit/deploy_scripts#1-项目介绍)
 
-[\[2. 技术架构   \]][2]
+[2. 技术架构   ](https://github.com/Datafruit/deploy_scripts#2-技术架构)
 
-[\[3. 集群部署架构   \]][3]
+[3. 集群部署架构   ](https://github.com/Datafruit/deploy_scripts#3-集群部署架构)
 
-[\[4. 单机版部署   \]][4]
+[4. 单机版部署   ](https://github.com/Datafruit/deploy_scripts#4-单机版部署)
 
-&emsp;&emsp;[\[4.1 前期准备   \]][5]
+&emsp;&emsp;[4.1 前期准备   ](https://github.com/Datafruit/deploy_scripts#41-前期准备)
 
-&emsp;&emsp;[\[4.2 一键部署   \]][6]
+&emsp;&emsp;[4.2 一键部署   ](https://github.com/Datafruit/deploy_scripts#42-一键部署)
 
-&emsp;&emsp;[\[4.3 环境测试  \]][7]
+&emsp;&emsp;[4.3 环境测试  ](https://github.com/Datafruit/deploy_scripts#43-环境测试)
 
-[\[5. 分布式集群部署   \]][8]
+[5. 分布式集群部署   ](https://github.com/Datafruit/deploy_scripts#5-分布式集群部署)
 
-&emsp;&emsp;[\[5.1 前期准备   \]][9]
+&emsp;&emsp;[5.1 前期准备   ](https://github.com/Datafruit/deploy_scripts#51-前期准备)
 
-&emsp;&emsp;&emsp;&emsp;[\[5.1.1主机配置要求   \]][10]
+&emsp;&emsp;&emsp;&emsp;[5.1.1主机配置要求   ](https://github.com/Datafruit/deploy_scripts#511-主机配置要求)
 
-&emsp;&emsp;&emsp;&emsp;[\[5.1.2 组件安装规划及准备   \]][11]
+&emsp;&emsp;&emsp;&emsp;[5.1.2 组件安装规划及准备   ](https://github.com/Datafruit/deploy_scripts#512-组件安装规划及准备)
 
-&emsp;&emsp;[\[5.2安装Ambari-Server   \]][12]
+&emsp;&emsp;[5.2安装Ambari-Server   ](https://github.com/Datafruit/deploy_scripts#52-安装ambari-server)
 
-&emsp;&emsp;[\[5.3集群部署 \]][13]
+&emsp;&emsp;[5.3集群部署 ](https://github.com/Datafruit/deploy_scripts#53-集群部署)
 
-&emsp;&emsp;&emsp;&emsp;[\[5.3.1 一键部署 \]][14]
+&emsp;&emsp;&emsp;&emsp;[5.3.1 一键部署 ](https://github.com/Datafruit/deploy_scripts#531-一键部署)
 
-&emsp;&emsp;&emsp;&emsp;[\[5.3.2 独立部署 \]][15]
+&emsp;&emsp;&emsp;&emsp;[5.3.2 独立部署 ](https://github.com/Datafruit/deploy_scripts#532-独立部署)
 
-&emsp;&emsp;[\[5.4 分布式集群测试 \]][16]
+&emsp;&emsp;[5.4 分布式集群测试 ](https://github.com/Datafruit/deploy_scripts#54-分布式集群测试)
 
-[\[6 集群管理 \]][17]
+[6 集群管理 ](https://github.com/Datafruit/deploy_scripts#6-集群管理)
 
-&emsp;&emsp;[\[6.1 启动集群 \]][18]
+&emsp;&emsp;[6.1 启动集群 ](https://github.com/Datafruit/deploy_scripts#61-启动集群)
 
-&emsp;&emsp;[\[6.2 更新服务 \]][19]
+&emsp;&emsp;[6.2 更新服务 ](https://github.com/Datafruit/deploy_scripts#62-更新服务)
 
-&emsp;&emsp;[\[6.3 增删Ambari-Agent \]][20]
+&emsp;&emsp;[6.3 增删Ambari-Agent ](https://github.com/Datafruit/deploy_scripts#64-增删ambari-agent)
 
-&emsp;&emsp;&emsp;&emsp;[\[6.3.1 增加Agent \]][21]
+&emsp;&emsp;&emsp;&emsp;[6.3.1 增加Agent ](https://github.com/Datafruit/deploy_scripts#641-增加agent)
 
-&emsp;&emsp;&emsp;&emsp;[\[6.3.2 迁移服务 \]][22]
+&emsp;&emsp;&emsp;&emsp;[6.3.2 迁移服务 ](https://github.com/Datafruit/deploy_scripts#642-迁移服务)
 
 
 
@@ -958,26 +958,3 @@ python add_agent.py testCluster 192.168.0.120
 
 &emsp;&emsp;正确停止该Kafka Broker后，点击该选项的删除按钮，删除完成后即将Kafka从test1.sugo.vm迁移到test3.sugo.vm上。如果只需要添加Kafka Broker，省略第3步。
 
-
-  [1]: https://github.com/Datafruit/deploy_scripts#1-%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D
-  [2]: https://github.com/Datafruit/deploy_scripts#2-%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84
-  [3]: https://github.com/Datafruit/deploy_scripts#3-%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2%E6%9E%B6%E6%9E%84
-  [4]: https://github.com/Datafruit/deploy_scripts#4-%E5%8D%95%E6%9C%BA%E7%89%88%E9%83%A8%E7%BD%B2
-  [5]: https://github.com/Datafruit/deploy_scripts#41-%E5%89%8D%E6%9C%9F%E5%87%86%E5%A4%87
-  [6]: https://github.com/Datafruit/deploy_scripts#42-%E4%B8%80%E9%94%AE%E9%83%A8%E7%BD%B2
-  [7]: https://github.com/Datafruit/deploy_scripts#43-%E7%8E%AF%E5%A2%83%E6%B5%8B%E8%AF%95
-  [8]: https://github.com/Datafruit/deploy_scripts#5-%E5%88%86%E5%B8%83%E5%BC%8F%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2
-  [9]: https://github.com/Datafruit/deploy_scripts#51-%E5%89%8D%E6%9C%9F%E5%87%86%E5%A4%87
-  [10]: https://github.com/Datafruit/deploy_scripts#511-%E4%B8%BB%E6%9C%BA%E9%85%8D%E7%BD%AE%E8%A6%81%E6%B1%82
-  [11]: https://github.com/Datafruit/deploy_scripts#512-%E7%BB%84%E4%BB%B6%E5%AE%89%E8%A3%85%E8%A7%84%E5%88%92%E5%8F%8A%E5%87%86%E5%A4%87
-  [12]: https://github.com/Datafruit/deploy_scripts#52-%E5%AE%89%E8%A3%85ambari-server
-  [13]: https://github.com/Datafruit/deploy_scripts#53-%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2
-  [14]: https://github.com/Datafruit/deploy_scripts#531-%E4%B8%80%E9%94%AE%E9%83%A8%E7%BD%B2
-  [15]: https://github.com/Datafruit/deploy_scripts#532-%E7%8B%AC%E7%AB%8B%E9%83%A8%E7%BD%B2
-  [16]: https://github.com/Datafruit/deploy_scripts#54-%E5%88%86%E5%B8%83%E5%BC%8F%E9%9B%86%E7%BE%A4%E6%B5%8B%E8%AF%95
-  [17]: https://github.com/Datafruit/deploy_scripts#6-%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86
-  [18]: https://github.com/Datafruit/deploy_scripts#61-%E5%90%AF%E5%8A%A8%E9%9B%86%E7%BE%A4
-  [19]: https://github.com/Datafruit/deploy_scripts#62-%E6%9B%B4%E6%96%B0%E6%9C%8D%E5%8A%A1
-  [20]: https://github.com/Datafruit/deploy_scripts#64-%E5%A2%9E%E5%88%A0ambari-agent
-  [21]: https://github.com/Datafruit/deploy_scripts#641-%E5%A2%9E%E5%8A%A0agent
-  [22]: https://github.com/Datafruit/deploy_scripts#642-%E8%BF%81%E7%A7%BB%E6%9C%8D%E5%8A%A1
