@@ -9,9 +9,9 @@
     tar -zxf stand-alone_deploy.tar.gz -C ~
     cd ~/stand-alone_deploy
     mkdir -p /opt/apps
-    cd /opt/apps
     yum install -y wget openssh-clients vim 
     ./init_centos6.sh -hostname test01.sugo.vm
+    source /etc/profile
 
     测试
     java -version
@@ -42,9 +42,9 @@
         passwd postgres
         
     
-    tar -zxf ~/stand-alone_deploy/postgresql-9.5.4-1-linux-x64-binaries.tar.gz -C /opt/apps/ 
-    mv pgsql postgres_sugo
-    rm postgresql-9.5.4-1-linux-x64-binaries.tar.gz 
+    tar -zxf ~/stand-alone_deploy/postgresql-9.5.4-1-linux-x64-binaries.tar.gz -C /opt/apps/
+    cd /opt/apps
+    mv pgsql postgres_sugo
     mkdir -p /data1/postgres/data
     mkdir -p /data1/postgres/log
     chown -f postgres:postgres /opt/apps/postgres_sugo/*
@@ -72,7 +72,7 @@
     修改配置文件:
     
     cd /data1/postgres/data
-    vi postgresql.conf(把里面全部内容替换成以下内容)
+    vi postgresql.conf (把里面全部内容替换成以下内容)
 
     datestyle='iso, mdy'
     default_text_search_config='pg_catalog.english'
@@ -84,9 +84,9 @@
     listen_addresses='0.0.0.0'
     log_timezone='PRC'
     max_connections=100
-    port=5432    
+    port=5432
     shared_buffers=128MB
-    unix_socket_directories = '/tmp' 
+    unix_socket_directories = '/tmp'
 
     重启数据库
 
@@ -103,9 +103,8 @@
     yum install -y gcc g++-c++
     
     cd /opt/apps
-    tar -zxf ~/stand-alone_deploy/redis-3.0.7.tar.gz /opt/apps/
+    tar -zxf ~/stand-alone_deploy/redis-3.0.7.tar.gz -C /opt/apps/
     mv redis-3.0.7 redis_sugo
-    rm redis-3.0.7.tar.gz
     cd redis_sugo
     
     make
@@ -132,9 +131,8 @@
 
 
     cd /opt/apps/
-    tar -zxf ~/stand-alone_deploy/zookeeper-3.4.8.tar.gz /opt/apps/
+    tar -zxf ~/stand-alone_deploy/zookeeper-3.4.8.tar.gz -C /opt/apps/
     mv zookeeper-3.4.8 zookeeper_sugo
-    rm zookeeper-3.4.8.tar.gz
     
     mkdir -p /data1/zookeeper/dataLog
     mkdir -p /data1/zookeeper/data
@@ -142,10 +140,10 @@
     echo 1 >> /data1/zookeeper/data/myid
     
     cd /opt/apps/zookeeper_sugo/conf
-    grep '^[[:space:]]*dataDir' /opt/apps/zookeeper_sugo/conf/zoo.cfg | sed -e 's/.*=//'
-
-
+    
     cp zoo_sample.cfg zoo.cfg
+    grep '^[[:space:]]*dataDir' /opt/apps/zookeeper_sugo/conf/zoo.cfg | sed -e 's/.*=//'
+    
     
     vi zoo.cfg        (全部内容替换成以下内容)
     
@@ -183,9 +181,8 @@
 
     cd /opt/apps/
     yum install -y libjpeg libpng freetype fontconfig
-    tar -zxf ~/stand-alone_deploy/nginx-clojure-0.4.4.tar.gz /opt/apps/
+    tar -zxf ~/stand-alone_deploy/nginx-clojure-0.4.4.tar.gz -C /opt/apps/
     mv nginx-clojure-0.4.4 gateway_sugo
-    rm nginx-clojure-0.4.4.tar.gz
     export JAVA_HOME=/usr/local/jdk18
     cd gateway_sugo/
     
@@ -216,9 +213,8 @@
 6.安装kafka
 
     cd /opt/apps/
-    tar -zxf ~/stand-alone_deploy/kafka_2.10-0.10.0.0.tgz /opt/apps/
+    tar -zxf ~/stand-alone_deploy/kafka_2.10-0.10.0.0.tgz -C /opt/apps/
     mv kafka_2.10-0.10.0.0 kafka_sugo
-    rm kafka_2.10-0.10.0.0.tgz
     
     cd /opt/apps/kafka_sugo
     
@@ -244,9 +240,9 @@
 7.安装druid
 
     cd /opt/apps/
-    tar -zxf ~/stand-alone_deploy/druid-1.0.0-bin.tar.gz /opt/apps/
+    tar -zxf ~/stand-alone_deploy/druid-1.0.0-bin.tar.gz -C /opt/apps/
     mv druid-1.0.0 druidio_sugo
-    rm druid-1.0.0-bin.tar.gz
+
     
     mkdir -p /opt/apps/druidio_sugo/var/druid/pids/
     mkdir /opt/apps/druidio_sugo/log
@@ -262,7 +258,7 @@
     vi broker/jvm.config
     
     修改
-    -Djava.io.tmpdir=/data1/druid/task     
+    -Djava.io.tmpdir=/data1/druid/task
     添加
     -Dlog.file.path=/data1/druid/logs
     -Dlog.file.type=broker
@@ -270,13 +266,13 @@
     vi broker/runtime.properties
 
     修改
-    druid.host=10.29.253.251
+    druid.host=192.168.233.128
 
     vi _common/common.runtime.properties
 
 
     druid.license.signature=48710FA3F1CDBA39DD3D7589262F2D066767C05CDF6AF1006D5B4B77A62063111DE60AA0BD309BF3
-    druid.emitter.composing.emitters=["logging"]  
+    druid.emitter.composing.emitters=["logging"]
     (上面两条添加到配置文件的最后面) 
     druid.zk.service.host=192.168.233.128
     druid.metadata.storage.connector.connectURI=jdbc:postgresql://192.168.233.128:5432/druid
@@ -287,13 +283,13 @@
     druid.indexer.logs.type=hdfs        注释掉
     druid.indexer.logs.directory=/druid/indexing-logs       注释掉
     com.metamx.metrics.JvmMonitor=[] 方括号里面的全部删掉
-    druid-kafka-eight   搜索删掉
+    druid-kafka-eight   搜索删掉,注意,双引号和逗号也要删掉
 
 
     vi coordinator/jvm.config
      
     修改
-    -Djava.io.tmpdir=/data1/druid/task   
+    -Djava.io.tmpdir=/data1/druid/task
     最底下添加
     -Dlog.file.path=/data1/druid/logs
     -Dlog.file.type=coordinator
@@ -383,8 +379,7 @@
     done
     
     
-    chmod 755 ./st*
-    ./bin/start-all.sh
+
     
     这个是关闭脚本
 
@@ -399,7 +394,7 @@
     done
     
     
-    
+    chmod 755 ./st*
     mkdir -p var/druid/pids
 
     启动
@@ -412,14 +407,13 @@
 8.安装astro
 
     cd /opt/apps
-    tar -zxf ~/stand-alone_deploy/sugo-analytics-fl0.16.7-1739650.tar.gz /opt/apps/
+    tar -zxf ~/stand-alone_deploy/sugo-analytics-fl0.16.7-1739650.tar.gz -C /opt/apps/
     mv sugo-analytics astro_sugo
-    rm sugo-analytics-fl0.16.7-1739650.tar.gz
     useradd astro 
     cd /opt/apps/astro_sugo/analytics
     cp config.default.js config.js
     
-    vi config.js
+    vim config.js
 
     collectGateway: 'http://192.168.233.128'
     sdk_ws_url: 'ws://192.168.233.128:8887'
