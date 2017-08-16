@@ -5,7 +5,7 @@
 
 
 
-[\[1. 项目介绍   \]][1]
+[1. 项目介绍   ](https://github.com/Datafruit/deploy_scripts#1-项目介绍)
 
 [\[2. 技术架构   \]][2]
 
