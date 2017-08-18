@@ -21,6 +21,6 @@ test3.sugo.vm 123456789 192.168.0.110
 此脚本用于安装、注册ambari-agent，会在hosts文件中列出的主机上安装注册agent，运行此脚本需输入参数：集群名称 ambari-server的IP地址
 例：
 ```
-python add_agent.py testCluster 192.168.0.110
+python add_agent.py testCluster 192.168.0.110 hosts
 ```
 注：此脚本包含安装和注册两个部分，由于主机的配置等因素不同，安装所需时间也会不同，而注册需要安装完成后才可执行，此处设置安装等待时间为5秒，若因配置原因，脚本注册部分执行失败，重复执行该脚本即可

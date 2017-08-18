@@ -7,8 +7,8 @@ import urllib2
 # need to be altered
 cluster_name = sys.argv[1]
 ambari_server_ip = sys.argv[2]
+agent_file = sys.argv[3]
 
-agent_file = "hosts"
 a = open(agent_file, "r+")
 hosts = []
 
@@ -39,7 +39,7 @@ response = urllib2.urlopen(request, json.dumps(data1), 10)
 print response.read()
 f.close()
 
-time.sleep(5)
+time.sleep(10)
 
 # register ambari-agent
 for host in hosts:
@@ -48,5 +48,6 @@ for host in hosts:
     request_register.add_header('Authorization', 'Basic YWRtaW46YWRtaW4=')
     request_register.add_header('Content-Type', 'application/json')
     request_register.add_header('X-Requested-By', 'ambari')
+    print request_register
     response2 = urllib2.urlopen(request_register, "", 60)
     print response2.read()
