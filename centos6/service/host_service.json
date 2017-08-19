@@ -74,7 +74,7 @@
         "dev222.sugo.net"
       ],
       "SUGO_PROXYSERVER": [
-        "dev220.sugo.net"
+        "dev222.sugo.net"
       ],
       "SUGO_YARN_CLIENT": [
         "dev220.sugo.net",
@@ -86,17 +86,29 @@
   {
     "MAPREDUCE_SUGO": {
       "SUGO_HISTORYSERVER": [
-        "dev220.sugo.net"
+        "dev222.sugo.net"
       ],
       "SUGO_MAPREDUCE_CLIENT": [
-        "dev220.sugo.net"
+        "dev222.sugo.net"
       ]
     }
   },
   {
     "KAFKA_SUGO": {
       "SUGO_KAFKA_BROKER": [
-        "dev222.sugo.net"
+        "dev220.sugo.net",
+		"dev221.sugo.net",
+		"dev222.sugo.net"
+      ]
+    }
+  },
+  {
+    "GATEWAY_SUGO": {
+      "SUGO_GATEWAY_SERVER": [
+        "dev220.sugo.net"
+      ],
+	  "SUGO_GATEWAY_CLIENT": [
+        "dev220.sugo.net"
       ]
     }
   },
@@ -136,3 +148,4 @@
     }
   }
 ]
+
