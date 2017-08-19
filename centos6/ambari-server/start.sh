@@ -62,6 +62,10 @@ if [ $skip_http -eq 0 ]
     echo "~~~~~~~~~~~~http server for sugo_yum skipped~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 fi
 
+#修改astro包名
+astro_package=`ls /var/www/html/sugo_yum/SG/centos6/1.0/ | grep sugo-analytics*`
+mv $astro_package sugo-analytics-SAAS.tar.gz
+
 #http_port=`cat /etc/httpd/conf/httpd.conf |grep "Listen " |grep -v "#" |awk '{print $2}'`
 baseurl=http://$ambari_ip:$http_port/sugo_yum
 

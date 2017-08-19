@@ -10,10 +10,32 @@ curl -u admin:admin -H "X-Requested-By: ambari" -X POST -d '{"Clusters": {"versi
 #更新基础url
 curl -u admin:admin -H "X-Requested-By: ambari" -X PUT -d '{"Repositories":{"base_url":"http://'$server_IP':'$httpd_port'/sugo_yum/SG/centos6/1.0/"}}' http://$server_IP:8080/api/v1/stacks/SG/versions/1.0/operating_systems/redhat6/repositories/SG-1.0
 
-#注册主机
+#安装ambari-agent
 cd ../ambari-agent
-python add_agent.py $cluster_name $server_IP "host"
-sleep 2
+python install_agent.py $cluster_name $server_IP "host"
+
+#判断agent是否已经安装完成并启动
+cat ../ambari-server/host |while read line
+do
+ip=`echo $line | awk '{print $1}'`
+res=`netstat -nap |grep $ip  |grep 8441  |awk '{print $5}' |grep $ip`
+
+  while [ "$res" = "" ]
+  do
+  res=`netstat -nap |grep $ip  |grep 8441  |awk '{print $5}' |grep $ip`
+        if [ "$res" = "" ];then
+         echo "waiting for agent to start~~~"
+         sleep 1
+         continue
+        else
+         break
+    fi
+  done
+echo "$ip agent connected~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+done
+
+#注册ambari-agent
+python regist_agent.py $cluster_name $server_IP "host"
 cd -
 
 #修改pg数据库
