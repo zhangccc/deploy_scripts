@@ -8,16 +8,16 @@
     cd ~/stand-alone_deploy
     mkdir -p /opt/apps
     yum install -y wget openssh-clients vim 
-    ./init_centos6.sh -hostname test01.sugo.vm
+    source init_centos6.sh -hostname test01.sugo.vm
     source /etc/profile
 
     测试
     java -version
-    
+
     vi /etc/hosts
     最底下添加ip和hostname
         192.168.233.128 test01.sugo.vm
-    
+
     建立两个目录用来保存各个服务的日志
     这里需要通过df -h 查看客户的机器情况，看哪个目录容量比较大，
     如果/目录下的容量较小，不能直接创建/data1和/data2，而应该创建符号连接 ln -s /创建的目录绝对路径 /
@@ -38,7 +38,7 @@
 
     adduser postgres
     passwd postgres
-    (密码自己记住)
+    (密码自己记住)
 
     tar -zxf ~/stand-alone_deploy/postgresql-9.5.4-1-linux-x64-binaries.tar.gz -C /opt/apps/
 
@@ -66,8 +66,8 @@
     //创建两个数据库 用于存储其它服务（astro/druid）的数据
     create database  astro_sugo with owner = postgres encoding = UTF8;
     create database  druid with owner = postgres encoding = UTF8;
-    输入 \l 查看是否创建好两个数据库 druid  astro_sugo
-    //创建好后 退出postgres数据库    用 ctrl+d 即可退出
+    输入 \l 查看是否创建好两个数据库 druid  astro_sugo
+    //创建好后 退出postgres数据库    用 ctrl+d 即可退出
 
     修改配置文件:
 
@@ -121,6 +121,8 @@
     dir /data1/redis
     pidfile /opt/apps/redis_sugo/redis.pid
 
+    chown -R root:root /opt/apps/redis_sugo
+
     启动
     /opt/apps/redis_sugo/src/redis-server /opt/apps/redis_sugo/redis.conf
     检查是否启动
@@ -159,6 +161,7 @@
     autopurge.snapRetainCount=100
     server.1=192.168.233.128:2888:3888
 
+    chown -R root:root /opt/apps/zookeeper_sugo
 
     启动
     /opt/apps/zookeeper_sugo/bin/zkServer.sh start
@@ -196,6 +199,8 @@
 
     mkdir -p /data2/kafka/data
 
+    chown -R root:root /opt/apps/kafka_sugo
+
     启动:
     bin/kafka-server-start.sh config/server.properties
 
@@ -217,6 +222,8 @@
 
     vi libs/kafka.properties
     bootstrap.servers=192.168.233.128:9092 (单机版的只有一个ip要修改成自己的ip)
+
+    chown -R root:root /opt/apps/gateway_sugo
 
     启动:
     /opt/apps/gateway_sugo/nginx-linux-x64
@@ -282,8 +289,10 @@
     druid.metadata.storage.connector.password=123456
     druid.storage.type=local     (去掉注释)
     druid.storage.storageDirectory=/druid/segments      (去掉注释) 并修改druid.storage.storageDirectory=/data1/druid/indexing-logs
-    druid.indexer.logs.type=hdfs        注释掉
-    druid.indexer.logs.directory=/druid/indexing-logs       注释掉
+    druid.storage.type=hdfs  注释掉
+    druid.indexer.logs.type=hdfs        注释掉
+    druid.storage.storageDirectory=/druid/segments   注释掉
+    druid.indexer.logs.directory=/druid/indexing-logs     注释掉
     com.metamx.metrics.JvmMonitor [] 搜索删掉 方括号里面的全部删掉
     druid-kafka-eight   搜索删掉,注意,双引号和逗号也要删掉
 
@@ -367,6 +376,9 @@
 
     cd /opt/apps/druidio_sugo/bin
 
+    chown -R root:root /opt/apps/druidio_sugo
+
+
     创建启动脚本
 
     vim start-all.sh
@@ -377,7 +389,7 @@
     CUR_DIR=$(cd `dirname $0`; pwd)
     for nodeType in broker historical coordinator overlord middleManager;
     do
-        sh $CUR_DIR/node.sh $nodeType start
+       sh $CUR_DIR/node.sh $nodeType start
     done
 
 
@@ -392,7 +404,7 @@
     CUR_DIR=$(cd `dirname $0`; pwd)
     for nodeType in broker historical coordinator overlord middleManager;
     do
-        sh $CUR_DIR/node.sh $nodeType stop
+       sh $CUR_DIR/node.sh $nodeType stop
     done
 
 
@@ -400,8 +412,8 @@
     mkdir -p var/druid/pids
 
     启动
-        cd /opt/apps/druidio_sugo
-        ./bin/start-all.sh
+       cd /opt/apps/druidio_sugo
+       ./bin/start-all.sh
 
     
     
@@ -428,9 +440,13 @@
     zookeeperHost: '192.168.233.128:2181/kafka'
     kafkaServerHost: '192.168.233.128:9092
 
+    chown -R root:root /opt/apps/astro_sugo
+
     创建数据存储目录：
     mkdir -p /data1/astro/log
     启动：
     cd /opt/apps/astro_sugo/analytics
     ./cmds/run
 
+    前端登录账号:admin
+    密码:admin123456
