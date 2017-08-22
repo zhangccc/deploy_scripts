@@ -177,7 +177,36 @@
     chmod 755 sugo_zookeeper_server.sh
     ./sugo_zookeeper_server.sh
     
-5.安装gateway
+
+    
+5.安装kafka
+
+    cd /opt/apps/
+    tar -zxf ~/stand-alone_deploy/kafka_2.10-0.10.0.0.tgz -C /opt/apps/
+    mv kafka_2.10-0.10.0.0 kafka_sugo
+
+    cd /opt/apps/kafka_sugo
+
+    修改配置文件
+
+    vi config/server.properties
+
+    zookeeper.connect=192.168.233.128:2181/kafka
+    log.dirs=/data2/kafka/data
+
+    mkdir -p /data2/kafka/data
+
+    启动:
+    bin/kafka-server-start.sh config/server.properties
+
+    或者
+    启动在后台
+    nohup /opt/apps/kafka_sugo/bin/kafka-server-start.sh config/server.properties > /opt/apps/kafka_sugo/kafka.log 2>&1 &
+
+    检查:
+    ps -ef |grep kafka
+    
+6.安装gateway
 
     cd /opt/apps/
     yum install -y libjpeg libpng freetype fontconfig
@@ -209,33 +238,6 @@
     ./nginx-linux-x64
 
     chmod +x start.sh
-    
-6.安装kafka
-
-    cd /opt/apps/
-    tar -zxf ~/stand-alone_deploy/kafka_2.10-0.10.0.0.tgz -C /opt/apps/
-    mv kafka_2.10-0.10.0.0 kafka_sugo
-
-    cd /opt/apps/kafka_sugo
-
-    修改配置文件
-
-    vi config/server.properties
-
-    zookeeper.connect=192.168.233.128:2181/kafka
-    log.dirs=/data2/kafka/data
-
-    mkdir -p /data2/kafka/data
-
-    启动:
-    bin/kafka-server-start.sh config/server.properties
-
-    或者
-    启动在后台
-    nohup /opt/apps/kafka_sugo/bin/kafka-server-start.sh config/server.properties > /opt/apps/kafka_sugo/kafka.log 2>&1 &
-
-    检查:
-    ps -ef |grep kafka
     
 7.安装druid
 
