@@ -410,16 +410,12 @@
     mv sugo-analytics astro_sugo
     useradd astro 
     cd /opt/apps/astro_sugo/analytics
-    cp config.default.js config.js
+    cp ~/stand-alone_deploy/config.js config.js
 
     vim config.js
 
     collectGateway: 'http://192.168.233.128'
-    sdk_ws_url: 'ws://192.168.233.128:8887'
-    websdk_api_host: '192.168.233.128:8000'
     websdk_app_host: '192.168.233.128:8000'
-    websdk_decide_host: '192.168.233.128:8080'
-    websdk_js_cdn: '192.168.233.128:8000'
     redis.host: '192.168.233.128'
     db.host: '192.168.233.128'
     db.database: 'astro_sugo',
@@ -428,7 +424,6 @@
     lookupHost: 'http://192.168.233.128:8081'
     zookeeperHost: '192.168.233.128:2181/kafka'
     kafkaServerHost: '192.168.233.128:9092
-    hostAndPorts: '192.168.233.128:6379
 
     创建数据存储目录：
     mkdir -p /data1/astro/log
