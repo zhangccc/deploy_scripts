@@ -360,7 +360,7 @@
 
     修改
     supervisor.kafka.zkHost=192.168.233.128:2181/kafka
-    supervisor.kafka.replication=2
+    supervisor.kafka.replication=1
     supervisor.segmentGranularity=DAY
     supervisor.io.taskDuration=PT86400S 
     supervisor.io.useEarliestOffset=true
