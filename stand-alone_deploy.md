@@ -66,7 +66,8 @@
     //创建两个数据库 用于存储其它服务（astro/druid）的数据
     create database  astro_sugo with owner = postgres encoding = UTF8;
     create database  druid with owner = postgres encoding = UTF8;
-    //创建好后 退出postgres数据库    用 ctrl+d 即可退出
+    输入 \l 查看是否创建好两个数据库 druid  astro_sugo
+    //创建好后 退出postgres数据库    用 ctrl+d 即可退出
 
     修改配置文件:
 
